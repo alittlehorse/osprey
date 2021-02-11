@@ -102,6 +102,6 @@ std::istream& operator>>(std::istream& in, std::set<T> &s);
 } // libfqfft
 
 // #include "common/serialization.tcc"
-#include <libfqfft/tools/serialization.tcc>
+#include <depends/libfqfft/libfqfft/tools/serialization.tcc>
 
 #endif // SERIALIZATION_HPP_

@@ -26,6 +26,6 @@ void _polynomial_xgcd(const std::vector<FieldT> &a, const std::vector<FieldT> &b
 
 } // libfqfft
 
-#include <libfqfft/polynomial_arithmetic/xgcd.tcc>
+#include <depends/libfqfft/libfqfft/polynomial_arithmetic/xgcd.tcc>
 
 #endif // XGCD_HPP_

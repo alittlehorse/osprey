@@ -104,7 +104,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     # Common compilation flags and warning configuration
     set(
             CMAKE_CXX_FLAGS
-            "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wfatal-errors"
+            "${CMAKE_CXX_FLAGS} -std=c++2a -Wall -Wextra -Wfatal-errors"
     )
     if("${MULTICORE}")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
@@ -231,22 +231,6 @@ if("${USE_LINKED_LIBRARIES}")
     find_library(LIBFF_LIBRARIES NAMES ff libff)
 endif()
 
-find_program(
-        MARKDOWN
-
-        markdown_py
-        DOC "Path to markdown_py binary"
-)
-if(MARKDOWN-NOTFOUND)
-else()
-    add_custom_target(
-            doc
-            ${MARKDOWN} -f ${CMAKE_CURRENT_BINARY_DIR}/README.html -x toc -x extra --noisy ${CMAKE_CURRENT_SOURCE_DIR}/README.md
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-            COMMENT "Translating from markdown to HTML" VERBATIM
-    )
-endif()
-
 # Configure CCache if available
 find_program(CCACHE_FOUND ccache)
 if(CCACHE_FOUND)
@@ -259,11 +243,12 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
 
 add_subdirectory(tinyram_snark)
 add_subdirectory(depends)
+add_subdirectory(libserver)
 add_executable(osprey main.cpp)
 target_link_libraries(osprey
 
         tinyram_snark
-        ${Boost_LIBRARIES}
+        libserver
         )
 
 

@@ -45,6 +45,6 @@ std::vector<FieldT> _basic_radix2_evaluate_all_lagrange_polynomials(const size_t
 
 } // libfqfft
 
-#include <libfqfft/evaluation_domain/domains/basic_radix2_domain_aux.tcc>
+#include <depends/libfqfft/libfqfft/evaluation_domain/domains/basic_radix2_domain_aux.tcc>
 
 #endif // BASIC_RADIX2_DOMAIN_AUX_HPP_

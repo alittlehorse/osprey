@@ -20,8 +20,7 @@
 
 #include <map>
 #include <memory>
-
-#include <libfqfft/evaluation_domain/evaluation_domain.hpp>
+#include <depends/libfqfft/libfqfft/evaluation_domain/evaluation_domain.hpp>
 
 namespace tinyram_snark {
 

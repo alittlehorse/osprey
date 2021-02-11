@@ -17,7 +17,7 @@ See qap.hpp .
 #include <libff/algebra/scalar_multiplication/multiexp.hpp>
 #include <libff/common/profiling.hpp>
 #include <libff/common/utils.hpp>
-#include <libfqfft/evaluation_domain/evaluation_domain.hpp>
+#include <depends/libfqfft/libfqfft/evaluation_domain/evaluation_domain.hpp>
 
 namespace tinyram_snark {
 

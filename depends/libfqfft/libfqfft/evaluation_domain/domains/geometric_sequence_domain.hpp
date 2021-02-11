@@ -14,7 +14,7 @@
 #ifndef GEOMETRIC_SEQUENCE_DOMAIN_HPP
 #define GEOMETRIC_SEQUENCE_DOMAIN_HPP
 
-#include <libfqfft/evaluation_domain/evaluation_domain.hpp>
+#include <depends/libfqfft/libfqfft/evaluation_domain/evaluation_domain.hpp>
 
 namespace libfqfft {
 
@@ -43,6 +43,6 @@ namespace libfqfft {
 
 } // libfqfft
 
-#include <libfqfft/evaluation_domain/domains/geometric_sequence_domain.tcc>
+#include <depends/libfqfft/libfqfft/evaluation_domain/domains/geometric_sequence_domain.tcc>
 
 #endif // GEOMETRIC_SEQUENCE_DOMAIN_HPP

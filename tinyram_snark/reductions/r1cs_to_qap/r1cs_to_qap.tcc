@@ -16,7 +16,7 @@
 
 #include <libff/common/profiling.hpp>
 #include <libff/common/utils.hpp>
-#include <libfqfft/evaluation_domain/get_evaluation_domain.hpp>
+#include <depends/libfqfft/libfqfft/evaluation_domain/get_evaluation_domain.hpp>
 
 namespace tinyram_snark {
 

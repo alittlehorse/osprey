@@ -387,6 +387,37 @@ void ram_universal_gadget<ramT>::print_execution_trace() const
                this->pb.val(execution_lines[i+1].timestamp->packed).as_ulong());
     }
 }
+//this function is used in future;
+    template<typename ramT>
+    void ram_universal_gadget<ramT>::print_execution_trace(std::string path)const
+    {
+        for (size_t i = 0; i < boot_trace_size_bound; ++i)
+        {
+            printf("Boot process at t=#%zu: store %zu at %zu\n",
+                   i,
+                   this->pb.val(boot_lines[i].contents_after->packed).as_ulong(),
+                   this->pb.val(boot_lines[i].address->packed).as_ulong());
+        }
+
+        for (size_t i = 0; i < time_bound; ++i)
+        {
+            printf("Execution step %zu:\n", i);
+            printf("  Loaded instruction %zu from address %zu (ts = %zu)\n",
+                   this->pb.val(load_instruction_lines[i].contents_after->packed).as_ulong(),
+                   this->pb.val(load_instruction_lines[i].address->packed).as_ulong(),
+                   this->pb.val(load_instruction_lines[i].timestamp->packed).as_ulong());
+
+            printf("  Debugging information from the transition function:\n");
+            execution_checkers[i].dump();
+
+            printf("  Memory operation executed: addr = %zu, contents_before = %zu, contents_after = %zu (ts_before = %zu, ts_after = %zu)\n",
+                   this->pb.val(execution_lines[i+1].address->packed).as_ulong(),
+                   this->pb.val(execution_lines[i+1].contents_before->packed).as_ulong(),
+                   this->pb.val(execution_lines[i+1].contents_after->packed).as_ulong(),
+                   this->pb.val(execution_lines[i].timestamp->packed).as_ulong(),
+                   this->pb.val(execution_lines[i+1].timestamp->packed).as_ulong());
+        }
+    }
 
 template<typename ramT>
 void ram_universal_gadget<ramT>::print_memory_trace() const

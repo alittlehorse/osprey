@@ -1,0 +1,125 @@
+/** @file
+ *****************************************************************************
+
+ Declaration of interfaces for a verfication program provided by server requester
+
+ *****************************************************************************
+ * @author     This file is part of libserver, developed by alittlehorse
+ * @copyright  MIT license (see LICENSE file)
+ *****************************************************************************/
+#include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
+
+#include <libff/common/profiling.hpp>
+
+#include <tinyram_snark/common/default_types/tinyram_ppzksnark_pp.hpp>
+#include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
+#include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_params.hpp>
+
+#include <libserver/construct_proof.hpp>
+#include <libserver/Log.hpp>
+#include <libserver/proof_program.hpp>
+
+using namespace tinyram_snark;
+
+namespace libserver{
+     ram_ppsnark_server::ram_ppsnark_server(proof_program& v) {
+         _vp = v;
+        log = new Log(v.get_program_name()+"/"+v.get_program_name()+"_log.txt");
+    }
+    proof ram_ppsnark_server::construct_proof() {
+        libff::start_profiling();
+        log->write_log<>("================================================================================\n");
+        log->write_log<>("TinyRAM example loader\n");
+        log->write_log<>("================================================================================\n\n");
+
+        //load everything
+        auto ap = generate_ram_ppsnark_architecture_params(_vp.get_architecture_params_fn());
+        log->write_log<size_t,size_t>("Will run on %zu register machine (word size = %zu)\\n", ap.k, ap.w);
+
+        std::ifstream f_rp(_vp.get_computation_bounds_fn());
+        size_t tinyram_input_size_bound, tinyram_program_size_bound, time_bound;
+        f_rp >> tinyram_input_size_bound >> tinyram_program_size_bound >> time_bound;
+
+        std::ifstream processed(_vp.get_processed_assembly_fn());
+        std::ifstream raw(_vp.get_assembly_fn());
+        tinyram_program program = load_preprocessed_program(ap, processed);
+
+        log->write_log<std::string>("Program:\n%s\n", std::string((std::istreambuf_iterator<char>(raw)),
+                                                std::istreambuf_iterator<char>()).c_str());
+        std::ifstream f_primary_input(_vp.get_primary_input_fn());
+        std::ifstream f_auxiliary_input(_vp.get_auxiliary_input_fn());
+
+        libff::enter_block("Loading primary input");
+        tinyram_input_tape primary_input = load_tape(f_primary_input);
+        libff::leave_block("Loading primary input");
+
+        libff::enter_block("Loading auxiliary input");
+        tinyram_input_tape auxiliary_input = load_tape(f_auxiliary_input);
+        libff::leave_block("Loading auxiliary input");
+
+        const size_t boot_trace_size_bound = tinyram_program_size_bound + tinyram_input_size_bound;
+        const boot_trace tinyram_boot_trace = tinyram_boot_trace_from_program_and_input(ap, boot_trace_size_bound, program, primary_input);
+
+        log->write_log<>("================================================================================\n");
+        log->write_log<size_t>("TinyRAM arithmetization test for T = %zu time steps\n", time_bound);
+        log->write_log<>("================================================================================\n\n");
+
+        typedef ram_ppzksnark_machine_pp<default_tinyram_ppzksnark_pp> default_ram;
+        typedef ram_base_field<default_ram> FieldT;
+
+        ram_to_r1cs<default_ram> r(ap, boot_trace_size_bound, time_bound);
+        r.instance_map();
+
+        const r1cs_primary_input<FieldT> r1cs_primary_input = ram_to_r1cs<default_ram>::primary_input_map(ap, boot_trace_size_bound, tinyram_boot_trace);
+        const r1cs_auxiliary_input<FieldT> r1cs_auxiliary_input = r.auxiliary_input_map(tinyram_boot_trace, auxiliary_input);
+        const r1cs_constraint_system<FieldT> constraint_system = r.get_constraint_system();
+
+//        r.print_execution_trace(proof_log->get_path()); //rediract to log
+        assert(constraint_system.is_satisfied(r1cs_primary_input, r1cs_auxiliary_input));
+
+        auto keypair = generate_ram_ppsnark_keypair(ap, boot_trace_size_bound, time_bound);
+
+        log->write_log<>("================================================================================\n");
+        log->write_log<>("TinyRAM ppzkSNARK Prover\n");
+        log->write_log<>("================================================================================\n\n");
+        const proof final_proof = ram_ppzksnark_prover<default_tinyram_ppzksnark_pp>(keypair.pk, tinyram_boot_trace,  auxiliary_input);
+        return final_proof;
+    }
+
+
+    ram_keypair ram_ppsnark_server::generate_ram_ppsnark_keypair(ram_ppzksnark_architecture_params<default_tinyram_ppzksnark_pp> ap,size_t boot_trace_size_bound,size_t time_bound){
+        log->write_log<>("================================================================================\n");
+        log->write_log<>("TinyRAM ppzkSNARK Key Pair Generator\n");
+        log->write_log<>("================================================================================\n\n");
+
+        const ram_keypair keypair = ram_ppzksnark_generator<default_tinyram_ppzksnark_pp>(ap, boot_trace_size_bound, time_bound);
+        return keypair;
+    }
+
+
+    bool ram_ppsnark_server::test_proof(const proof& p,const boot_trace& bt,const ram_keypair& keypair){
+        printf("================================================================================\n");
+        printf("TinyRAM ppzkSNARK Verifier\n");
+        printf("================================================================================\n\n");
+        bool bit = ram_ppzksnark_verifier<default_tinyram_ppzksnark_pp>(keypair.vk, bt, p);
+
+        printf("================================================================================\n");
+        printf("The verification result is: %s\n", (bit ? "PASS" : "FAIL"));
+        printf("================================================================================\n");
+        libff::print_mem();
+        printf("================================================================================\n");
+        return bit;
+    }
+
+    ram_ppzksnark_architecture_params<default_tinyram_ppzksnark_pp>
+    ram_ppsnark_server::generate_ram_ppsnark_architecture_params(std::string&& get_architecture_params_fn) {
+        ram_ppzksnark_architecture_params<default_tinyram_ppzksnark_pp> ap;
+        std::ifstream f_ap(get_architecture_params_fn);
+        f_ap >> ap;
+        return ap;
+    }
+}

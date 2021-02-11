@@ -28,6 +28,6 @@ void kronecker_substitution(std::vector<FieldT> &v3, const std::vector<FieldT> &
 
 } // libfqfft
 
-#include <libfqfft/kronecker_substitution/kronecker_substitution.tcc>
+#include <depends/libfqfft/libfqfft/kronecker_substitution/kronecker_substitution.tcc>
 
 #endif // KRONECKER_SUBSTITUTION_HPP_

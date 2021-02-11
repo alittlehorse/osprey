@@ -87,6 +87,6 @@ void _polynomial_division(std::vector<FieldT> &q, std::vector<FieldT> &r, const 
 
 } // libfqfft
 
-#include <libfqfft/polynomial_arithmetic/basic_operations.tcc>
+#include <depends/libfqfft/libfqfft/polynomial_arithmetic/basic_operations.tcc>
 
 #endif // BASIC_OPERATIONS_HPP_

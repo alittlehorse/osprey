@@ -8,7 +8,8 @@ if(${CURVE} STREQUAL "BN128")
             zm
     )
 endif()
-set(DEPENDS_DIR "${PROJECT_SOURCE_DIR}/depends")
+
+
 
 add_library(
         tinyram_snark

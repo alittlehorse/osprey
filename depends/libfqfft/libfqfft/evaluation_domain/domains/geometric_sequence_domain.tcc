@@ -14,8 +14,8 @@
 #ifndef GEOMETRIC_SEQUENCE_DOMAIN_TCC_
 #define GEOMETRIC_SEQUENCE_DOMAIN_TCC_
 
-#include <libfqfft/evaluation_domain/domains/basic_radix2_domain_aux.hpp>
-#include <libfqfft/polynomial_arithmetic/basis_change.hpp>
+#include <depends/libfqfft/libfqfft/evaluation_domain/domains/basic_radix2_domain_aux.hpp>
+#include <depends/libfqfft/libfqfft/polynomial_arithmetic/basis_change.hpp>
 
 #ifdef MULTICORE
 #include <omp.h>

@@ -64,6 +64,6 @@ void newton_to_monomial_basis_geometric(std::vector<FieldT> &a,
 
 } // libfqfft
 
-#include <libfqfft/polynomial_arithmetic/basis_change.tcc>
+#include <depends/libfqfft/libfqfft/polynomial_arithmetic/basis_change.tcc>
 
 #endif // BASIS_CHANGE_HPP_

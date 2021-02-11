@@ -23,7 +23,7 @@
 
 #include <libff/algebra/fields/field_utils.hpp>
 
-#include <libfqfft/tools/exceptions.hpp>
+#include <depends/libfqfft/libfqfft/tools/exceptions.hpp>
 
 #ifdef DEBUG
 #include <libff/common/profiling.hpp>

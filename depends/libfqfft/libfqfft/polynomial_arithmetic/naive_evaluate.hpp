@@ -14,7 +14,7 @@
 
 #include <vector>
 
-#include <libfqfft/tools/exceptions.hpp>
+#include <depends/libfqfft/libfqfft/tools/exceptions.hpp>
 
 namespace libfqfft {
 
@@ -45,6 +45,6 @@ FieldT evaluate_lagrange_polynomial(const size_t &m, const std::vector<FieldT> &
 
 } // libfqfft
 
-#include <libfqfft/polynomial_arithmetic/naive_evaluate.tcc>
+#include <depends/libfqfft/libfqfft/polynomial_arithmetic/naive_evaluate.tcc>
 
 #endif // NAIVE_EVALUATE_HPP_

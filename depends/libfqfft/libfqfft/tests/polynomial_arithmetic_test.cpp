@@ -10,8 +10,8 @@
 #include <gtest/gtest.h>
 #include <stdint.h>
 
-#include <libfqfft/polynomial_arithmetic/basic_operations.hpp>
-#include <libfqfft/polynomial_arithmetic/xgcd.hpp>
+#include <depends/libfqfft/libfqfft/polynomial_arithmetic/basic_operations.hpp>
+#include <depends/libfqfft/libfqfft/polynomial_arithmetic/xgcd.hpp>
 
 namespace libfqfft {
 

@@ -15,7 +15,7 @@
 #ifndef EXTENDED_RADIX2_DOMAIN_HPP_
 #define EXTENDED_RADIX2_DOMAIN_HPP_
 
-#include <libfqfft/evaluation_domain/evaluation_domain.hpp>
+#include <depends/libfqfft/libfqfft/evaluation_domain/evaluation_domain.hpp>
 
 namespace libfqfft {
 
@@ -43,6 +43,6 @@ public:
 
 } // libfqfft
 
-#include <libfqfft/evaluation_domain/domains/extended_radix2_domain.tcc>
+#include <depends/libfqfft/libfqfft/evaluation_domain/domains/extended_radix2_domain.tcc>
 
 #endif // EXTENDED_RADIX2_DOMAIN_HPP_

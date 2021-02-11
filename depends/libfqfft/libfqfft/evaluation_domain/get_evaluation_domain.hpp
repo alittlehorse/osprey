@@ -18,7 +18,7 @@
 
 #include <memory>
 
-#include <libfqfft/evaluation_domain/evaluation_domain.hpp>
+#include <depends/libfqfft/libfqfft/evaluation_domain/evaluation_domain.hpp>
 
 namespace libfqfft {
 
@@ -27,6 +27,6 @@ std::shared_ptr<evaluation_domain<FieldT> > get_evaluation_domain(const size_t m
 
 } // libfqfft
 
-#include <libfqfft/evaluation_domain/get_evaluation_domain.tcc>
+#include <depends/libfqfft/libfqfft/evaluation_domain/get_evaluation_domain.tcc>
 
 #endif // GET_EVALUATION_DOMAIN_HPP_

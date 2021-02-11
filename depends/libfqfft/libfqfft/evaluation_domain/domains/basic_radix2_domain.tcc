@@ -18,7 +18,7 @@
 #include <libff/common/double.hpp>
 #include <libff/common/utils.hpp>
 
-#include <libfqfft/evaluation_domain/domains/basic_radix2_domain_aux.hpp>
+#include <depends/libfqfft/libfqfft/evaluation_domain/domains/basic_radix2_domain_aux.hpp>
 
 namespace libfqfft {
 

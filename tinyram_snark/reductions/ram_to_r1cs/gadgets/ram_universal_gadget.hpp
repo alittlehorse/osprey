@@ -124,6 +124,7 @@ public:
 
     /* both methods assume that generate_r1cs_witness has been called */
     void print_execution_trace() const;
+    void print_execution_trace(std::string path) const;
     void print_memory_trace() const;
 
     static size_t packed_input_element_size(const ram_architecture_params<ramT> &ap);

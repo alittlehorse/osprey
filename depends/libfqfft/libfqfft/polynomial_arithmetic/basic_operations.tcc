@@ -16,9 +16,9 @@
 
 #include <algorithm>
 
-#include <libfqfft/evaluation_domain/domains/basic_radix2_domain_aux.hpp>
-#include <libfqfft/kronecker_substitution/kronecker_substitution.hpp>
-#include <libfqfft/tools/exceptions.hpp>
+#include <depends/libfqfft/libfqfft/evaluation_domain/domains/basic_radix2_domain_aux.hpp>
+#include <depends/libfqfft/libfqfft/kronecker_substitution/kronecker_substitution.hpp>
+#include <depends/libfqfft/libfqfft/tools/exceptions.hpp>
 
 #ifdef MULTICORE
 #include <omp.h>
