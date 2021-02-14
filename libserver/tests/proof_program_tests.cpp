@@ -11,4 +11,5 @@ int main(){
      std::string s= "avarage";
      assert(p.get_auxiliary_input_fn()=="avarage/avarage-auxiliary_input.txt");
      assert(p.get_assembly_fn()=="avarage/avarage.s");
+
 }

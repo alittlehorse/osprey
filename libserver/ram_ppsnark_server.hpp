@@ -26,17 +26,23 @@ namespace libserver{
     using proof = tinyram_snark::ram_ppzksnark_proof<default_tinyram_ppzksnark_pp>;
     using boot_trace = ram_boot_trace<default_tinyram_ppzksnark_pp>;
     using ram_keypair = ram_ppzksnark_keypair<default_tinyram_ppzksnark_pp> ;
+    using architecture_params = ram_ppzksnark_architecture_params<default_tinyram_ppzksnark_pp>;
     class ram_ppsnark_server{
     public :
         explicit ram_ppsnark_server(proof_program&);
         proof construct_proof();
-        ram_ppzksnark_architecture_params<default_tinyram_ppzksnark_pp> generate_ram_ppsnark_architecture_params(std::string&&);
-        ram_keypair generate_ram_ppsnark_keypair(ram_ppzksnark_architecture_params<default_tinyram_ppzksnark_pp> ,size_t,size_t);
+        proof construct_proof(ram_keypair&,const boot_trace&,tinyram_input_tape&) const;
+        architecture_params generate_ram_ppsnark_architecture_params(std::string&&);
+        ram_keypair generate_ram_ppsnark_keypair(architecture_params ,size_t,size_t);
         static bool test_proof(const proof& ,const boot_trace& ,const ram_keypair& );
 
     private:
         proof_program _vp;
         Log* log;
+
+        boot_trace generate_primary_input(architecture_params &ap, size_t boot_trace_size_bound);
+
+        tinyram_input_tape generate_auxili_input(std::string &&auxiliary_input_path);
     };
 
 

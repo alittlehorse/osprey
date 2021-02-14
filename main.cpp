@@ -1,4 +1,4 @@
-# include <libserver/construct_proof.hpp>
+# include <libserver/ram_ppsnark_server.hpp>
 
 using namespace libserver;
 

@@ -2,7 +2,7 @@
 add_library(libserver
         STATIC
 
-        construct_proof.cpp
+        ram_ppsnark_server.cpp
         proof_program.cpp
         Log.hpp
         )
@@ -25,6 +25,12 @@ add_executable(
 )
 target_link_libraries(proof_program_tests libserver)
 
+add_executable(
+        ram_ppsnark_server_test
+
+        tests/ram_ppsnark_server_test.cpp
+)
+target_link_libraries(ram_ppsnark_server_test libserver)
 
 include(CTest)
 enable_testing()
@@ -36,5 +42,10 @@ add_test(
         NAME log_tests
         COMMAND log_tests
 )
+add_test(
+        NAME ram_ppsnark_server_test
+        COMMAND ram_ppsnark_server_test
+)
 add_dependencies(check proof_program_tests)
 add_dependencies(check log_tests)
+add_dependencies(check ram_ppsnark_server_test)
