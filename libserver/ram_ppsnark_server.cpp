@@ -28,10 +28,12 @@ using namespace tinyram_snark;
 namespace libserver{
      ram_ppsnark_server::ram_ppsnark_server(proof_program& v) {
          _vp = v;
-        log = new Log(v.get_program_name()+"/"+v.get_program_name()+"_log.txt");
+         log = new Log(v.get_program_name()+"/"+v.get_program_name()+"_log.txt");
+         default_tinyram_ppzksnark_pp::init_public_params();
+         libff::start_profiling();
     }
     proof ram_ppsnark_server::construct_proof() {
-        libff::start_profiling();
+
         log->write_log<>("================================================================================\n");
         log->write_log<>("TinyRAM example loader\n");
         log->write_log<>("================================================================================\n\n");
@@ -67,22 +69,24 @@ namespace libserver{
 
         auto keypair = generate_ram_ppsnark_keypair(ap, boot_trace_size_bound, time_bound);
         auto proof = construct_proof(keypair,primary_input_boot_trace,auxiliary_input);
+
+        assert(ram_ppzksnark_verifier<default_tinyram_ppzksnark_pp>(keypair.vk, primary_input_boot_trace, proof)==true);
+        libff::print_mem();
         return proof;
     }
 
-    proof ram_ppsnark_server::construct_proof(ram_keypair& keypair,const boot_trace& bt,tinyram_input_tape& auxiliary_input) const{
+    proof ram_ppsnark_server::construct_proof(const ram_keypair& keypair,const boot_trace& bt,tinyram_input_tape& auxiliary_input) const{
         log->write_log<>("================================================================================\n");
         log->write_log<>("TinyRAM ppzkSNARK Prover\n");
         log->write_log<>("================================================================================\n\n");
-        const proof final_proof = ram_ppzksnark_prover<default_tinyram_ppzksnark_pp>(keypair.pk, bt,  auxiliary_input);
-        return final_proof;
+        const proof p = ram_ppzksnark_prover<default_tinyram_ppzksnark_pp>(keypair.pk, bt,  auxiliary_input);
+        assert(ram_ppzksnark_verifier<default_tinyram_ppzksnark_pp>(keypair.vk, bt, p)==true);
+        libff::print_mem();
+        return p;
      }
-///
-/// \param ap :
-/// \param boot_trace_size_bound
-/// \param time_bound
-/// \return ram_keypair;
-    ram_keypair ram_ppsnark_server::generate_ram_ppsnark_keypair(architecture_params ap,size_t boot_trace_size_bound,size_t time_bound){
+
+
+    ram_keypair ram_ppsnark_server::generate_ram_ppsnark_keypair(const architecture_params& ap,size_t boot_trace_size_bound,size_t time_bound) {
         log->write_log<>("================================================================================\n");
         log->write_log<>("TinyRAM ppzkSNARK Key Pair Generator\n");
         log->write_log<>("================================================================================\n\n");
@@ -99,7 +103,7 @@ namespace libserver{
         return ap;
     }
 
-    boot_trace ram_ppsnark_server::generate_primary_input(architecture_params& ap,const size_t boot_trace_size_bound){
+    boot_trace ram_ppsnark_server::generate_primary_input(const architecture_params& ap,const size_t boot_trace_size_bound){
 
         std::ifstream processed(_vp.get_processed_assembly_fn());
         std::ifstream raw(_vp.get_assembly_fn());
@@ -123,20 +127,16 @@ namespace libserver{
          return auxiliary_input;
      }
 
-    bool ram_ppsnark_server::test_proof(const proof& p,
+     bool ram_ppsnark_server::test_proof(const proof& p,
                                         const boot_trace& bt,
                                         const ram_keypair& keypair){
-        printf("================================================================================\n");
-        printf("TinyRAM ppzkSNARK Verifier\n");
-        printf("================================================================================\n\n");
-        bool bit = ram_ppzksnark_verifier<default_tinyram_ppzksnark_pp>(keypair.vk, bt, p);
+         libff::start_profiling();
+         bool bit = ram_ppzksnark_verifier<default_tinyram_ppzksnark_pp>(keypair.vk, bt, p);
+         return bit;
+    }
 
-        printf("================================================================================\n");
-        printf("The verification result is: %s\n", (bit ? "PASS" : "FAIL"));
-        printf("================================================================================\n");
-        libff::print_mem();
-        printf("================================================================================\n");
-        return bit;
+    std::string ram_ppsnark_server::get_target_path() {
+        return _vp.get_program_name();
     }
 
 

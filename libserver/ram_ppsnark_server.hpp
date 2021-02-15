@@ -23,28 +23,31 @@
 using namespace tinyram_snark;
 
 namespace libserver{
+
     using proof = tinyram_snark::ram_ppzksnark_proof<default_tinyram_ppzksnark_pp>;
     using boot_trace = ram_boot_trace<default_tinyram_ppzksnark_pp>;
     using ram_keypair = ram_ppzksnark_keypair<default_tinyram_ppzksnark_pp> ;
     using architecture_params = ram_ppzksnark_architecture_params<default_tinyram_ppzksnark_pp>;
+
     class ram_ppsnark_server{
     public :
         explicit ram_ppsnark_server(proof_program&);
+        std::string get_target_path();
         proof construct_proof();
-        proof construct_proof(ram_keypair&,const boot_trace&,tinyram_input_tape&) const;
+        proof construct_proof(const ram_keypair&,const boot_trace&,tinyram_input_tape&) const;
         architecture_params generate_ram_ppsnark_architecture_params(std::string&&);
-        ram_keypair generate_ram_ppsnark_keypair(architecture_params ,size_t,size_t);
-        static bool test_proof(const proof& ,const boot_trace& ,const ram_keypair& );
-
+        ///generate_ram_ppsnark_keypair function Logs the processing of Key Pair Genetator and using tinyram_snark::ram_ppzksnark_generator to construct a keypair;
+        /// \param ap : the atchitecute_params of tinyram
+        /// \param boot_trace_size_bound:primary input size bound
+        /// \param time_bound: the program execution time bound
+        /// \return ram_keypair;
+        ram_keypair generate_ram_ppsnark_keypair(const architecture_params& ,size_t,size_t);
+        bool test_proof(const proof& ,const boot_trace& ,const ram_keypair& );
+        boot_trace generate_primary_input(const architecture_params &ap, size_t boot_trace_size_bound);
+        tinyram_input_tape generate_auxili_input(std::string&&);
     private:
         proof_program _vp;
         Log* log;
-
-        boot_trace generate_primary_input(architecture_params &ap, size_t boot_trace_size_bound);
-
-        tinyram_input_tape generate_auxili_input(std::string &&auxiliary_input_path);
     };
-
-
 }
 

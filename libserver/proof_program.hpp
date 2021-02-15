@@ -16,6 +16,7 @@
 
 
 namespace libserver{
+
     class proof_program{
         private:
         std::string assembly_fn;
@@ -27,7 +28,7 @@ namespace libserver{
         std::string _program_name;
         void processe_program(){
             assembly_fn = _program_name +"/"+ _program_name+".s";
-            processed_assembly_fn = _program_name +"/"+ _program_name+"-processed_assembly";
+            processed_assembly_fn = _program_name +"/"+ _program_name+"-processed_assembly.txt";
             architecture_params_fn = _program_name +"/"+ _program_name+"-architecture_params.txt";
             primary_input_fn = _program_name +"/"+ _program_name+"-primary_input.txt";
             auxiliary_input_fn = _program_name +"/"+ _program_name+"-auxiliary_input.txt";
@@ -42,6 +43,7 @@ namespace libserver{
         std::string get_auxiliary_input_fn();
         std::string get_program_name();
         proof_program() = default;
+
         explicit proof_program(std::string program_name);
 
 
