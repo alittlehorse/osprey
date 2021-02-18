@@ -68,14 +68,14 @@ namespace libserver{
         assert(constraint_system.is_satisfied(r1cs_primary_input, r1cs_auxiliary_input));
 
         auto keypair = generate_ram_ppsnark_keypair(ap, boot_trace_size_bound, time_bound);
-        auto proof = construct_proof(keypair,primary_input_boot_trace,auxiliary_input);
+        auto proof = generate_proof(keypair,primary_input_boot_trace,auxiliary_input);
 
         assert(ram_ppzksnark_verifier<default_tinyram_ppzksnark_pp>(keypair.vk, primary_input_boot_trace, proof)==true);
         libff::print_mem();
         return proof;
     }
 
-    proof ram_ppsnark_server::construct_proof(const ram_keypair& keypair,const boot_trace& bt,tinyram_input_tape& auxiliary_input) const{
+    proof ram_ppsnark_server::generate_proof(const ram_keypair& keypair,const boot_trace& bt,tinyram_input_tape& auxiliary_input) const{
         log->write_log<>("================================================================================\n");
         log->write_log<>("TinyRAM ppzkSNARK Prover\n");
         log->write_log<>("================================================================================\n\n");
@@ -137,6 +137,22 @@ namespace libserver{
 
     std::string ram_ppsnark_server::get_target_path() {
         return _vp.get_program_name();
+    }
+
+    architecture_params ram_ppsnark_server::genenerate_ram_ppsnark_architecture_params() {
+       return  generate_ram_ppsnark_architecture_params(_vp.get_architecture_params_fn());
+    }
+
+    tinyram_input_tape ram_ppsnark_server::generate_auxili_input() {
+        return generate_auxili_input(_vp.get_auxiliary_input_fn());
+    }
+
+    std::tuple<size_t, size_t,size_t> ram_ppsnark_server::get_bounds() {
+        std::ifstream f_rp(_vp.get_computation_bounds_fn());
+        size_t tinyram_input_size_bound, tinyram_program_size_bound, time_bound;
+        f_rp >> tinyram_input_size_bound >> tinyram_program_size_bound >> time_bound;
+        f_rp.close();
+        return std::make_tuple(tinyram_input_size_bound,tinyram_program_size_bound,time_bound);
     }
 
 
