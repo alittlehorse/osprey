@@ -5,6 +5,7 @@ add_library(libserver
         ram_ppsnark_server.cpp
         proof_program.cpp
         Log.hpp
+        tinyram_complier_server.hpp
         )
 target_link_libraries(libserver
         tinyram_snark

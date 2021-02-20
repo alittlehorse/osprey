@@ -1,7 +1,7 @@
 /** @file
  *****************************************************************************
 
- Declaration of interfaces for a verfication program provided by server requester
+ Declaration of interfaces for a proof program provided by server requester
 
  *****************************************************************************
  * @author     This file is part of libserver, developed by alittlehorse

@@ -9,13 +9,10 @@ int main()
     libserver::ram_ppsnark_server server(p);
     //simulate the trust third part to construct the keypair and architecture params
     auto arch_params = server.generate_ram_ppsnark_architecture_params(p.get_architecture_params_fn());
-    //const auto bounds =  server.get_bounds();
-    //const size_t tinyram_input_size_bound = std::get<0>(bounds);
-    //const size_t tinyram_program_size_bound = std::get<1>(bounds);
-    //const size_t time_bound = std::get<2>(bounds);
-    std::ifstream f_rp(p.get_computation_bounds_fn());
-    size_t tinyram_input_size_bound, tinyram_program_size_bound, time_bound;
-    f_rp >> tinyram_input_size_bound>> tinyram_program_size_bound >> time_bound;
+    const auto bounds =  server.get_bounds();
+    const size_t tinyram_input_size_bound = std::get<0>(bounds);
+    const size_t tinyram_program_size_bound = std::get<1>(bounds);
+    const size_t time_bound = std::get<2>(bounds);
     const size_t boot_trace_size_bounds = tinyram_input_size_bound+tinyram_program_size_bound;
     const auto primary_input  = server.generate_primary_input(arch_params,boot_trace_size_bounds);
     const auto keypair = server.generate_ram_ppsnark_keypair(arch_params,boot_trace_size_bounds,time_bound);

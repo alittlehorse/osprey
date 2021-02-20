@@ -1,7 +1,12 @@
 /** @file
  *****************************************************************************
 
- Declaration of interfaces for a verfication program provided by server requester
+the server of zksnark using the proof program with tinyram
+ + generate_proof
+ + test_proof
+ + generate keypair
+ + generate architecture params
+ + get bounds(time bounds, compution bounds...)
 
  *****************************************************************************
  * @author     This file is part of libserver, developed by alittlehorse

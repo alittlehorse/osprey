@@ -49,6 +49,7 @@ qap_instance<FieldT> r1cs_to_qap_instance_map(const r1cs_constraint_system<Field
      *     input_i * 0 = 0
      * to ensure soundness of input consistency
      */
+
     for (size_t i = 0; i <= cs.num_inputs(); ++i)
     {
         A_in_Lagrange_basis[i][cs.num_constraints() + i] = FieldT::one();
@@ -57,7 +58,19 @@ qap_instance<FieldT> r1cs_to_qap_instance_map(const r1cs_constraint_system<Field
     for (size_t i = 0; i < cs.num_constraints(); ++i)
     {
         for (size_t j = 0; j < cs.constraints[i].a.terms.size(); ++j)
-        {
+        {     /*example:
+                * A:{
+                * {0,1,0,0,0,0}
+                * {0,0,0,1,0,0}
+                * {0,1,0,0,1,0}
+                * {5,0,0,0,0,1}
+                * }
+                *
+                */
+            // std::vector<std::map<size_t, FieldT> > A_in_Lagrange_basis<s>
+            // std::map<size_t,FieldT> s
+            //s[0]=0,s[1]=0,s[2]=0,s[3]=5;
+            //A[0] = s;
             A_in_Lagrange_basis[cs.constraints[i].a.terms[j].index][i] +=
                 cs.constraints[i].a.terms[j].coeff;
         }
@@ -187,6 +200,7 @@ qap_instance_evaluation<FieldT> r1cs_to_qap_instance_map_with_evaluation(const r
  *   B(z) := B_0(z) + \sum_{k=1}^{m} w_k B_k(z) + d2 * Z(z)
  *   C(z) := C_0(z) + \sum_{k=1}^{m} w_k C_k(z) + d3 * Z(z)
  *   Z(z) := "vanishing polynomial of set S"
+ *   Z(z) = (z-sigma_1)(z-sigma_2)...(z-sigma_n)
  * and
  *   m = number of variables of the QAP
  *   n = degree of the QAP
