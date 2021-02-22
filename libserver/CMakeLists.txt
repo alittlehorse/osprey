@@ -2,10 +2,10 @@
 add_library(libserver
         STATIC
 
+        tinyram_complier_server.cpp
         ram_ppsnark_server.cpp
         proof_program.cpp
         Log.hpp
-        tinyram_complier_server.hpp
         )
 target_link_libraries(libserver
         tinyram_snark
@@ -33,6 +33,11 @@ add_executable(
 )
 target_link_libraries(ram_ppsnark_server_test libserver)
 
+add_executable(
+        tinyram_complier_server_test
+        tests/tinyram_complier_server_test.cpp
+)
+
 include(CTest)
 enable_testing()
 add_test(
@@ -47,6 +52,11 @@ add_test(
         NAME ram_ppsnark_server_test
         COMMAND ram_ppsnark_server_test
 )
+add_test(
+        NAME tinyram_complier_server_test
+        COMMAND tinyram_complier_server_test
+)
+
 add_dependencies(check proof_program_tests)
 add_dependencies(check log_tests)
 add_dependencies(check ram_ppsnark_server_test)

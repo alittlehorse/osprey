@@ -12,10 +12,10 @@ the server of zksnark using the proof program with tinyram
  * @author     This file is part of libserver, developed by alittlehorse
  * @copyright  MIT license (see LICENSE file)
  *****************************************************************************/
-#include <algorithm>
-#include <fstream>
+
+
 #include <iostream>
-#include <sstream>
+
 #include <string>
 
 #include <libff/common/profiling.hpp>
