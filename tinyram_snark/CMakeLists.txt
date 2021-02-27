@@ -9,7 +9,8 @@ if(${CURVE} STREQUAL "BN128")
     )
 endif()
 
-
+FIND_PACKAGE( Boost 1.56 COMPONENTS program_options REQUIRED )
+INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
 add_library(
         tinyram_snark

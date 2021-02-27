@@ -9,6 +9,7 @@
  *****************************************************************************/
 #include <unordered_map>
 #include <vector>
+#include<tuple>
 #ifndef OSPREY_TINYRAM_COMPLIER_SERVER_H
 #define OSPREY_TINYRAM_COMPLIER_SERVER_H
 
@@ -51,10 +52,13 @@ namespace libserver{
         //input the assemble file and process the file ,like a complier
     public:
         bool complie_tinyram(std::string &&file_path);
+        int parse_reg(std::string);
+        std::tuple<int,int> parse_arg2(std::string);
 
     private:
-        std::string&& parent_dir(){};
-        std::string&& file_name(){};
+        std::string&& parent_dir();
+        std::string&& file_name();
+        std::unordered_map<std::string,int> labels;
     };
 
 }
