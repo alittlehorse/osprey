@@ -22,6 +22,10 @@ int main(){
     assert(b[0] == "i");
     assert(b[1] == "am");
     assert(b[2]=="james");
+    std::string s1 = "0 r1";
+    std::vector<std::string> v = libserver::string_helper::split(s1," ");
+    assert(v[0]=="0");
+    assert(v[1]=="r1");
     std::vector<int> v1{1,2,3};
     std::vector<int> v2{3,2,1};
     std::vector<float> v3{1.2,2.4,9.0};
@@ -31,5 +35,6 @@ int main(){
                 std::cout << i << " " << j << " " << k << " " << l << std::endl;
             },
             v1.begin(),v1.end(),v2.begin(),v3.begin(),v4.begin());
+    assert("it's 1"== libserver::string_helper::StrFormat<int>("it's %d",1));
 }
 

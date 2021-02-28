@@ -6,6 +6,7 @@
 #define OSPREY_STRING_HELPER_HPP
 #include <string>
 #include<vector>
+#include<functional>
 namespace libserver{
     class string_helper {
     public:
@@ -56,6 +57,25 @@ namespace libserver{
                 func(*begin, *(iterators)... );
             //could also make this a tuple
             return func;
+        }
+        template <typename... Args>
+        static std::string StrFormat(const char *format, Args... args) {
+            std::string buffer;
+            size_t const size = StringPrint(nullptr, 0, format, args...);
+            buffer.resize(size);
+            StringPrint(&buffer[0], buffer.size() + 1, format, args...);
+            return buffer;
+        }
+        template <typename T> static T Argument(T value) noexcept { return value; }
+        template <typename T>
+        static T const *Argument(std::basic_string<T> const &value) noexcept {
+            return value.c_str();
+        }
+        template <typename... Args>
+        static int StringPrint(char *const buffer, size_t const bufferCount,
+                        char const *const format, Args const &... args) noexcept {
+            int const result = snprintf(buffer, bufferCount, format, Argument(args)...);
+            return result;
         }
     };
 }

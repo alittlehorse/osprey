@@ -34,7 +34,6 @@ target_link_libraries(ram_ppsnark_server_test libserver)
 
 add_executable(
         tinyram_complier_server_test
-        EXCLUDE_FROM_ALL
         tests/tinyram_complier_server_test.cpp
 )
 target_link_libraries(tinyram_complier_server_test libserver)
@@ -49,12 +48,12 @@ enable_testing()
 #add_test(NAME proof_program_tests COMMAND proof_program_tests)
 #add_test(NAME log_tests COMMAND log_tests)
 #add_test(NAME ram_ppsnark_server_test COMMAND ram_ppsnark_server_test)
-#add_test(NAME tinyram_complier_server_test COMMAND tinyram_complier_server_test)
+add_test(NAME tinyram_complier_server_test COMMAND tinyram_complier_server_test)
 
 add_test(NAME string_helper_tests COMMAND string_helper_tests)
 
 #add_dependencies(check proof_program_tests)
 #add_dependencies(check log_tests)
 #add_dependencies(check ram_ppsnark_server_test)
-#add_dependencies(check tinyram_complier_server)
+add_dependencies(check tinyram_complier_server_test)
 add_dependencies(check string_helper_tests)

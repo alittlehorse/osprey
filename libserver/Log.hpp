@@ -7,25 +7,13 @@
 #include <iostream>
 #include <utility>
 #include <fstream>
+#include <libserver/string_helper.hpp>
 
 namespace libserver{
     class Log{
     private:
         std::string _path;
         std::ofstream  outfile;
-        template <typename T> T Argument(T value) noexcept { return value; }
-        template <typename T>
-        T const *Argument(std::basic_string<T> const &value) noexcept {
-            return value.c_str();
-        }
-        template <typename... Args>
-        int StringPrint(char *const buffer, size_t const bufferCount,
-                        char const *const format, Args const &... args) noexcept {
-            int const result = snprintf(buffer, bufferCount, format, Argument(args)...);
-            return result;
-        }
-
-
 
     public:
         explicit Log(std::string path){_path = std::move(path);}
@@ -33,19 +21,12 @@ namespace libserver{
         template<typename... Args>
         void write_log(const char *format, Args... args)
         {
-            std::string content =  StrFormat(format,args...);
+            std::string content =  libserver::string_helper::StrFormat(format,args...);
             outfile.open(_path, std::ios::app);
             outfile<<content;
             outfile.close();
         }
-        template <typename... Args>
-        std::string StrFormat(const char *format, Args... args) {
-            std::string buffer;
-            size_t const size = StringPrint(nullptr, 0, format, args...);
-            buffer.resize(size);
-            StringPrint(&buffer[0], buffer.size() + 1, format, args...);
-            return buffer;
-        }
+
     };
 
 }
