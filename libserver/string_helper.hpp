@@ -39,25 +39,6 @@ namespace libserver{
             }
             return std::move(res);
         }
-        template <typename Iterator>
-        static  void advance_all (Iterator & iterator) {
-            ++iterator;
-        }
-        template <typename Iterator, typename ... Iterators>
-        static void advance_all (Iterator & iterator, Iterators& ... iterators) {
-            ++iterator;
-            advance_all(iterators...);
-        }
-        template <typename Function, typename Iterator, typename ... Iterators>
-        static Function zip (Function func, Iterator begin,
-                      Iterator end,
-                      Iterators ... iterators)
-        {
-            for(;begin != end; ++begin, advance_all(iterators...))
-                func(*begin, *(iterators)... );
-            //could also make this a tuple
-            return func;
-        }
         template <typename... Args>
         static std::string StrFormat(const char *format, Args... args) {
             std::string buffer;

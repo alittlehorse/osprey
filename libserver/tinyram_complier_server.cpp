@@ -85,7 +85,7 @@ namespace libserver{
             if(size_t indx = head.find(':');indx !=  string::npos){
                 std::string&& lable = std::move(head.substr(0,indx));
                 labels[lable] = addr;
-                head = head.substr(indx);
+                head = head.substr(indx+1);
                 string_helper::trim(head);
             }
             if(!head.empty()){
@@ -107,6 +107,14 @@ namespace libserver{
                 return std::make_tuple<int,int>(1, stoi(arg));
             }
         };
+        std::function process_args = [&d,&labels,&parse_reg,&parse_arg2](const std::string& t,const std::string& v){
+            if(t=="arg2"){
+                std::tie(d["immflag"], d["arg2"]) = parse_arg2(v);
+            }
+            else{
+                d[t] = parse_reg(v);
+            }
+        };
 
         // complie the tinyram to mechism pattern(formal pattern)
         for(auto l:lines){
@@ -117,20 +125,16 @@ namespace libserver{
             arg = l.substr(pos+1);
             auto args = libserver::string_helper::split(arg," ");
             assert(instruction_types.at(instr).size() == args.size());
-            std::function process_args = [&d,&labels,&parse_reg,&parse_arg2](const std::string& t,const std::string& v){
-                if(t=="arg2"){
-                    std::tie(d["immflag"], d["arg2"]) = parse_arg2(v);
-                }
-                else{
-                    d[t] = parse_reg(v);
-                }
-            };
-            string_helper::zip(
-                    process_args,
-                    instruction_types.at(instr).begin(),
-                    instruction_types.at(instr).end(),
-                    args.begin());
-            out<<libserver::string_helper::StrFormat<std::string,int,int,int,int>("%s %d %d %d %d",instr,d["immflag"],d["des"], d["arg1"], d["arg2"])<<'\n';
+           //zip
+           //modify the value correponding to key
+           for(int i = 0;i<args.size();i++){
+               process_args(instruction_types.at(instr)[i],args[i]);
+           }
+           string s = libserver::string_helper::StrFormat<std::string,int,int,int,int>("%s %d %d %d %d",instr,d["immflag"], d["des"], d["arg1"], d["arg2"]);
+           for(auto it = d.begin();it!=d.end();it++){
+               it->second=0;
+           }
+           out<<s<<'\n';
         }
         return true;
     }
