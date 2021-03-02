@@ -1,6 +1,10 @@
 
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <event2/bufferevent.h>
+#include <event2/buffer.h>
+#include <event2/listener.h>
+#include <event2/util.h>
 #include <event2/event.h>
 #include <cstdio>
 
@@ -11,34 +15,16 @@ using namespace std;
 
 struct event_base* base;
 
-void onRead(int iCliFd, short iEvent, void *arg)
-{
-    int iLen;
-    char buf[1500];
-    iLen = recv(iCliFd, buf, 1500, 0);
-    if (iLen <= 0) {
 
-        struct event *pEvRead = (struct event*)arg;
-        event_del(pEvRead);
-        delete pEvRead;
-        libserver::network_server::close(iCliFd);
-        return;
-    }
-    buf[iLen] = 0;
-    printf("Client Close %s",buf );
-}
-
-
-void onAccept(int iSvrFd, short iEvent, void *arg)
+void onAccept(evutil_socket_t iSvrFd, short what, void *arg)
 {
     int iCliFd;
     struct sockaddr_in sCliAddr;
     socklen_t iSinSize = sizeof(sCliAddr);
     iCliFd = accept(iSvrFd, (struct sockaddr*)&sCliAddr, &iSinSize);
     // 连接注册为新事件 (EV_PERSIST为事件触发后不默认删除)
-    struct event *pEvRead = event_new(base,iCliFd,EV_READ|EV_PERSIST,onRead,event_self_cbarg());
-    event_base_set(base, pEvRead);
-    event_add(pEvRead, NULL);
+    printf("connect from %s",iCliFd);
+
 }
 
 int main()
@@ -49,14 +35,9 @@ int main()
 
     // 初始化base
     base = event_base_new();
-    struct event evListen;
-    // 设置事件
-    event_set(&evListen, iSvrFd, EV_READ|EV_PERSIST, onAccept, NULL);
-
-    // 设置为base事件
-    event_base_set(base, &evListen);
+    struct event* evListen = event_new(base,iSvrFd,EV_READ|EV_PERSIST,onAccept,NULL);
     // 添加事件
-    event_add(&evListen, NULL);
+    event_add(evListen, NULL);
 
     // 事件循环
     event_base_dispatch(base);

@@ -1,5 +1,5 @@
 include(FindPkgConfig)
-pkg_check_modules(LIBEVENT REQUIRED libevent)
+pkg_check_modules(LIBEVENT REQUIRED libevent>2.1.10)
 add_library(libserver
         STATIC
 
@@ -12,7 +12,6 @@ add_library(libserver
         )
 target_link_libraries(libserver
         tinyram_snark
-        ${LIBEVENT_LIBRARIES}
 )
 
 
@@ -53,7 +52,7 @@ add_executable(
 
         tests/network_test.cpp
 )
-link_libraries(network_server_tests ${LIBEVENT_LIBRARIES})
+target_link_libraries(network_server_tests ${LIBEVENT_LIBRARIES})
 
 include(CTest)
 enable_testing()

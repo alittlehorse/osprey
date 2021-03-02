@@ -136,7 +136,6 @@ pkg_check_modules(
 
         libcrypto
 )
-pkg_check_modules(LIBEVENT REQUIRED libevent)
 
 if("${WITH_PROCPS}")
     pkg_check_modules(
