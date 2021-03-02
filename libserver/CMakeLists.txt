@@ -1,6 +1,5 @@
-
-FIND_PACKAGE( libevent 2.1.12 COMPONENTS program_options REQUIRED )
-INCLUDE_DIRECTORIES( ${libevent_INCLUDE_DIR} )
+include(FindPkgConfig)
+pkg_check_modules(LIBEVENT REQUIRED libevent)
 add_library(libserver
         STATIC
 
@@ -8,9 +7,12 @@ add_library(libserver
         ram_ppsnark_server.cpp
         proof_program.cpp
         Log.hpp
-        string_helper.hpp network_server.hpp)
+        string_helper.hpp
+        network_server.hpp
+        )
 target_link_libraries(libserver
         tinyram_snark
+        ${LIBEVENT_LIBRARIES}
 )
 
 
@@ -48,9 +50,10 @@ target_link_libraries(string_helper_tests libserver)
 
 add_executable(
         network_server_tests
+
         tests/network_test.cpp
 )
-link_libraries()
+link_libraries(network_server_tests ${LIBEVENT_LIBRARIES})
 
 include(CTest)
 enable_testing()

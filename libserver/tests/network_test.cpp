@@ -1,9 +1,9 @@
 
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <event.h>
+#include <event2/event.h>
 #include <cstdio>
-#include <cstdlib>
+
 
 #include <libserver/network_server.hpp>
 
@@ -36,8 +36,7 @@ void onAccept(int iSvrFd, short iEvent, void *arg)
     socklen_t iSinSize = sizeof(sCliAddr);
     iCliFd = accept(iSvrFd, (struct sockaddr*)&sCliAddr, &iSinSize);
     // 连接注册为新事件 (EV_PERSIST为事件触发后不默认删除)
-    struct event *pEvRead = new event;
-    event_set(pEvRead, iCliFd, EV_READ|EV_PERSIST, onRead, pEvRead);
+    struct event *pEvRead = event_new(base,iCliFd,EV_READ|EV_PERSIST,onRead,event_self_cbarg());
     event_base_set(base, pEvRead);
     event_add(pEvRead, NULL);
 }

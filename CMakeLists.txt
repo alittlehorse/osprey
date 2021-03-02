@@ -128,6 +128,7 @@ find_path(GMP_INCLUDE_DIR NAMES gmp.h)
 find_library(GMP_LIBRARIES NAMES gmp libgmp)
 find_library(GMPXX_LIBRARIES NAMES gmpxx libgmpxx)
 
+
 include(FindPkgConfig)
 pkg_check_modules(
         CRYPTO
@@ -135,6 +136,7 @@ pkg_check_modules(
 
         libcrypto
 )
+pkg_check_modules(LIBEVENT REQUIRED libevent)
 
 if("${WITH_PROCPS}")
     pkg_check_modules(
