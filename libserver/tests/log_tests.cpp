@@ -3,13 +3,14 @@
 //
 #include<libserver/Log.hpp>
 #include <cassert>
+#include <libserver/string_helper.hpp>
 
 int main()
 {
     libserver::Log log("avarage/log.txt");
     assert(log.get_path()=="avarage/log.txt");
     size_t a = 1;
-    assert(log.StrFormat("Hello,World%zu",a)=="Hello,World1");
+    assert(libserver::string_helper::StrFormat("Hello,World%zu",a)=="Hello,World1");
     //log.write_log("Hello,World");
 }
 
