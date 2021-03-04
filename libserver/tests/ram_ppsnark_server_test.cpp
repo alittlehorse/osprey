@@ -8,9 +8,9 @@ using namespace libserver;
 int main(){
     default_tinyram_ppzksnark_pp::init_public_params();
     libff::start_profiling();
-    proof_program p("avarage");
+    proof_program p("avarage1");
     ram_ppsnark_server ppsnark_server(p);
-    assert(ppsnark_server.get_target_path()=="avarage");
+    assert(ppsnark_server.get_target_path()=="avarage1");
 
 
     const auto ap = ppsnark_server.generate_ram_ppsnark_architecture_params(p.get_architecture_params_fn());
@@ -29,7 +29,7 @@ int main(){
     const boot_trace primary_input_boot_trace = ppsnark_server.generate_primary_input(ap,boot_trace_size_bound);
 
     auto auxiliary_input = ppsnark_server.generate_auxili_input(p.get_auxiliary_input_fn());
-    assert(p.get_auxiliary_input_fn()=="avarage/avarage-auxiliary_input.txt");
+    assert(p.get_auxiliary_input_fn()=="avarage1/avarage1-auxiliary_input.txt");
     assert(auxiliary_input[0]==bool(1));
     auto keypair = ppsnark_server.generate_ram_ppsnark_keypair(ap,boot_trace_size_bound,time_bound);
 

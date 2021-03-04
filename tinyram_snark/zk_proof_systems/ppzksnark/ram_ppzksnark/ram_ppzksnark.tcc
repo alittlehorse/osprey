@@ -126,6 +126,7 @@ ram_ppzksnark_keypair<ram_ppzksnark_ppT> ram_ppzksnark_generator(const ram_ppzks
     libff::enter_block("Call to ram_ppzksnark_generator");
     ram_to_r1cs<ram_ppT> universal_r1cs(ap, primary_input_size_bound, time_bound);
     universal_r1cs.instance_map();
+    //have problem
     r1cs_ppzksnark_keypair<snark_ppT> ppzksnark_keypair = r1cs_ppzksnark_generator<snark_ppT>(universal_r1cs.get_constraint_system());
     libff::leave_block("Call to ram_ppzksnark_generator");
 

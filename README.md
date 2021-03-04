@@ -17,6 +17,7 @@ This platform implements network transmission between buyer and provider.
 
 A computation can be expressed as an NP statement in form:  
 *"The Tinyram program foo, when executed, returns answer 0 if given the input bar and some additional input qux."*
+<<<<<<< HEAD
 
 A prover who knows the witness for the NP statement (i.e., a satisfying input/assignment) can produce a short proof attesting to the truth of the NP statement. This proof can be verified by anyone, and offers the following properties.
 
@@ -26,6 +27,17 @@ A prover who knows the witness for the NP statement (i.e., a satisfying input/as
 + Soundness: the proof is computationally sound (i.e., it is infeasible to fake a proof of a false NP statement). Such a proof system is also called an argument.
 + Proof of knowledge: the proof attests not just that the NP statement is true, but also that the prover knows why (e.g., knows a valid qux).
 
+=======
+
+A prover who knows the witness for the NP statement (i.e., a satisfying input/assignment) can produce a short proof attesting to the truth of the NP statement. This proof can be verified by anyone, and offers the following properties.
+
++ Zero knowledge: the verifier learns nothing from the proof beside the truth of the statement (i.e., the value qux, in the above examples, remains secret).
++ Succinctness: the proof is short and easy to verify.
++ Non-interactivity: the proof is a string (i.e. it does not require back-and-forth interaction between the prover and the verifier).
++ Soundness: the proof is computationally sound (i.e., it is infeasible to fake a proof of a false NP statement). Such a proof system is also called an argument.
++ Proof of knowledge: the proof attests not just that the NP statement is true, but also that the prover knows why (e.g., knows a valid qux).
+
+>>>>>>> 959d7af49e4682d721b7688d4b45861f4bc3c86a
 --------------------------------
 ## Security
 This code is a research-quality proof of concept, and has not yet undergone extensive review or testing. It is thus not suitable, as is, for use in critical or production systems
@@ -67,7 +79,5 @@ $ make check
 + [BCTV14a] Succinct non-interactive zero knowledge for a von Neumann architecture , Eli Ben-Sasson, Alessandro Chiesa, Eran Tromer, Madars Virza, USENIX Security 2014
 + [ate-pairing] High-Speed Software Implementation of the Optimal Ate Pairing over Barreto-Naehrig Curves , MITSUNARI Shigeo, TERUYA Tadanori
 + [Groth16] On the Size of Pairing-based Non-interactive Arguments , Jens Groth, EUROCRYPT 2016
-
-
 
 
