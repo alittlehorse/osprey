@@ -23,7 +23,7 @@ namespace libserver{
         /// arg:: file_path:std::string&&
         ///return: bool. if complie success, return ture
         bool complie_tinyram(std::string &&file_path);
-        std::unordered_map<std::string,std::vector<std::string>> instruction_types=
+        const std::unordered_map<std::string,std::vector<std::string>> instruction_types=
                 {       {"and",{"des","arg1","arg2"}},
                         {"or",{"des","arg1","arg2"}},
                         {"xor",{"des","arg1","arg2"}},

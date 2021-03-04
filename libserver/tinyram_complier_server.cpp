@@ -107,7 +107,7 @@ namespace libserver{
                 return std::make_tuple<int,int>(1, stoi(arg));
             }
         };
-        std::function process_args = [&d,&labels,&parse_reg,&parse_arg2](const std::string& t,const std::string& v){
+        std::function<void(const std::string&,const std::string&)> process_args = [&d,&labels,&parse_reg,&parse_arg2](const std::string& t,const std::string& v){
             if(t=="arg2"){
                 std::tie(d["immflag"], d["arg2"]) = parse_arg2(v);
             }
