@@ -37,48 +37,6 @@ namespace libserver{
          default_tinyram_ppzksnark_pp::init_public_params();
          libff::start_profiling();
     }
-    proof ram_ppsnark_server::construct_proof() {
-
-        log->write_log<>("================================================================================\n");
-        log->write_log<>("TinyRAM example loader\n");
-        log->write_log<>("================================================================================\n\n");
-
-        //load everything
-        auto ap = generate_ram_ppsnark_architecture_params(_vp.get_architecture_params_fn());
-        log->write_log<size_t,size_t>("Will run on %zu register machine (word size = %zu)\\n", ap.k, ap.w);
-
-        std::ifstream f_rp(_vp.get_computation_bounds_fn());
-        size_t tinyram_input_size_bound, tinyram_program_size_bound, time_bound;
-        f_rp >> tinyram_input_size_bound >> tinyram_program_size_bound >> time_bound;
-        const size_t boot_trace_size_bound = tinyram_program_size_bound + tinyram_input_size_bound;
-
-        const boot_trace primary_input_boot_trace = generate_primary_input(ap,boot_trace_size_bound);
-        auto auxiliary_input = generate_auxili_input(_vp.get_auxiliary_input_fn());
-
-        log->write_log<>("================================================================================\n");
-        log->write_log<size_t>("TinyRAM arithmetization test for T = %zu time steps\n", time_bound);
-        log->write_log<>("================================================================================\n\n");
-
-        typedef ram_ppzksnark_machine_pp<default_tinyram_ppzksnark_pp> default_ram;
-        typedef ram_base_field<default_ram> FieldT;
-
-        ram_to_r1cs<default_ram> r(ap, boot_trace_size_bound, time_bound);
-        r.instance_map();
-
-        const r1cs_primary_input<FieldT> r1cs_primary_input = ram_to_r1cs<default_ram>::primary_input_map(ap, boot_trace_size_bound, primary_input_boot_trace);
-        const r1cs_auxiliary_input<FieldT> r1cs_auxiliary_input = r.auxiliary_input_map(primary_input_boot_trace, auxiliary_input);
-        const r1cs_constraint_system<FieldT> constraint_system = r.get_constraint_system();
-
-//        r.print_execution_trace(proof_log->get_path()); //rediract to log
-        assert(constraint_system.is_satisfied(r1cs_primary_input, r1cs_auxiliary_input));
-
-        auto keypair = generate_ram_ppsnark_keypair(ap, boot_trace_size_bound, time_bound);
-        auto proof = generate_proof(keypair,primary_input_boot_trace,auxiliary_input);
-
-        assert(ram_ppzksnark_verifier<default_tinyram_ppzksnark_pp>(keypair.vk, primary_input_boot_trace, proof)==true);
-        libff::print_mem();
-        return proof;
-    }
 
     proof ram_ppsnark_server::generate_proof(const ram_keypair& keypair,const boot_trace& bt,tinyram_input_tape& auxiliary_input) const{
         log->write_log<>("================================================================================\n");
@@ -160,5 +118,56 @@ namespace libserver{
         return std::make_tuple(tinyram_input_size_bound,tinyram_program_size_bound,time_bound);
     }
 
+    r1cs_constraint_system<ram_ppsnark_server::FieldT> ram_ppsnark_server::ram2r1cs(){
+
+        typedef ram_tinyram<FieldT> default_ram;
+
+        libff::default_ec_pp::init_public_params();
+        libff::start_profiling();
+
+        log->write_log("================================================================================\n");
+        log->write_log("TinyRAM example loader\n");
+        log->write_log("================================================================================\n\n");
+
+        /* load everything */
+        /*TinyRAM's architecture params*/
+        ram_architecture_params<default_ram> arch_params;
+        std::ifstream f_ap(_vp.get_architecture_params_fn());
+        f_ap >> arch_params;
+
+        log->write_log("Will run on %zu register machine (word size = %zu)\n", arch_params.k, arch_params.w);
+        const auto bounds =  get_bounds();
+        const size_t tinyram_input_size_bound = std::get<0>(bounds);
+        const size_t tinyram_program_size_bound = std::get<1>(bounds);
+        const size_t time_bound = std::get<2>(bounds);
+        const size_t boot_trace_size_bounds = tinyram_input_size_bound+tinyram_program_size_bound;
+
+        std::ifstream processed(_vp.get_processed_assembly_fn());
+        std::ifstream raw(_vp.get_assembly_fn());
+        tinyram_program program = load_preprocessed_program(arch_params, processed);
+        log->write_log("Program:\n%s\n", std::string((std::istreambuf_iterator<char>(raw)),
+                                             std::istreambuf_iterator<char>()).c_str());
+
+        std::ifstream f_primary_input(_vp.get_primary_input_fn());
+        std::ifstream f_auxiliary_input(_vp.get_auxiliary_input_fn());
+
+        const auto primary_input  = generate_primary_input(arch_params,boot_trace_size_bounds);
+        auto auxiliary_input = generate_auxili_input();
+        /*ram to r1cs*/
+        typedef ram_ppzksnark_machine_pp<default_tinyram_ppzksnark_pp> default_ram;
+
+        ram_to_r1cs<default_ram> r(arch_params, boot_trace_size_bounds, time_bound);
+        r.instance_map();
+
+        const r1cs_primary_input<FieldT> r1cs_primary_input = ram_to_r1cs<default_ram>::primary_input_map(arch_params, boot_trace_size_bounds, primary_input);
+        const r1cs_auxiliary_input<FieldT> r1cs_auxiliary_input = r.auxiliary_input_map(primary_input, auxiliary_input);
+        const r1cs_constraint_system<FieldT> constraint_system = r.get_constraint_system();
+
+        r.print_execution_trace();
+
+        const bool bit = constraint_system.is_satisfied(r1cs_primary_input, r1cs_auxiliary_input);
+        assert(bit==1);
+        return constraint_system;
+    }
 
 }

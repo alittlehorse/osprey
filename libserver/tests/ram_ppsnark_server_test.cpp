@@ -34,7 +34,8 @@ int main(){
     auto keypair = ppsnark_server.generate_ram_ppsnark_keypair(ap,boot_trace_size_bound,time_bound);
 
     const auto proof2 = ppsnark_server.generate_proof(keypair,primary_input_boot_trace,auxiliary_input);
-    assert(ppsnark_server.test_proof(proof2,primary_input_boot_trace,keypair)==true);
+    //assert(ppsnark_server.test_proof(proof2,primary_input_boot_trace,keypair)==true);
+    ppsnark_server.ram2r1cs();
 }
 
 

@@ -36,6 +36,7 @@ namespace libserver{
 
     class ram_ppsnark_server{
     public :
+        typedef libff::Fr<libff::default_ec_pp> FieldT;
         explicit ram_ppsnark_server(proof_program&);
         std::string get_target_path();
 
@@ -77,11 +78,14 @@ namespace libserver{
         /// time_bound
         /// return :\tuple<tinyram_input_size_bound,tinyram_program_size_bound,time_bound>
         std::tuple<size_t,size_t,size_t> get_bounds();
+        ///reduce ram to r1cs
+        r1cs_constraint_system<FieldT> ram2r1cs();
+
     private:
         proof_program _vp;
         Log* log;
         // just a test function ,
-        proof construct_proof();
+        //proof construct_proof();
     };
 }
 

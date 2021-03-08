@@ -26,6 +26,7 @@ namespace libserver{
         //label the labels
         //transform all instructiontype argument to formal pattern:
         //op immflag des arg arg2
+
         std::unordered_map<std::string,int> d={
                 {"arg1", 0},
                 {"arg2", 0},
@@ -51,28 +52,46 @@ namespace libserver{
             std::string parentdir = file_path.substr(0,pos+1);
             return std::pair<std::string,std::string>(std::move(filename), std::move(parentdir));
         };
-        file_name = p().first;
-        parent_dir = p().second;
+        try{
+            file_name = p().first;
+            parent_dir = p().second;
+        }
+        catch(std::exception& e){
+            //log.write("cannot parse tinyram file path and name");
+            return false;
+        }
+        Log log(parent_dir+file_name+"-complier-log.txt");
         std::ifstream in(file_path);
         std::ofstream out(parent_dir+file_name+"-processed_assembly.txt");
 
         //-------------------
         //create\open the $1-architecture_params.txt and write the params;
+        log.write_log(" parse word size and register number which is located in tinyram file first line \n");
         if(getline(in,head)){
             if(std::regex_match(head,head_match,head_re)){
                 if (head_match.size() == 3){
                     std::string w_str =  head_match[1].str();
                     std::string k_str = head_match[2].str();
-                    w = stoi(w_str);
-                    k = stoi(k_str);
+                    try{
+                        w = stoi(w_str);
+                        k = stoi(k_str);
+                    }
+                    catch(exception &e){
+                        log.write_log("the compling process fail!\n the word size and register size format is wrong!pealse check!\n");
+                        return false;
+                    }
                     std::ofstream arch_params_file(parent_dir+file_name+"-architecture_params.txt");
                     arch_params_file << w_str.append(" ");
                     arch_params_file <<k_str;
                     arch_params_file.close();
                 }
             }
+            log.write_log("word size and register number parse processing success!\n word size is %d,\n register nunmber is %d \n",w,k);
         }
-        else return false;
+        else {
+            log.write_log("the compling process fail!\n word size and register number parse processing fail!\n");
+            return false;
+        }
         // delete the comments
         // write the labels[lale] = addr
         // append the processed-line to lines;
@@ -118,14 +137,20 @@ namespace libserver{
 
         // complie the tinyram to mechism pattern(formal pattern)
         for(auto l:lines){
+            log.write_log("compling the instruction : %s \n",l);
             string_helper::replace_all(l,","," ");
             string_helper::replace_all(l,"  "," ");
             size_t pos = l.find(' ');
             instr = l.substr(0,pos);
             arg = l.substr(pos+1);
             auto args = libserver::string_helper::split(arg," ");
-            assert(instruction_types.at(instr).size() == args.size());
-           //zip
+            try{
+                assert(instruction_types.at(instr).size() == args.size());
+            }
+            catch (exception &e) {
+                log.write_log("the compling process fail!\n the instruction operand size is not right. the erro report is %s\n", e.what());
+                return false;
+            }
            //modify the value correponding to key
            for(int i = 0;i<args.size();i++){
                process_args(instruction_types.at(instr)[i],args[i]);
@@ -134,8 +159,10 @@ namespace libserver{
            for(auto it = d.begin();it!=d.end();it++){
                it->second=0;
            }
+           log.write_log("the complied resualt is: %s\n",s);
            out<<s<<'\n';
         }
+        log.write_log("\n\n complier success!");
         return true;
     }
 

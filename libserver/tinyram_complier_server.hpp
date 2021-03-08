@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <vector>
 #include<tuple>
+#include <libserver/Log.hpp>
 #ifndef OSPREY_TINYRAM_COMPLIER_SERVER_H
 #define OSPREY_TINYRAM_COMPLIER_SERVER_H
 
@@ -56,7 +57,6 @@ namespace libserver{
                         {"load.w",{"des","arg2"}},
                         {"read",{"des","arg2"}},
                         {"answer",{"arg2"}}};
-
     };
 
 }

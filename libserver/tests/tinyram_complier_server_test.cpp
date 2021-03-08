@@ -11,5 +11,5 @@ int main(){
     auto a = libserver::string_helper::split(s," ");
 
     assert(complier.instruction_types.at(instr).size()==a.size());
-    complier.complie_tinyram("avarage-debug/avarage.s");
+    complier.complie_tinyram("avarage-complier/avarage.s");
 }
