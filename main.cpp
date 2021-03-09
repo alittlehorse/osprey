@@ -1,4 +1,4 @@
-#include <libserver/ram_ppsnark_server.hpp>
+#include <libserver/proof_systems/ram_ppsnark_server.hpp>
 
 using namespace libserver;
 

@@ -24,7 +24,7 @@ the server of zksnark using the proof program with tinyram
 #include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
 #include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_params.hpp>
 
-#include <libserver/ram_ppsnark_server.hpp>
+#include <libserver/proof_systems/ram_ppsnark_server.hpp>
 #include <libserver/Log.hpp>
 #include <libserver/proof_program.hpp>
 

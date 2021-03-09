@@ -2,7 +2,7 @@
 // Created by alittlehorse on 2/14/21.
 //
 #include<string>
-#include<libserver/ram_ppsnark_server.hpp>
+#include<libserver/proof_systems/ram_ppsnark_server.hpp>
 #include <cassert>
 using namespace libserver;
 int main(){

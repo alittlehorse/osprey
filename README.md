@@ -17,7 +17,6 @@ This platform implements network transmission between buyer and provider.
 
 A computation can be expressed as an NP statement in form:  
 *"The Tinyram program foo, when executed, returns answer 0 if given the input bar and some additional input qux."*
-<<<<<<< HEAD
 
 A prover who knows the witness for the NP statement (i.e., a satisfying input/assignment) can produce a short proof attesting to the truth of the NP statement. This proof can be verified by anyone, and offers the following properties.
 
@@ -27,7 +26,7 @@ A prover who knows the witness for the NP statement (i.e., a satisfying input/as
 + Soundness: the proof is computationally sound (i.e., it is infeasible to fake a proof of a false NP statement). Such a proof system is also called an argument.
 + Proof of knowledge: the proof attests not just that the NP statement is true, but also that the prover knows why (e.g., knows a valid qux).
 
-=======
+---------------------
 
 A prover who knows the witness for the NP statement (i.e., a satisfying input/assignment) can produce a short proof attesting to the truth of the NP statement. This proof can be verified by anyone, and offers the following properties.
 
@@ -37,7 +36,7 @@ A prover who knows the witness for the NP statement (i.e., a satisfying input/as
 + Soundness: the proof is computationally sound (i.e., it is infeasible to fake a proof of a false NP statement). Such a proof system is also called an argument.
 + Proof of knowledge: the proof attests not just that the NP statement is true, but also that the prover knows why (e.g., knows a valid qux).
 
->>>>>>> 959d7af49e4682d721b7688d4b45861f4bc3c86a
+
 --------------------------------
 ## Security
 This code is a research-quality proof of concept, and has not yet undergone extensive review or testing. It is thus not suitable, as is, for use in critical or production systems
