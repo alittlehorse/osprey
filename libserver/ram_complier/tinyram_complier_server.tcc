@@ -7,19 +7,24 @@
  * @author     This file is part of libserver, developed by alittlehorse
  * @copyright  MIT license (see LICENSE file)
  *****************************************************************************/
-#include <libserver/tinyram_complier_server.hpp>
-#include <libserver/string_helper.hpp>
-#include <tuple>
-#include<unordered_map>
 #include <regex>
 #include <fstream>
 #include <cassert>
 #include <string>
 #include<functional>
+#include <unordered_map>
+#include <vector>
+#include<tuple>
+#include <libserver/Log.hpp>
+#include <tinyram_snark/common/default_types/tinyram_gg_ppzksnark_pp.hpp>
+#include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
+#include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_params.hpp>
+#include <tinyram_snark/common/default_types/r1cs_gg_ppzksnark_pp.hpp>
+#include<optional>
 
 
 namespace libserver{
-    bool tinyram_comlier_server::complie_tinyram(std::string &&file_path) {
+    std::optional<tinyram_snark::tinyram_program> tinyram_comlier_server::complie_tinyram(std::string &&file_path) {
         //turn file content to string and process the information
         //firstly,match the bounds information
         //then delete all comment
@@ -57,16 +62,16 @@ namespace libserver{
             parent_dir = p().second;
         }
         catch(std::exception& e){
-            //log.write("cannot parse tinyram file path and name");
-            return false;
+            //log->write("cannot parse tinyram file path and name");
+            return nullopt;
         }
-        Log log(parent_dir+file_name+"-complier-log.txt");
+        log =  new Log(parent_dir+file_name+"-complier-log.txt");
         std::ifstream in(file_path);
         std::ofstream out(parent_dir+file_name+"-processed_assembly.txt");
 
         //-------------------
         //create\open the $1-architecture_params.txt and write the params;
-        log.write_log(" parse word size and register number which is located in tinyram file first line \n");
+        log->write_log(" parse word size and register number which is located in tinyram file first line \n");
         if(getline(in,head)){
             if(std::regex_match(head,head_match,head_re)){
                 if (head_match.size() == 3){
@@ -77,8 +82,8 @@ namespace libserver{
                         k = stoi(k_str);
                     }
                     catch(exception &e){
-                        log.write_log("the compling process fail!\n the word size and register size format is wrong!pealse check!\n");
-                        return false;
+                        log->write_log("the compling process fail!\n the word size and register size format is wrong!pealse check!\n");
+                        return nullopt;
                     }
                     std::ofstream arch_params_file(parent_dir+file_name+"-architecture_params.txt");
                     arch_params_file << w_str.append(" ");
@@ -86,11 +91,12 @@ namespace libserver{
                     arch_params_file.close();
                 }
             }
-            log.write_log("word size and register number parse processing success!\n word size is %d,\n register nunmber is %d \n",w,k);
+
+            log->write_log("word size and register number parse processing success!\n word size is %d,\n register nunmber is %d \n",w,k);
         }
         else {
-            log.write_log("the compling process fail!\n word size and register number parse processing fail!\n");
-            return false;
+            log->write_log("the compling process fail!\n word size and register number parse processing fail!\n");
+            return nullopt;
         }
         // delete the comments
         // write the labels[lale] = addr
@@ -137,7 +143,8 @@ namespace libserver{
 
         // complie the tinyram to mechism pattern(formal pattern)
         for(auto l:lines){
-            log.write_log("compling the instruction : %s \n",l);
+            log->write_log("---------------------------------------------------------\n");
+            log->write_log("compling the instruction : %s \n",l);
             string_helper::replace_all(l,","," ");
             string_helper::replace_all(l,"  "," ");
             size_t pos = l.find(' ');
@@ -148,8 +155,8 @@ namespace libserver{
                 assert(instruction_types.at(instr).size() == args.size());
             }
             catch (exception &e) {
-                log.write_log("the compling process fail!\n the instruction operand size is not right. the erro report is %s\n", e.what());
-                return false;
+                log->write_log("the compling process fail!\n the instruction operand size is not right. the erro report is %s\n", e.what());
+                return nullopt;
             }
            //modify the value correponding to key
            for(int i = 0;i<args.size();i++){
@@ -159,11 +166,46 @@ namespace libserver{
            for(auto it = d.begin();it!=d.end();it++){
                it->second=0;
            }
-           log.write_log("the complied resualt is: %s\n",s);
+           log->write_log("the complied resualt is: %s\n",s);
            out<<s<<'\n';
         }
-        log.write_log("\n\n complier success!");
-        return true;
+        std::ifstream processed(parent_dir+file_name+"-processed_assembly.txt");
+        tinyram_snark::tinyram_program program = tinyram_snark::load_preprocessed_program(w, processed);
+        log->write_log("\n\n complier success!");
+        return {program};
+    }
+
+    
+    template<typename ppT>
+    std::optional<tinyram_snark::r1cs_constraint_system<libff::Fr<ppT>>> tinyram_comlier_server::complie_r1cs(std::string &&architecture_params_path,std::string &&computation_bounds_path) {
+        
+        typedef tinyram_snark::ram_tinyram<ppT> default_ram_with_pp;
+        ppT::init_public_params();
+
+        tinyram_snark::ram_architecture_params<default_ram_with_pp> ap;
+        std::ifstream f_ap(architecture_params_path);
+        f_ap >> ap;
+
+        log->write_log<size_t,size_t>("Will run on %zu register machine (word size = %zu)\n", ap.k, ap.w);
+
+        std::ifstream f_rp(computation_bounds_path);
+        size_t tinyram_input_size_bound, tinyram_program_size_bound, time_bound;
+        f_rp >> tinyram_input_size_bound >> tinyram_program_size_bound >> time_bound;
+        const size_t boot_trace_size_bound = tinyram_input_size_bound + tinyram_program_size_bound;
+
+        typedef tinyram_snark::default_tinyram_gg_ppzksnark_pp::machine_pp default_ram_with_Fr;
+        try{
+            tinyram_snark::ram_to_r1cs<default_ram_with_Fr> r(ap, boot_trace_size_bound, time_bound);
+            r.instance_map();
+
+            tinyram_snark::r1cs_constraint_system<default_ram_with_Fr::base_field_type> constraint_system = r.get_constraint_system();
+            log->write_log("the complier from ram to r1cs is success!\n\n");
+            return {constraint_system};
+        }
+        catch (exception &e){
+            log->write_log("From Ram to R1CS compling failed!\n\n");
+            return nullopt;
+        }
     }
 
 }

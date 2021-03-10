@@ -3,13 +3,14 @@ pkg_check_modules(LIBEVENT REQUIRED libevent>2.1.10)
 add_library(libserver
         STATIC
 
-        tinyram_complier_server.cpp
+        ram_complier/tinyram_complier_server.tcc
         proof_systems/ram_ppsnark_server.cpp
+        proof_systems/ram_gg_ppsnark_server.hpp
         proof_program.cpp
         Log.hpp
         string_helper.hpp
         network_server.hpp
-        proof_systems/ram_gg_ppsnark_server.hpp)
+        )
 target_link_libraries(libserver
         tinyram_snark
 )

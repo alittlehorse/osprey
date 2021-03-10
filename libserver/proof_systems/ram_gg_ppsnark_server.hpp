@@ -3,7 +3,7 @@
 //
 #ifndef OSPREY_RAM_GG_PPSNARK_SERVER_HPP
 #define OSPREY_RAM_GG_PPSNARK_SERVER_HPP
-#endif //OSPREY_RAM_GG_PPSNARK_SERVER_HPP
+
 #include <tinyram_snark/common/default_types/tinyram_gg_ppzksnark_pp.hpp>
 #include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
 #include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_params.hpp>
@@ -18,13 +18,6 @@ namespace  libserver{
         bool construct_proof(){
             //reduce from ram to r1cs
             // product prover key and verifier key
-            //
-            //typedef libff::Fr<libff::default_ec_pp> FieldT;
-
-            //ram_tinyram
-            //default tinyram gg ppzksanrk pp
-
-            //typedef libff::Fr<libff::default_ec_pp> FieldT;
 
             typedef ram_tinyram<default_r1cs_gg_ppzksnark_pp> default_ram_with_pp;
 
@@ -109,6 +102,6 @@ namespace  libserver{
     };
 }
 
-
+#endif //OSPREY_RAM_GG_PPSNARK_SERVER_HPP
 
 

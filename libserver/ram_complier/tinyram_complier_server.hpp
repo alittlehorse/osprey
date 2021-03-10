@@ -11,19 +11,27 @@
 #include <vector>
 #include<tuple>
 #include <libserver/Log.hpp>
+#include <tinyram_snark/common/default_types/tinyram_gg_ppzksnark_pp.hpp>
+#include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
+#include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_params.hpp>
+#include <tinyram_snark/common/default_types/r1cs_gg_ppzksnark_pp.hpp>
+#include<optional>
+
 #ifndef OSPREY_TINYRAM_COMPLIER_SERVER_H
 #define OSPREY_TINYRAM_COMPLIER_SERVER_H
 
 using namespace std;
 namespace libserver{
 
+    /// tinyram_complier
+    //template<typename ppT>
     class tinyram_comlier_server {
         //input the assemble file and process the file ,like a complier
     public:
         /// complie the tinyram file to mechism format
         /// arg:: file_path:std::string&&
         ///return: bool. if complie success, return ture
-        bool complie_tinyram(std::string &&file_path);
+
         const std::unordered_map<std::string,std::vector<std::string>> instruction_types=
                 {       {"and",{"des","arg1","arg2"}},
                         {"or",{"des","arg1","arg2"}},
@@ -57,7 +65,16 @@ namespace libserver{
                         {"load.w",{"des","arg2"}},
                         {"read",{"des","arg2"}},
                         {"answer",{"arg2"}}};
+        optional<tinyram_snark::tinyram_program> complie_tinyram(std::string &&file_path);
+
+        template<typename ppT>
+        optional<tinyram_snark::r1cs_constraint_system<libff::Fr<ppT>>> complie_r1cs(string &&architecture_params_path,string &&computation_bounds_path);
+
+        bool tests();
+    private:
+        Log* log;
     };
 
 }
+#include <libserver/ram_complier/tinyram_complier_server.tcc>
 #endif //OSPREY_TINYRAM_COMPLIER_SERVER_H
