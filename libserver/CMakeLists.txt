@@ -10,7 +10,10 @@ add_library(libserver
         Log.hpp
         string_helper.hpp
         network_server.hpp
-        proof_systems/groth16_server.hpp)
+        proof_systems/groth16_server.hpp
+        )
+
+add_subdirectory(smart_contract)
 target_link_libraries(libserver
         tinyram_snark
 )

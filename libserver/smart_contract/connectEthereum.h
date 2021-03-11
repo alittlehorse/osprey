@@ -1,1 +1,4 @@
-int connectEthereum(char const *functionName,char const *args[]);
+namespace libserver{
+    int connectEthereum(char const *functionName,char const *args[]);
+}
+

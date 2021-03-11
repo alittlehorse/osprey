@@ -1,5 +1,6 @@
 #include "connectEthereum.h"
 
+
 int main(){
 	// SendTxnGetBalance 获取账户余额  args:to_addr
 	char const *functionName = "SendTxnGetBalance";
@@ -12,8 +13,9 @@ int main(){
 	// SendTxnTransfer 转账给卖方
 	//char const *functionName = "SendTxnTransfer";   args:addr
 	//char const *args[] = {"0xAa3d7608ed56FCbE7aA5c75a5af180eB9Fd0133e"};
-	
-	connectEthereum(functionName,args);
+
+
+	libserver::connectEthereum(functionName,args);
 	return 0;
 }
 
