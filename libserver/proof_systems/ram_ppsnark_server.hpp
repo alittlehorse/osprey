@@ -28,6 +28,7 @@ the server of zksnark using the proof program with tinyram
 #include <iostream>
 #include <string>
 
+
 using namespace tinyram_snark;
 
 namespace libserver{

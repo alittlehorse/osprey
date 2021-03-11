@@ -28,10 +28,17 @@ namespace libserver{
     class tinyram_comlier_server {
         //input the assemble file and process the file ,like a complier
     public:
-        /// complie the tinyram file to mechism format
-        /// arg:: file_path:std::string&&
-        ///return: bool. if complie success, return ture
+        /// complie the tinyram file to immediate format.
+        /// \arg:: file_path:std::string&&
+        /// \return: bool and write the immediate format to the same path
 
+        bool complie_tinyram(std::string &&file_path,std::string&& out_name);
+
+        template<typename ppT>
+        optional<tinyram_snark::r1cs_constraint_system<libff::Fr<ppT>>> complie_r1cs(string &&architecture_params_path,string &&computation_bounds_path);
+
+        bool tests();
+    private:
         const std::unordered_map<std::string,std::vector<std::string>> instruction_types=
                 {       {"and",{"des","arg1","arg2"}},
                         {"or",{"des","arg1","arg2"}},
@@ -65,13 +72,6 @@ namespace libserver{
                         {"load.w",{"des","arg2"}},
                         {"read",{"des","arg2"}},
                         {"answer",{"arg2"}}};
-        optional<tinyram_snark::tinyram_program> complie_tinyram(std::string &&file_path);
-
-        template<typename ppT>
-        optional<tinyram_snark::r1cs_constraint_system<libff::Fr<ppT>>> complie_r1cs(string &&architecture_params_path,string &&computation_bounds_path);
-
-        bool tests();
-    private:
         Log* log;
     };
 

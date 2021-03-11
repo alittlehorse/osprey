@@ -19,9 +19,7 @@ namespace libserver{
     std::string proof_program::get_architecture_params_fn() {
         return architecture_params_fn;
     }
-    std::string proof_program::get_assembly_fn() {
-        return assembly_fn;
-    }
+
     std::string proof_program::get_auxiliary_input_fn() {
         return auxiliary_input_fn;
     }

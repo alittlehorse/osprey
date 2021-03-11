@@ -12,19 +12,10 @@
 #include <cassert>
 #include <string>
 #include<functional>
-#include <unordered_map>
-#include <vector>
-#include<tuple>
-#include <libserver/Log.hpp>
-#include <tinyram_snark/common/default_types/tinyram_gg_ppzksnark_pp.hpp>
-#include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
-#include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_params.hpp>
-#include <tinyram_snark/common/default_types/r1cs_gg_ppzksnark_pp.hpp>
-#include<optional>
 
 
 namespace libserver{
-    std::optional<tinyram_snark::tinyram_program> tinyram_comlier_server::complie_tinyram(std::string &&file_path) {
+    bool tinyram_comlier_server::complie_tinyram(std::string &&file_path, std::string&& out_name) {
         //turn file content to string and process the information
         //firstly,match the bounds information
         //then delete all comment
@@ -42,8 +33,7 @@ namespace libserver{
         std::string parent_dir,file_name,instr,arg;
         std::string head;
 
-        int w,k;
-        int addr = 0;
+        int w,k,addr = 0;
 
         vector<std::string> lines;
 
@@ -63,11 +53,12 @@ namespace libserver{
         }
         catch(std::exception& e){
             //log->write("cannot parse tinyram file path and name");
-            return nullopt;
+            return false;
         }
         log =  new Log(parent_dir+file_name+"-complier-log.txt");
+
         std::ifstream in(file_path);
-        std::ofstream out(parent_dir+file_name+"-processed_assembly.txt");
+        std::ofstream out(parent_dir+out_name);
 
         //-------------------
         //create\open the $1-architecture_params.txt and write the params;
@@ -83,7 +74,7 @@ namespace libserver{
                     }
                     catch(exception &e){
                         log->write_log("the compling process fail!\n the word size and register size format is wrong!pealse check!\n");
-                        return nullopt;
+                        return false;
                     }
                     std::ofstream arch_params_file(parent_dir+file_name+"-architecture_params.txt");
                     arch_params_file << w_str.append(" ");
@@ -96,7 +87,7 @@ namespace libserver{
         }
         else {
             log->write_log("the compling process fail!\n word size and register number parse processing fail!\n");
-            return nullopt;
+            return false;
         }
         // delete the comments
         // write the labels[lale] = addr
@@ -156,7 +147,7 @@ namespace libserver{
             }
             catch (exception &e) {
                 log->write_log("the compling process fail!\n the instruction operand size is not right. the erro report is %s\n", e.what());
-                return nullopt;
+                return false;
             }
            //modify the value correponding to key
            for(int i = 0;i<args.size();i++){
@@ -169,10 +160,9 @@ namespace libserver{
            log->write_log("the complied resualt is: %s\n",s);
            out<<s<<'\n';
         }
-        std::ifstream processed(parent_dir+file_name+"-processed_assembly.txt");
-        tinyram_snark::tinyram_program program = tinyram_snark::load_preprocessed_program(w, processed);
+
         log->write_log("\n\n complier success!");
-        return {program};
+        return true;
     }
 
     

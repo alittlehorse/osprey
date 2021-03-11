@@ -1,21 +1,30 @@
-//
-// Created by alittlehorse on 3/8/21.
-//
-#ifndef OSPREY_RAM_GG_PPSNARK_SERVER_HPP
-#define OSPREY_RAM_GG_PPSNARK_SERVER_HPP
+/** @file
+ *****************************************************************************
 
+the server of zksnark using the Groth16 algorithm
+ + generate_proof
+ + test_proof
+ + generate keypair
+ + generate architecture params
+ + get bounds(time bounds, compution bounds...)
+
+ *****************************************************************************
+ * @author     This file is part of libserver, developed by alittlehorse
+ * @copyright  MIT license (see LICENSE file)
+ *****************************************************************************/
+
+
+
+#include <libserver/Log.hpp>
+#include <tuple>
 #include <tinyram_snark/common/default_types/tinyram_gg_ppzksnark_pp.hpp>
 #include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
 #include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_params.hpp>
-#include <libserver/proof_program.hpp>
-#include <libserver/Log.hpp>
-#include<tinyram_snark/zk_proof_systems/r1cs_gg_ppzksnark/r1cs_gg_ppzksnark.hpp>
+#include <tinyram_snark/zk_proof_systems/r1cs_gg_ppzksnark/r1cs_gg_ppzksnark.hpp>
 
 using namespace tinyram_snark;
 namespace  libserver{
-    class ram_gg_ppsnark_server {
-    public:
-        bool construct_proof(){
+        bool groth16_server::construct_proof(){
             //reduce from ram to r1cs
             // product prover key and verifier key
 
@@ -23,7 +32,7 @@ namespace  libserver{
 
             default_r1cs_gg_ppzksnark_pp::init_public_params();
 
-            
+
             log->write_log<>("================================================================================\n");
             log->write_log<>("TinyRAM example loader\n");
             log->write_log<>("================================================================================\n\n");
@@ -40,10 +49,7 @@ namespace  libserver{
             f_rp >> tinyram_input_size_bound >> tinyram_program_size_bound >> time_bound;
 
             std::ifstream processed(_vp.get_processed_assembly_fn());
-            std::ifstream raw(_vp.get_assembly_fn());
             tinyram_program program = load_preprocessed_program(ap, processed);
-            log->write_log<std::string>("Program:\n%s\n", std::string((std::istreambuf_iterator<char>(raw)),
-                                                 std::istreambuf_iterator<char>()).c_str());
 
             std::ifstream f_primary_input(_vp.get_primary_input_fn());
             std::ifstream f_auxiliary_input(_vp.get_auxiliary_input_fn());
@@ -91,17 +97,47 @@ namespace  libserver{
             log->write_log<>("================================================================================\n");
             return b;
         }
-        ram_gg_ppsnark_server(proof_program& v) {
-            _vp = v;
-            log = new Log(v.get_program_name()+"/"+v.get_program_name()+"_log.txt");
+
+        template<typename ramT>
+        std::optional<const ram_architecture_params<ramT>> groth16_server::generate_ram_architecture_params(std::string&& architecture_params_file_path){
+            //ram_architecture_params<default_ram_with_pp> ap;
+            ram_architecture_params<ramT> ap;
+            try{
+                std::ifstream f_ap(architecture_params_file_path);
+                f_ap >> ap;
+            }
+            catch(exception &e){
+                return nullopt;
+            }
+            return {ap};
         }
 
-    private:
-        proof_program _vp;
-        Log* log;
-    };
+        std::optional<const std::tuple<size_t,size_t,size_t>> groth16_server::get_bounds(std::string&& bounds_filepath){
+            size_t tinyram_input_size_bound, tinyram_program_size_bound, time_bound;
+            try{
+                std::ifstream f_rp(bounds_filepath);
+                f_rp >> tinyram_input_size_bound >> tinyram_program_size_bound >> time_bound;
+            }
+            catch(exception &e){
+                return nullopt;
+            }
+            return {std::make_tuple(tinyram_input_size_bound,tinyram_program_size_bound,time_bound)};
+        }
+        std::optional<tinyram_program> groth16_server::generate_program(std::string&& processed_assemble_filepath,const tinyram_architecture_params& ap){
+            tinyram_program program;
+            try{
+                std::ifstream processed(processed_assemble_filepath);
+                program = load_preprocessed_program(ap, processed);
+            }
+            catch (exception &e){
+                return nullopt;
+            }
+
+            return {program};
+        }
+
+
 }
 
-#endif //OSPREY_RAM_GG_PPSNARK_SERVER_HPP
 
 

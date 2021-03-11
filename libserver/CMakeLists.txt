@@ -5,12 +5,12 @@ add_library(libserver
 
         ram_complier/tinyram_complier_server.tcc
         proof_systems/ram_ppsnark_server.cpp
-        proof_systems/ram_gg_ppsnark_server.hpp
+        proof_systems/groth16_server.hpp
         proof_program.cpp
         Log.hpp
         string_helper.hpp
         network_server.hpp
-        )
+        proof_systems/groth16_server.hpp)
 target_link_libraries(libserver
         tinyram_snark
 )
@@ -57,11 +57,11 @@ add_executable(
 target_link_libraries(network_server_tests ${LIBEVENT_LIBRARIES})
 
 add_executable(
-        ram_ppsnark_gg_tests
+        groth16_server_tests
 
-        tests/ram_ppsnark_gg_server_tests.cpp
+        tests/groth16_server_tests.cpp
 )
-target_link_libraries(ram_ppsnark_gg_tests libserver)
+target_link_libraries(groth16_server_tests libserver)
 
 include(CTest)
 enable_testing()
@@ -71,7 +71,7 @@ add_test(NAME ram_ppsnark_server_test COMMAND ram_ppsnark_server_test)
 add_test(NAME tinyram_complier_server_test COMMAND tinyram_complier_server_test)
 
 add_test(NAME string_helper_tests COMMAND string_helper_tests)
-add_test(NAME ram_ppsnark_gg_tests COMMAND ram_ppsnark_gg_tests)
+add_test(NAME groth16_server_tests COMMAND groth16_server_tests)
 
 #add_test(NAME network_server_tests COMMAND string_helper_tests)
 
@@ -80,4 +80,4 @@ add_dependencies(check log_tests)
 add_dependencies(check ram_ppsnark_server_test)
 add_dependencies(check tinyram_complier_server_test)
 add_dependencies(check string_helper_tests)
-add_dependencies(check ram_ppsnark_gg_tests)
+add_dependencies(check groth16_server_tests)

@@ -59,11 +59,8 @@ namespace libserver{
     boot_trace ram_ppsnark_server::generate_primary_input(const architecture_params& ap,const size_t boot_trace_size_bound){
 
         std::ifstream processed(_vp.get_processed_assembly_fn());
-        std::ifstream raw(_vp.get_assembly_fn());
         tinyram_program program = load_preprocessed_program(ap, processed);
 
-        log->write_log<std::string>("Program:\n%s\n", std::string((std::istreambuf_iterator<char>(raw)),
-                                                                  std::istreambuf_iterator<char>()).c_str());
         std::ifstream f_primary_input(_vp.get_primary_input_fn());
         libff::enter_block("Loading primary input");
         tinyram_input_tape primary_input = load_tape(f_primary_input);
@@ -133,10 +130,7 @@ namespace libserver{
         const size_t boot_trace_size_bounds = tinyram_input_size_bound+tinyram_program_size_bound;
 
         std::ifstream processed(_vp.get_processed_assembly_fn());
-        std::ifstream raw(_vp.get_assembly_fn());
         tinyram_program program = load_preprocessed_program(arch_params, processed);
-        log->write_log("Program:\n%s\n", std::string((std::istreambuf_iterator<char>(raw)),
-                                             std::istreambuf_iterator<char>()).c_str());
 
         std::ifstream f_primary_input(_vp.get_primary_input_fn());
         std::ifstream f_auxiliary_input(_vp.get_auxiliary_input_fn());

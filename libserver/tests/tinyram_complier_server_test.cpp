@@ -12,8 +12,7 @@ int main(){
     std::string s = "0 r0";
     auto a = libserver::string_helper::split(s," ");
 
-    assert(complier.instruction_types.at(instr).size()==a.size());
-    assert(complier.complie_tinyram("avarage-complier/avarage.s")!= nullopt);
+    assert(complier.complie_tinyram("avarage-complier/avarage.s","avarage-processed_assembly.txt")==true);
     auto b = complier.complie_r1cs<libff::default_ec_pp>("avarage-complier/avarage-architecture_params.txt","avarage-complier/avarage-computation_bounds.txt");
 
     assert(b!=nullopt);
