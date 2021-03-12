@@ -216,6 +216,8 @@ public:
 tinyram_program load_preprocessed_program(const tinyram_architecture_params &ap,
                                           std::istream &preprocessed);
 
+tinyram_program load_preprocessed_program(int w,std::istream &preprocessed);
+
 memory_store_trace tinyram_boot_trace_from_program_and_input(const tinyram_architecture_params &ap,
                                                              const size_t boot_trace_size_bound,
                                                              const tinyram_program &program,

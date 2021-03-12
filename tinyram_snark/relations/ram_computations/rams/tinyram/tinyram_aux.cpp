@@ -376,6 +376,31 @@ tinyram_program load_preprocessed_program(const tinyram_architecture_params &ap,
     return program;
 }
 
+tinyram_program load_preprocessed_program(int w,std::istream &preprocessed){
+    ensure_tinyram_opcode_value_map();
+
+    tinyram_program program;
+
+    libff::enter_block("Loading program");
+    std::string instr, line;
+
+    while (preprocessed >> instr)
+    {
+        libff::print_indent();
+        size_t immflag, des, a1;
+        long long int a2;
+        if (preprocessed.good())
+        {
+            preprocessed >> immflag >> des >> a1 >> a2;
+            a2 = ((1ul<<w)+(a2 % (1ul<<w))) % (1ul<<w);
+            program.add_instruction(tinyram_instruction(opcode_values[instr], immflag, des, a1, a2));
+        }
+    }
+    libff::leave_block("Loading program");
+
+    return program;
+}
+
 memory_store_trace tinyram_boot_trace_from_program_and_input(const tinyram_architecture_params &ap,
                                                              const size_t boot_trace_size_bound,
                                                              const tinyram_program &program,

@@ -19,6 +19,7 @@ add_library(
         common/data_structures/integer_permutation.cpp
         common/data_structures/set_commitment.cpp
         common/default_types/tinyram_ppzksnark_pp.cpp
+        common/default_types/tinyram_gg_ppzksnark_pp.hpp
         common/routing_algorithms/as_waksman_routing_algorithm.cpp
         common/routing_algorithms/benes_routing_algorithm.cpp
         gadgetlib1/constraint_profiling.cpp

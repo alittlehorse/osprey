@@ -16,7 +16,7 @@ the server of zksnark using the proof program with tinyram
 #ifndef OSPREY_CONSTRUCT_PROOF_H
 #define OSPREY_CONSTRUCT_PROOF_H
 
-#endif //OSPREY_CONSTRUCT_PROOF_H
+
 
 #include <tinyram_snark/common/default_types/tinyram_ppzksnark_pp.hpp>
 #include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
@@ -24,6 +24,10 @@ the server of zksnark using the proof program with tinyram
 #include <tinyram_snark/zk_proof_systems/ppzksnark/ram_ppzksnark/ram_ppzksnark.hpp>
 #include <libserver/proof_program.hpp>
 #include <libserver/Log.hpp>
+#include <libff/common/profiling.hpp>
+#include <iostream>
+#include <string>
+
 
 using namespace tinyram_snark;
 
@@ -89,3 +93,4 @@ namespace libserver{
     };
 }
 
+#endif //OSPREY_CONSTRUCT_PROOF_H
