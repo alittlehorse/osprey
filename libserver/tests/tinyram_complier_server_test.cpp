@@ -2,7 +2,7 @@
 // Created by alittlehorse on 2/19/21.
 //
 #include<libserver/ram_complier/tinyram_complier_server.hpp>
-#include<libserver/string_helper.hpp>
+#include<libserver/aux/string_helper.hpp>
 
 
 #include<cassert>

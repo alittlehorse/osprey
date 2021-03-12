@@ -1,9 +1,9 @@
 //
 // Created by alittlehorse on 2/11/21.
 //
-#include<libserver/Log.hpp>
+#include<libserver/aux/Log.hpp>
 #include <cassert>
-#include <libserver/string_helper.hpp>
+#include <libserver/aux/string_helper.hpp>
 
 int main()
 {

@@ -24,8 +24,8 @@ the server of zksnark using the Groth16 algorithm
 #include <tinyram_snark/zk_proof_systems/r1cs_gg_ppzksnark/r1cs_gg_ppzksnark.hpp>
 
 #include <libserver/ram_complier/tinyram_complier_server.hpp>
-#include <libserver/proof_program.hpp>
-#include <libserver/Log.hpp>
+#include <libserver/aux/proof_program.hpp>
+#include <libserver/aux/Log.hpp>
 #include <unordered_map>
 
 using namespace tinyram_snark;

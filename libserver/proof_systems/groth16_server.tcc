@@ -15,7 +15,7 @@ the server of zksnark using the Groth16 algorithm
 
 
 
-#include <libserver/Log.hpp>
+#include <libserver/aux/Log.hpp>
 #include <tuple>
 #include <tinyram_snark/common/default_types/tinyram_gg_ppzksnark_pp.hpp>
 #include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>

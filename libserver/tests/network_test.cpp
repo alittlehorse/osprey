@@ -1,46 +1,144 @@
-
-#include <sys/socket.h>
-#include <netinet/in.h>
+#include <string>
+#include <event2/listener.h>
 #include <event2/bufferevent.h>
 #include <event2/buffer.h>
-#include <event2/listener.h>
-#include <event2/util.h>
-#include <event2/event.h>
-#include <cstdio>
+
+#include <arpa/inet.h>
+
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <errno.h>
 
 
-#include <libserver/network_server.hpp>
+enum class request_state : unsigned int{
+    request_server =0,
+    quote = 1,
+    reques_proof = 2,  //mean: begin to construct proof
+    proof_pass = 3,
+    already_paid = 4,
+    proof_failed = 5,
+    failed_paid = 5
+};
+
+enum class prover_state : unsigned int{
+    prover_account = 0,
+    primary_input =1,
+    send_prover = 2,
+};
+
 
 using namespace std;
 
 struct event_base* base;
 
-
-void onAccept(evutil_socket_t iSvrFd, short what, void *arg)
-{
-    int iCliFd;
-    struct sockaddr_in sCliAddr;
-    socklen_t iSinSize = sizeof(sCliAddr);
-    iCliFd = accept(iSvrFd, (struct sockaddr*)&sCliAddr, &iSinSize);
-    // 连接注册为新事件 (EV_PERSIST为事件触发后不默认删除)
-    printf("connect from %s",iCliFd);
-
+static void on_quote(){
+    printf("begin quote");
+}
+static void on_request_proof(){
+    printf("begin on_request_proof");
+}
+static void on_request_server(){
+    printf("begin on_request_server");
+}
+static void on_aready_paid(){
+    printf("begin on_aready_paid");
 }
 
-int main()
+
+static void
+read_cb(struct bufferevent *bev, void *ctx)
 {
-    libserver::network_server network("127.0.0.1",10086);
-    int iSvrFd = network.init();
-    listen(iSvrFd, 10);
+    /* This callback is invoked when there is data to read on bev. */
+    char buff[2048];
+    struct evbuffer *input = bufferevent_get_input(bev);
+    struct evbuffer *output = bufferevent_get_output(bev);
+    int a = evbuffer_remove (input, buff, evbuffer_get_length(input) );
+    //unsigned int b = static_cast<typename std::underlying_type<request_state>::type>(request_state::quote);
+    int b = int(buff[0]-'0');
+    if(b==0){on_quote();}
 
-    // 初始化base
+}
+static void
+write_cb(struct bufferevent *bev, void *ctx){
+
+}
+static void
+event_cb(struct bufferevent *bev, short events, void *ctx)
+{
+    if (events & BEV_EVENT_ERROR)
+        perror("Error from bufferevent");
+    if (events & (BEV_EVENT_EOF | BEV_EVENT_ERROR)) {
+        bufferevent_free(bev);
+    }
+}
+static void
+accept_conn_cb(struct evconnlistener *listener,
+               evutil_socket_t fd, struct sockaddr *address, int socklen,
+               void *ctx)
+{
+    /* We got a new connection! Set up a bufferevent for it. */
+    struct event_base *base = evconnlistener_get_base(listener);
+    struct bufferevent *bev = bufferevent_socket_new(
+            base, fd, BEV_OPT_CLOSE_ON_FREE);
+    bufferevent_setcb(bev, read_cb, write_cb , event_cb, NULL);
+
+    bufferevent_enable(bev, EV_READ|EV_WRITE);
+}
+static void
+accept_error_cb(struct evconnlistener *listener, void *ctx)
+{
+    struct event_base *base = evconnlistener_get_base(listener);
+    int err = EVUTIL_SOCKET_ERROR();
+    fprintf(stderr, "Got an error %d (%s) on the listener. "
+                    "Shutting down.\n", err, evutil_socket_error_to_string(err));
+
+    event_base_loopexit(base, NULL);
+}
+
+int
+main(int argc, char **argv)
+{
+    struct event_base *base;
+    struct evconnlistener *listener;
+    struct sockaddr_in sin;
+
+    int port = 10086;
+
+    if (argc > 1) {
+        port = atoi(argv[1]);
+    }
+    if (port<=0 || port>65535) {
+        puts("Invalid port");
+        return 1;
+    }
+
     base = event_base_new();
-    struct event* evListen = event_new(base,iSvrFd,EV_READ|EV_PERSIST,onAccept,NULL);
-    // 添加事件
-    event_add(evListen, NULL);
+    if (!base) {
+        puts("Couldn't open event base");
+        return 1;
+    }
 
-    // 事件循环
+    /* Clear the sockaddr before using it, in case there are extra
+     * platform-specific fields that can mess us up. */
+    memset(&sin, 0, sizeof(sin));
+    /* This is an INET address */
+    sin.sin_family = AF_INET;
+    /* Listen on 0.0.0.0 */
+    sin.sin_addr.s_addr = htonl(0);
+    /* Listen on the given port. */
+    sin.sin_port = htons(port);
+
+    listener = evconnlistener_new_bind(base, accept_conn_cb, NULL,
+                                       LEV_OPT_CLOSE_ON_FREE|LEV_OPT_REUSEABLE, -1,
+                                       (struct sockaddr*)&sin, sizeof(sin));
+    if (!listener) {
+        perror("Couldn't create listener");
+        return 1;
+    }
+    evconnlistener_set_error_cb(listener, accept_error_cb);
+
     event_base_dispatch(base);
     return 0;
-
 }
+

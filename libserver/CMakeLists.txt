@@ -6,10 +6,9 @@ add_library(libserver
         ram_complier/tinyram_complier_server.tcc
         proof_systems/ram_ppsnark_server.cpp
         proof_systems/groth16_server.hpp
-        proof_program.cpp
-        Log.hpp
-        string_helper.hpp
-        network_server.hpp
+        aux/proof_program.cpp
+        aux/Log.hpp
+        aux/string_helper.hpp
         proof_systems/groth16_server.hpp
         )
 
@@ -58,6 +57,7 @@ add_executable(
         tests/network_test.cpp
 )
 target_link_libraries(network_server_tests ${LIBEVENT_LIBRARIES})
+target_link_libraries(network_server_tests libserver)
 
 add_executable(
         groth16_server_tests
