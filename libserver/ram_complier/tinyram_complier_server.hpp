@@ -10,7 +10,7 @@
 #include <unordered_map>
 #include <vector>
 #include<tuple>
-#include <libserver/Log.hpp>
+#include <libserver/aux/Log.hpp>
 #include <tinyram_snark/common/default_types/tinyram_gg_ppzksnark_pp.hpp>
 #include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
 #include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_params.hpp>

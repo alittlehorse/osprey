@@ -2,7 +2,7 @@
 // Created by alittlehorse on 2/10/21.
 //
 #include<string>
-#include<libserver/proof_program.hpp>
+#include<libserver/aux/proof_program.hpp>
 #include <cassert>
 using namespace libserver;
 int main(){

@@ -4,7 +4,7 @@
 #include<string>
 #include<vector>
 #include <cassert>
-#include<libserver/string_helper.hpp>
+#include<libserver/aux/string_helper.hpp>
 #include<iostream>
 
 int main(){

@@ -22,32 +22,37 @@ the server of zksnark using the Groth16 algorithm
 #include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
 #include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_params.hpp>
 #include <tinyram_snark/zk_proof_systems/r1cs_gg_ppzksnark/r1cs_gg_ppzksnark.hpp>
+#include <libserver/proof_systems/proof_public_params.hpp>
 
 #include <libserver/ram_complier/tinyram_complier_server.hpp>
-#include <libserver/proof_program.hpp>
-#include <libserver/Log.hpp>
+#include <libserver/aux/proof_program.hpp>
+#include <libserver/aux/Log.hpp>
 #include <unordered_map>
 
 using namespace tinyram_snark;
 namespace  libserver{
     class groth16_server {
     public:
-        bool construct_proof();
-        groth16_server(proof_program& v) {
-            _vp = v;
-            log = new Log(v.get_program_name()+"/"+v.get_program_name()+"_log.txt");
+        groth16_server(const proof_program& vp):_vp(vp),
+        _proof_public_params(proof_public_params<default_r1cs_gg_ppzksnark_pp>("avarage/avarage-processed_assembly.txt",
+                                                                               "avarage/avarage-computation_bounds.txt",
+                                                                               "avarage/avarage-architecture_params.txt",
+                                                                               "avarage/avarage-primary_input.txt"))
+        {
+
         }
-        template<typename ramT>
-        std::optional<const ram_architecture_params<ramT>> generate_ram_architecture_params(std::string&& file_path);
+        bool construct_proof();
 
-        std::optional<const std::tuple<size_t,size_t,size_t>> get_bounds(std::string&& bounds_filepath);
+        std::optional<r1cs_gg_ppzksnark_proof<default_r1cs_gg_ppzksnark_pp>> generate_proof();
 
-        std::optional<tinyram_program> generate_program(std::string&& processed_assemble_filepath,const tinyram_architecture_params& ap);
-
+        bool construct_proof1();
 
     private:
         proof_program _vp;
         Log* log;
+        proof_public_params<default_r1cs_gg_ppzksnark_pp> _proof_public_params;
+        r1cs_constraint_system<libff::Fr<default_r1cs_gg_ppzksnark_pp>> constraint_system;
+        r1cs_constraint_system<libff::Fr<default_r1cs_gg_ppzksnark_pp>> generate_r1cs();
     };
 }
 

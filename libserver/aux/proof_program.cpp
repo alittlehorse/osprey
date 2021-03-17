@@ -9,7 +9,7 @@
  *****************************************************************************/
 #include <string>
 #include <utility>
-#include <libserver/proof_program.hpp>
+#include <libserver/aux/proof_program.hpp>
 namespace libserver{
     proof_program::proof_program(std::string program_name) {
         _program_name = std::move(program_name);

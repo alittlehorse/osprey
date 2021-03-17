@@ -7,7 +7,7 @@
 #include <iostream>
 #include <utility>
 #include <fstream>
-#include <libserver/string_helper.hpp>
+#include <libserver/aux/string_helper.hpp>
 
 namespace libserver{
     class Log{
@@ -25,8 +25,8 @@ namespace libserver{
             outfile.open(_path, std::ios::app);
             outfile<<content;
             outfile.close();
+            std::string s = "World";
         }
-
     };
 
 }
