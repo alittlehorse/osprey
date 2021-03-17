@@ -3,13 +3,14 @@ pkg_check_modules(LIBEVENT REQUIRED libevent>2.1.10)
 add_library(libserver
         STATIC
 
-        ram_complier/tinyram_complier_server.tcc
+        ram_complier/tinyram_complier_server.hpp
         proof_systems/ram_ppsnark_server.cpp
         proof_systems/groth16_server.hpp
         aux/proof_program.cpp
         aux/Log.hpp
         aux/string_helper.hpp
-        proof_systems/groth16_server.hpp
+        proof_systems/proof_public_params.hpp
+        proof_systems/tinyram_zksnark_pp.hpp
         )
 
 add_subdirectory(smart_contract)
@@ -66,6 +67,14 @@ add_executable(
 )
 target_link_libraries(groth16_server_tests libserver)
 
+add_executable(
+        proof_public_params_tests
+
+        tests/proof_public_params_tests.cpp
+)
+target_link_libraries(proof_public_params_tests libserver)
+
+
 include(CTest)
 enable_testing()
 add_test(NAME proof_program_tests COMMAND proof_program_tests)
@@ -75,7 +84,7 @@ add_test(NAME tinyram_complier_server_test COMMAND tinyram_complier_server_test)
 
 add_test(NAME string_helper_tests COMMAND string_helper_tests)
 add_test(NAME groth16_server_tests COMMAND groth16_server_tests)
-
+add_test(NAME proof_public_params_tests COMMAND proof_public_params_tests)
 #add_test(NAME network_server_tests COMMAND string_helper_tests)
 
 add_dependencies(check proof_program_tests)

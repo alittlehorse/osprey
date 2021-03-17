@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
+#include <istream>
+#include <fstream>
 
 
 enum class request_state : unsigned int{
@@ -53,16 +55,16 @@ read_cb(struct bufferevent *bev, void *ctx)
     char buff[2048];
     struct evbuffer *input = bufferevent_get_input(bev);
     struct evbuffer *output = bufferevent_get_output(bev);
-    int a = evbuffer_remove (input, buff, evbuffer_get_length(input) );
-    //unsigned int b = static_cast<typename std::underlying_type<request_state>::type>(request_state::quote);
-    int b = int(buff[0]-'0');
-    if(b==0){on_quote();}
-
+    int len = evbuffer_remove (input, buff, evbuffer_get_length(input) );
+    std::string_view tag(buff,6);
+    std::string_view VR(buff+6,1);
+    std::string_view length(buff+7,2);
+    //int l = to_len(length);
+    std::string v(buff+9,len-9);
+    ofstream out("Hello,world.txt");
+    out<<v;
 }
-static void
-write_cb(struct bufferevent *bev, void *ctx){
 
-}
 static void
 event_cb(struct bufferevent *bev, short events, void *ctx)
 {
@@ -81,7 +83,7 @@ accept_conn_cb(struct evconnlistener *listener,
     struct event_base *base = evconnlistener_get_base(listener);
     struct bufferevent *bev = bufferevent_socket_new(
             base, fd, BEV_OPT_CLOSE_ON_FREE);
-    bufferevent_setcb(bev, read_cb, write_cb , event_cb, NULL);
+    bufferevent_setcb(bev, read_cb, NULL , event_cb, NULL);
 
     bufferevent_enable(bev, EV_READ|EV_WRITE);
 }
@@ -128,7 +130,7 @@ main(int argc, char **argv)
     sin.sin_addr.s_addr = htonl(0);
     /* Listen on the given port. */
     sin.sin_port = htons(port);
-
+    printf("Hello,World!");
     listener = evconnlistener_new_bind(base, accept_conn_cb, NULL,
                                        LEV_OPT_CLOSE_ON_FREE|LEV_OPT_REUSEABLE, -1,
                                        (struct sockaddr*)&sin, sizeof(sin));
