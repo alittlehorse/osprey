@@ -7,7 +7,7 @@
 #include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_params.hpp>
 namespace libserver{
     template<typename ppT>
-    class tinyram_zksnark_pp{
+    class tinyram_r1cs_pp{
     public:
         typedef ppT snark_pp;
         typedef libff::Fr<ppT> FieldT;
@@ -17,6 +17,7 @@ namespace libserver{
             snark_pp::init_public_params();
         }
     };
+
 }
 #endif
 

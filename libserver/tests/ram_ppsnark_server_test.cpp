@@ -8,7 +8,7 @@ using namespace libserver;
 int main(){
     default_tinyram_ppzksnark_pp::init_public_params();
     libff::start_profiling();
-    proof_program p("avarage");
+    proof_params_config p("avarage");
     ram_ppsnark_server ppsnark_server(p);
     assert(ppsnark_server.get_target_path()=="avarage");
 

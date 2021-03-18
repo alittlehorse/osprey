@@ -7,7 +7,7 @@
 
 #include<cassert>
 int main(){
-    libserver::tinyram_comlier_server complier;
+    libserver::tinyram_complier_server complier;
     std::string instr ="store.w";
     std::string s = "0 r0";
     auto a = libserver::string_helper::split(s," ");

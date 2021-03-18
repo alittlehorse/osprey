@@ -1,7 +1,7 @@
 /** @file
  *****************************************************************************
 
- Declaration of interfaces for a proof program provided by server requester
+ Declaration of interfaces for a proof program config provided by server requester
 
  *****************************************************************************
  * @author     This file is part of libserver, developed by alittlehorse
@@ -17,7 +17,7 @@
 
 namespace libserver{
 
-    class proof_program{
+    class proof_params_config{
         private:
         std::string processed_assembly_fn;
         std::string architecture_params_fn;
@@ -39,7 +39,7 @@ namespace libserver{
         std::string get_primary_input_fn();
         std::string get_auxiliary_input_fn();
         std::string get_program_name();
-        proof_program() = default;
+        proof_params_config() = default;
 
         bool set_processed_assembly_fn(const std::string&& processed_assemble_path);
         bool set_architecture_params_fn(const std::string&& architecture_params_fn);
@@ -47,7 +47,7 @@ namespace libserver{
         bool set_primary_input_fn(const std::string&& _primary_input_fn);
         bool set_get_auxiliary_input_fn(const std::string&& get_auxiliary_input_fn);
 
-        explicit proof_program(std::string program_name);
+        explicit proof_params_config(std::string program_name);
     };
 }
 #endif //OSPREY_proof_program_H

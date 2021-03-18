@@ -6,12 +6,14 @@ add_library(libserver
         ram_complier/tinyram_complier_server.hpp
         proof_systems/ram_ppsnark_server.cpp
         proof_systems/groth16_server.hpp
-        aux/proof_program.cpp
+        aux/proof_params_config.cpp
         aux/Log.hpp
         aux/string_helper.hpp
-        proof_systems/proof_public_params.hpp
-        proof_systems/tinyram_zksnark_pp.hpp
-        )
+        proof_systems/tinyram_circuit.hpp
+        proof_systems/tinyram_r1cs_pp.hpp
+        proof_systems/r1cs_constraint_system_pool.hpp
+        proof_systems/r1cs_adapter.tcc
+        proof_systems/r1cs_adapter.hpp)
 
 add_subdirectory(smart_contract)
 target_link_libraries(libserver
@@ -68,11 +70,18 @@ add_executable(
 target_link_libraries(groth16_server_tests libserver)
 
 add_executable(
-        proof_public_params_tests
+        tinyram_circuit_server_tests
 
-        tests/proof_public_params_tests.cpp
+        tests/tinyram_circuit_server_tests.cpp
 )
-target_link_libraries(proof_public_params_tests libserver)
+target_link_libraries(tinyram_circuit_server_tests libserver)
+
+add_executable(
+        r1cs_adapter_tests
+
+        tests/r1cs_adapter_tests.cpp
+)
+target_link_libraries(r1cs_adapter_tests libserver)
 
 
 include(CTest)
@@ -84,7 +93,7 @@ add_test(NAME tinyram_complier_server_test COMMAND tinyram_complier_server_test)
 
 add_test(NAME string_helper_tests COMMAND string_helper_tests)
 add_test(NAME groth16_server_tests COMMAND groth16_server_tests)
-add_test(NAME proof_public_params_tests COMMAND proof_public_params_tests)
+add_test(NAME tinyram_circuit_server_tests COMMAND tinyram_circuit_server_tests)
 #add_test(NAME network_server_tests COMMAND string_helper_tests)
 
 add_dependencies(check proof_program_tests)

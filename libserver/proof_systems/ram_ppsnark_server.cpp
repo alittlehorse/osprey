@@ -21,7 +21,7 @@ the server of zksnark using the proof program with tinyram
 using namespace tinyram_snark;
 
 namespace libserver{
-     ram_ppsnark_server::ram_ppsnark_server(proof_program& v) {
+     ram_ppsnark_server::ram_ppsnark_server(proof_params_config& v) {
          _vp = v;
          log = new Log(v.get_program_name()+"/"+v.get_program_name()+"_log.txt");
          default_tinyram_ppzksnark_pp::init_public_params();

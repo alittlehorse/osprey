@@ -25,7 +25,7 @@ namespace libserver{
 
     /// tinyram_complier
     //template<typename ppT>
-    class tinyram_comlier_server {
+    class tinyram_complier_server {
         //input the assemble file and process the file ,like a complier
     public:
         /// complie the tinyram file to immediate format.
@@ -36,9 +36,11 @@ namespace libserver{
 
         template<typename ppT>
         optional<tinyram_snark::r1cs_constraint_system<libff::Fr<ppT>>> complie_r1cs(string &&architecture_params_path,string &&computation_bounds_path);
+        template<typename ppT>
+        optional<tinyram_snark::r1cs_constraint_system<libff::Fr<ppT>>> complie_r1cs(const tinyram_snark::ram_architecture_params<tinyram_snark::ram_tinyram<ppT>> &ap,const unordered_map<const char*,size_t> &bounds);
 
-        bool tests();
     private:
+        Log* log;
         const std::unordered_map<std::string,std::vector<std::string>> instruction_types=
                 {       {"and",{"des","arg1","arg2"}},
                         {"or",{"des","arg1","arg2"}},
@@ -72,9 +74,10 @@ namespace libserver{
                         {"load.w",{"des","arg2"}},
                         {"read",{"des","arg2"}},
                         {"answer",{"arg2"}}};
-        Log* log;
+
     };
 
 }
 #include <libserver/ram_complier/tinyram_complier_server.tcc>
+
 #endif //OSPREY_TINYRAM_COMPLIER_SERVER_H

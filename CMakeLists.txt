@@ -245,12 +245,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
 add_subdirectory(tinyram_snark)
 add_subdirectory(depends)
 add_subdirectory(libserver)
-add_executable(osprey main.cpp)
-target_link_libraries(osprey
 
-        tinyram_snark
-        libserver
-        )
 
 
 
