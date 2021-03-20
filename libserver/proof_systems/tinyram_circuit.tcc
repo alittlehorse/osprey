@@ -30,7 +30,7 @@ namespace libserver{
     template<typename tinyram_r1cs_params>
     tinyram_circuit<tinyram_r1cs_params>::tinyram_circuit(const std::string& assemble_file_name,
                                                              const std::string& bounds_path,
-                                                             const std::string& architecture_params_path,
+                                                             const std::string&  architecture_params_path,
                                                              const std::string& primary_input_path):
     assemble_file_name(assemble_file_name),
     bounds_path(bounds_path),

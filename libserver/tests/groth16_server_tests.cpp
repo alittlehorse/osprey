@@ -12,9 +12,9 @@ int main(){
 
     //default_r1cs_gg_ppzksnark_pp::init_public_params();
 
-    //auto ap = s.generate_ram_architecture_params<default_ram_with_pp>(p.get_architecture_params_fn());
+    //auto ap = s.generate_ram_architecture_params<default_ram_with_pp>(p.get_architecture_params_path());
     //assert(ap!=nullopt);
-    //assert(s.generate_program(p.get_processed_assembly_fn(),ap.value())!=nullopt);
+    //assert(s.generate_program(p.get_processed_assembly_path(),ap.value())!=nullopt);
     //s.construct_proof();
     s.construct_proof1();
     return 0;

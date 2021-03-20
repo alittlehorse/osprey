@@ -1,10 +1,13 @@
 include(FindPkgConfig)
 pkg_check_modules(LIBEVENT REQUIRED libevent>2.1.10)
+
+#find_package(fmt)
+
 add_library(libserver
         STATIC
 
-        ram_complier/tinyram_complier_server.hpp
-        proof_systems/ram_ppsnark_server.cpp
+        #ram_complier/tinyram_complier_server.hpp
+        #proof_systems/ram_ppsnark_server.cpp
         proof_systems/groth16_server.hpp
         aux/proof_params_config.cpp
         aux/Log.hpp
@@ -12,12 +15,14 @@ add_library(libserver
         proof_systems/tinyram_circuit.hpp
         proof_systems/tinyram_r1cs_pp.hpp
         proof_systems/r1cs_constraint_system_pool.hpp
-        proof_systems/r1cs_adapter.tcc
-        proof_systems/r1cs_adapter.hpp)
+        proof_systems/r1cs_adapter.hpp
+        ram_complier/tinyram_precompiler.cpp
+        )
 
 add_subdirectory(smart_contract)
 target_link_libraries(libserver
         tinyram_snark
+        fmt::fmt
 )
 
 
@@ -30,9 +35,8 @@ target_link_libraries(proof_program_tests libserver)
 
 add_executable(
         log_tests
-
         tests/log_tests.cpp)
-target_link_libraries(log_tests libserver)
+target_link_libraries(log_tests fmt::fmt)
 
 add_executable(
         ram_ppsnark_server_test

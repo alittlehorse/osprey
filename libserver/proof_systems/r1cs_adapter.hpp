@@ -33,12 +33,11 @@ namespace libserver{
         r1cs_constraint_system<typename tinyram_r1cs_params::FieldT> cs;
         r1cs_primary_input<typename tinyram_r1cs_params::FieldT> primary_input;
         r1cs_auxiliary_input<typename tinyram_r1cs_params::FieldT> auxiliary_input;
-        proof_params_config* p;
+        proof_params_config p;
 
     public:
-        explicit r1cs_adapter(const std::string& config_path){
-            p = new proof_params_config(config_path);
-            _tinyram_ciruit = new tinyram_circuit<tinyram_r1cs_params>(p->get_processed_assembly_fn(),p->get_computation_bounds_fn(),p->get_architecture_params_fn(),p->get_primary_input_fn());
+        explicit r1cs_adapter(const proof_params_config& p):p(p){
+            _tinyram_ciruit = new tinyram_circuit<tinyram_r1cs_params>(p.get_processed_assembly_path(),p.get_computation_bounds_path(),p.get_architecture_params_path(),p.get_primary_input_path());
             auto ap = _tinyram_ciruit->get_ram_architecture_params();
             auto bounds = _tinyram_ciruit->get_bounds();
             
@@ -53,10 +52,10 @@ namespace libserver{
             const size_t boot_trace_size_bound = tinyram_input_size_bound + tinyram_program_size_bound;
 
             //typedef default_tinyram_gg_ppzksnark_pp::machine_pp default_ram_with_Fr;
-
+            //
             ram_to_r1cs<typename tinyram_r1cs_params::machine_pp> r(ap, boot_trace_size_bound, time_bound);
             r.instance_map();
-            std::ifstream f_auxiliary_input(p->get_auxiliary_input_fn());
+            std::ifstream f_auxiliary_input(p.get_auxiliary_input_path());
 
             libff::enter_block("Loading auxiliary input");
             tinyram_snark::tinyram_input_tape aux_input = tinyram_snark::load_tape(f_auxiliary_input);

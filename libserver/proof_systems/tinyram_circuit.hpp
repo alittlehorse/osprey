@@ -46,7 +46,7 @@ namespace libserver{
     public:
         tinyram_circuit(const std::string& assemble_file_name,
                         const std::string& bounds_path,
-                        const std::string& architecture_params_path,
+                        const std::string&  architecture_params_path,
                         const std::string& primary_input_path);
 
         tinyram_snark::ram_architecture_params<machine_pp>&

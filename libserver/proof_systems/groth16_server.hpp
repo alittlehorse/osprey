@@ -23,12 +23,14 @@ the server of zksnark using the Groth16 algorithm
 #include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_params.hpp>
 #include <tinyram_snark/zk_proof_systems/r1cs_gg_ppzksnark/r1cs_gg_ppzksnark.hpp>
 #include <libserver/proof_systems/tinyram_circuit.hpp>
+#include <libserver/aux/Log.hpp>
 
-
+#include <depends/fmt/include/fmt/ostream.h>
 #include <libserver/aux/proof_params_config.hpp>
 #include <libserver/aux/Log.hpp>
 #include <unordered_map>
 #include <libserver/proof_systems/r1cs_adapter.hpp>
+#include <iostream>
 
 using namespace tinyram_snark;
 namespace  libserver{
@@ -39,17 +41,15 @@ namespace  libserver{
         r1cs_adapter<tinyram_r1cs_params>* _r1cs_adapter;
         r1cs_gg_ppzksnark_proving_key<default_r1cs_gg_ppzksnark_pp> pk;
         Log* log;
-        proof_params_config* _vp;
+        proof_params_config _vp;
 
     public:
-        groth16_server(const std::string& initial_path):initial_path(initial_path){
-            _r1cs_adapter = new r1cs_adapter<tinyram_r1cs_params>(initial_path);
-            _vp = new proof_params_config(initial_path);
+        explicit groth16_server(const std::string& initial_path):initial_path(initial_path){
+            _vp = *new proof_params_config(std::move(initial_path));
+            _r1cs_adapter = new r1cs_adapter<tinyram_r1cs_params>(_vp);
+            log = new Log((_vp.get_log_path()));
         };
-        bool construct_proof();
-
         bool construct_proof1();
-
 
     };
 }

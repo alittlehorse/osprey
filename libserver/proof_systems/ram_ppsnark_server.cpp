@@ -49,19 +49,19 @@ namespace libserver{
     }
 
     architecture_params
-    ram_ppsnark_server::generate_ram_ppsnark_architecture_params(std::string&& get_architecture_params_fn) {
+    ram_ppsnark_server::generate_ram_ppsnark_architecture_params(std::string&& get_architecture_params_path) {
         architecture_params ap;
-        std::ifstream f_ap(get_architecture_params_fn);
+        std::ifstream f_ap(get_architecture_params_path);
         f_ap >> ap;
         return ap;
     }
 
     boot_trace ram_ppsnark_server::generate_primary_input(const architecture_params& ap,const size_t boot_trace_size_bound){
 
-        std::ifstream processed(_vp.get_processed_assembly_fn());
+        std::ifstream processed(_vp.get_processed_assembly_path());
         tinyram_program program = load_preprocessed_program(ap, processed);
 
-        std::ifstream f_primary_input(_vp.get_primary_input_fn());
+        std::ifstream f_primary_input(_vp.get_primary_input_path());
         libff::enter_block("Loading primary input");
         tinyram_input_tape primary_input = load_tape(f_primary_input);
         libff::leave_block("Loading primary input");
@@ -90,11 +90,11 @@ namespace libserver{
     }
 
     architecture_params ram_ppsnark_server::genenerate_ram_ppsnark_architecture_params() {
-       return  generate_ram_ppsnark_architecture_params(_vp.get_architecture_params_fn());
+       return  generate_ram_ppsnark_architecture_params(_vp.get_architecture_params_path());
     }
 
     tinyram_input_tape ram_ppsnark_server::generate_auxili_input() {
-        return generate_auxili_input(_vp.get_auxiliary_input_fn());
+        return generate_auxili_input(_vp.get_auxiliary_input_path());
     }
 
     std::tuple<size_t, size_t,size_t> ram_ppsnark_server::get_bounds() {
@@ -119,7 +119,7 @@ namespace libserver{
         /* load everything */
         /*TinyRAM's architecture params*/
         ram_architecture_params<default_ram> arch_params;
-        std::ifstream f_ap(_vp.get_architecture_params_fn());
+        std::ifstream f_ap(_vp.get_architecture_params_path());
         f_ap >> arch_params;
 
         log->write_log("Will run on %zu register machine (word size = %zu)\n", arch_params.k, arch_params.w);
@@ -129,11 +129,11 @@ namespace libserver{
         const size_t time_bound = std::get<2>(bounds);
         const size_t boot_trace_size_bounds = tinyram_input_size_bound+tinyram_program_size_bound;
 
-        std::ifstream processed(_vp.get_processed_assembly_fn());
+        std::ifstream processed(_vp.get_processed_assembly_path());
         tinyram_program program = load_preprocessed_program(arch_params, processed);
 
-        std::ifstream f_primary_input(_vp.get_primary_input_fn());
-        std::ifstream f_auxiliary_input(_vp.get_auxiliary_input_fn());
+        std::ifstream f_primary_input(_vp.get_primary_input_path());
+        std::ifstream f_auxiliary_input(_vp.get_auxiliary_input_path());
 
         const auto primary_input  = generate_primary_input(arch_params,boot_trace_size_bounds);
         auto auxiliary_input = generate_auxili_input();

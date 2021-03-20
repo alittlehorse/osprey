@@ -1,31 +1,43 @@
-//
-// Created by alittlehorse on 2/9/21.
-//
+/** @file
+ *****************************************************************************
+
+ Declaration of interfaces for Log system
+
+ *****************************************************************************
+ * @author     This file is part of libserver, developed by alittlehorse
+ * @copyright  MIT license (see LICENSE file)
+ *****************************************************************************/
+
 
 #ifndef OSPREY_LOG_H
 #define OSPREY_LOG_H
-#include <iostream>
+
 #include <utility>
 #include <fstream>
 #include <libserver/aux/string_helper.hpp>
 
+#include<depends/fmt/include/fmt/format.h>
+#include<depends/fmt/include/fmt/ostream.h>
+
+//TODO:refactoring the log system.
 namespace libserver{
     class Log{
     private:
         std::string _path;
-        std::ofstream  outfile;
+        std::ofstream log_file;
 
     public:
-        explicit Log(std::string path){_path = std::move(path);}
+        explicit Log(const std::string& path):_path(path){
+            log_file.open(path);
+        }
         std::string  get_path(){return _path;};
-        template<typename... Args>
-        void write_log(const char *format, Args... args)
+        void write_log(const std::string&& content)
         {
-            std::string content =  libserver::string_helper::StrFormat(format,args...);
-            outfile.open(_path, std::ios::app);
-            outfile<<content;
-            outfile.close();
-            std::string s = "World";
+            fmt::print(content);
+            fmt::print(log_file,content);
+        }
+        void close(){
+            log_file.close();
         }
     };
 

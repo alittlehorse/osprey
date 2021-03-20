@@ -7,77 +7,49 @@
  * @author     This file is part of libserver, developed by alittlehorse
  * @copyright  MIT license (see LICENSE file)
  *****************************************************************************/
-#include <unordered_map>
-#include <vector>
-#include<tuple>
-#include <libserver/aux/Log.hpp>
-#include <tinyram_snark/common/default_types/tinyram_gg_ppzksnark_pp.hpp>
-#include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
-#include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_params.hpp>
-#include <tinyram_snark/common/default_types/r1cs_gg_ppzksnark_pp.hpp>
-#include<optional>
 
 #ifndef OSPREY_TINYRAM_COMPLIER_SERVER_H
 #define OSPREY_TINYRAM_COMPLIER_SERVER_H
+#include <unordered_map>
+#include <vector>
+#include <libserver/aux/Log.hpp>
+#include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
+#include <tinyram_snark/common/default_types/r1cs_gg_ppzksnark_pp.hpp>
+#include <optional>
+#include <tinyram_snark/relations/constraint_satisfaction_problems/r1cs/r1cs.hpp>
 
-using namespace std;
-namespace libserver{
+namespace libserver {
 
     /// tinyram_complier
-    //template<typename ppT>
+    template<typename tinyram_r1cs_params>
     class tinyram_complier_server {
         //input the assemble file and process the file ,like a complier
     public:
         /// complie the tinyram file to immediate format.
         /// \arg:: file_path:std::string&&
         /// \return: bool and write the immediate format to the same path
+        using   machine_pp =typename tinyram_r1cs_params::machine_pp;
+        using   FieldT = typename tinyram_r1cs_params::FieldT;
 
-        bool complie_tinyram(std::string &&file_path,std::string&& out_name);
 
-        template<typename ppT>
-        optional<tinyram_snark::r1cs_constraint_system<libff::Fr<ppT>>> complie_r1cs(string &&architecture_params_path,string &&computation_bounds_path);
-        template<typename ppT>
-        optional<tinyram_snark::r1cs_constraint_system<libff::Fr<ppT>>> complie_r1cs(const tinyram_snark::ram_architecture_params<tinyram_snark::ram_tinyram<ppT>> &ap,const unordered_map<const char*,size_t> &bounds);
+        std::optional<tinyram_snark::r1cs_constraint_system<FieldT>>
+        complie_r1cs_constrain_system(const tinyram_snark::ram_architecture_params<machine_pp> &ap,
+                     const std::unordered_map<const char *, size_t> &bounds);
 
+        std::optional<tinyram_snark::r1cs_primary_input<FieldT>> compiler_r1cs_primary_input();
+        std::optional<tinyram_snark::r1cs_auxiliary_input<FieldT>> compiler_r1cs_auxiliary_input();
     private:
-        Log* log;
-        const std::unordered_map<std::string,std::vector<std::string>> instruction_types=
-                {       {"and",{"des","arg1","arg2"}},
-                        {"or",{"des","arg1","arg2"}},
-                        {"xor",{"des","arg1","arg2"}},
-                        {"not",{"des","arg2"}},
-                        {"add",{"des","arg1","arg2"}},
-                        {"sub",{"des","arg1","arg2"}},
-                        {"mull",{"des","arg1","arg2"}},
-                        {"umulh",{"des","arg1","arg2"}},
-                        {"smulh",{"des","arg1","arg2"}},
-                        {"udiv",{"des","arg1","arg2"}},
-                        {"umod",{"des","arg1","arg2"}},
-                        {"shl",{"des","arg1","arg2"}},
-                        {"shr",{"des","arg1","arg2"}},
-                        {"cmpe",{"arg1","arg2"}},
-                        {"cmpa",{"arg1","arg2"}},
-                        {"cmpae",{"arg1","arg2"}},
-                        {"cmpg",{"arg1","arg2"}},
-                        {"cmpge",{"arg1","arg2"}},
-                        {"mov",{"des","arg2"}},
-                        {"cmov",{"des","arg2"}},
-                        {"jmp",{"arg2"}},
-                        {"cjmp",{"arg2"}},
-                        {"cnjmp",{"arg2"}},
-                        {"opcode_10111",{}},
-                        {"opcode_11000",{}},
-                        {"opcode_11001",{}},
-                        {"store.b",{"arg2","des"}},
-                        {"load.b",{"des","arg2"}},
-                        {"store.w",{"arg2","des"}},
-                        {"load.w",{"des","arg2"}},
-                        {"read",{"des","arg2"}},
-                        {"answer",{"arg2"}}};
+
+        Log *log;
+        tinyram_snark::ram_to_r1cs<machine_pp> r;
+
 
     };
 
+
+
 }
 #include <libserver/ram_complier/tinyram_complier_server.tcc>
+
 
 #endif //OSPREY_TINYRAM_COMPLIER_SERVER_H

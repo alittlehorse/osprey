@@ -13,7 +13,7 @@ int main(){
     assert(ppsnark_server.get_target_path()=="avarage");
 
 
-    const auto ap = ppsnark_server.generate_ram_ppsnark_architecture_params(p.get_architecture_params_fn());
+    const auto ap = ppsnark_server.generate_ram_ppsnark_architecture_params(p.get_architecture_params_path());
     //load bound of the program ,include the input_size_bound,program_size_bound and time_bound;
     std::ifstream f_rp(p.get_computation_bounds_fn());
     size_t tinyram_input_size_bound1, tinyram_program_size_bound1, time_bound1;
@@ -28,8 +28,8 @@ int main(){
     assert(boot_trace_size_bound>0);
     const boot_trace primary_input_boot_trace = ppsnark_server.generate_primary_input(ap,boot_trace_size_bound);
 
-    auto auxiliary_input = ppsnark_server.generate_auxili_input(p.get_auxiliary_input_fn());
-    assert(p.get_auxiliary_input_fn()=="avarage/avarage-auxiliary_input.txt");
+    auto auxiliary_input = ppsnark_server.generate_auxili_input(p.get_auxiliary_input_path());
+    assert(p.get_auxiliary_input_path()=="avarage/avarage-auxiliary_input.txt");
     assert(auxiliary_input[0]==bool(1));
     auto keypair = ppsnark_server.generate_ram_ppsnark_keypair(ap,boot_trace_size_bound,time_bound);
 
