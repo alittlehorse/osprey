@@ -6,7 +6,7 @@ pkg_check_modules(LIBEVENT REQUIRED libevent>2.1.10)
 add_library(libserver
         STATIC
 
-        #ram_complier/tinyram_complier_server.hpp
+        #ram_compiler/tinyram_compiler_server.hpp
         #proof_systems/ram_ppsnark_server.cpp
         proof_systems/groth16_server.hpp
         aux/proof_params_config.cpp
@@ -14,9 +14,10 @@ add_library(libserver
         aux/string_helper.hpp
         proof_systems/tinyram_circuit.hpp
         proof_systems/tinyram_r1cs_pp.hpp
-        proof_systems/r1cs_constraint_system_pool.hpp
         proof_systems/r1cs_adapter.hpp
-        ram_complier/tinyram_precompiler.cpp
+        ram_compiler/tinyram_precompiler.cpp
+        ram_compiler/tinyram_compiler_server.hpp
+        ram_compiler/specialization_pool.hpp
         )
 
 add_subdirectory(smart_contract)
@@ -30,38 +31,33 @@ target_link_libraries(libserver
 add_executable(
         proof_program_tests
 
-        tests/proof_program_tests.cpp)
+        aux/tests/proof_program_tests.cpp)
 target_link_libraries(proof_program_tests libserver)
 
 add_executable(
         log_tests
-        tests/log_tests.cpp)
+        aux/tests/log_tests.cpp)
 target_link_libraries(log_tests fmt::fmt)
 
 add_executable(
         ram_ppsnark_server_test
 
-        tests/ram_ppsnark_server_test.cpp
+        proof_systems/tests/ram_ppsnark_server_test.cpp
 )
 target_link_libraries(ram_ppsnark_server_test libserver)
 
 add_executable(
-        tinyram_complier_server_test
+        tinyram_compiler_server_test
 
-        tests/tinyram_complier_server_test.cpp
+        ram_compiler/tests/tinyram_precompiler_tests.cpp
 )
-target_link_libraries(tinyram_complier_server_test libserver)
-add_executable(
-        string_helper_tests
+target_link_libraries(tinyram_compiler_server_test libserver)
 
-        tests/string_helper_tests.cpp
-)
-target_link_libraries(string_helper_tests libserver)
 
 add_executable(
         network_server_tests
 
-        tests/network_test.cpp
+        aux/tests/network_test.cpp
 )
 target_link_libraries(network_server_tests ${LIBEVENT_LIBRARIES})
 target_link_libraries(network_server_tests libserver)
@@ -69,40 +65,53 @@ target_link_libraries(network_server_tests libserver)
 add_executable(
         groth16_server_tests
 
-        tests/groth16_server_tests.cpp
+        proof_systems/tests/groth16_server_tests.cpp
 )
 target_link_libraries(groth16_server_tests libserver)
 
 add_executable(
         tinyram_circuit_server_tests
 
-        tests/tinyram_circuit_server_tests.cpp
+        proof_systems/tests/tinyram_circuit_server_tests.cpp
 )
 target_link_libraries(tinyram_circuit_server_tests libserver)
 
 add_executable(
         r1cs_adapter_tests
 
-        tests/r1cs_adapter_tests.cpp
+        proof_systems/tests/r1cs_adapter_tests.cpp
 )
 target_link_libraries(r1cs_adapter_tests libserver)
 
+add_executable(
+        compiler_tests
+
+        ram_compiler/tests/compiler_tests.cpp
+)
+target_link_libraries(compiler_tests libserver)
+
+add_executable(
+        specialization_pool_tests
+
+        ram_compiler/tests/specialization_pool_tests.cpp
+)
+target_link_libraries(specialization_pool_tests libserver)
 
 include(CTest)
 enable_testing()
 add_test(NAME proof_program_tests COMMAND proof_program_tests)
 add_test(NAME log_tests COMMAND log_tests)
 add_test(NAME ram_ppsnark_server_test COMMAND ram_ppsnark_server_test)
-add_test(NAME tinyram_complier_server_test COMMAND tinyram_complier_server_test)
+add_test(NAME tinyram_compiler_server_test COMMAND tinyram_compiler_server_test)
 
-add_test(NAME string_helper_tests COMMAND string_helper_tests)
 add_test(NAME groth16_server_tests COMMAND groth16_server_tests)
 add_test(NAME tinyram_circuit_server_tests COMMAND tinyram_circuit_server_tests)
 #add_test(NAME network_server_tests COMMAND string_helper_tests)
+add_test(NAME compiler_tests COMMAND compiler_tests)
+add_test(NAME specialization_pool_tests COMMAND specialization_pool_tests)
 
 add_dependencies(check proof_program_tests)
 add_dependencies(check log_tests)
 add_dependencies(check ram_ppsnark_server_test)
-add_dependencies(check tinyram_complier_server_test)
-add_dependencies(check string_helper_tests)
+add_dependencies(check tinyram_compiler_server_test)
 add_dependencies(check groth16_server_tests)

@@ -26,11 +26,13 @@ namespace libserver{
         };
         tinyram_snark::tinyram_program program;
         tinyram_snark::ram_boot_trace<machine_pp> boot_trace;
+        tinyram_snark::tinyram_input_tape auxiliary_input_tap;
 
         const std::string assemble_file_name;
         const std::string bounds_path;
         const std::string architecture_params_path;
         const std::string primary_input_path;
+        const std::string auxiliary_input_path;
 
         bool set_ram_architecture_params(const std::string& architecture_params_file_path);
         bool set_program(
@@ -41,13 +43,16 @@ namespace libserver{
 
         bool set_boot_trace(const std::string& primary_input_path);
 
+        bool set_aux_input(const std::string& aux_input_path);
+
         tinyram_circuit(){};
 
     public:
         tinyram_circuit(const std::string& assemble_file_name,
                         const std::string& bounds_path,
-                        const std::string&  architecture_params_path,
-                        const std::string& primary_input_path);
+                        const std::string& architecture_params_path,
+                        const std::string& primary_input_path,
+                        const std::string& auxiliary_input_path);
 
         tinyram_snark::ram_architecture_params<machine_pp>&
         get_ram_architecture_params();
@@ -60,6 +65,9 @@ namespace libserver{
 
         const tinyram_snark::ram_boot_trace<machine_pp>&
         get_boot_trace();
+
+        const tinyram_snark::tinyram_input_tape&
+        get_auxiliary_input_tap();
 
     };
 

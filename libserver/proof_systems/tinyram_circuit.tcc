@@ -6,6 +6,7 @@
 #include <istream>
 #include <fstream>
 #include <optional>
+#include "tinyram_circuit.hpp"
 
 
 namespace libserver{
@@ -31,11 +32,13 @@ namespace libserver{
     tinyram_circuit<tinyram_r1cs_params>::tinyram_circuit(const std::string& assemble_file_name,
                                                              const std::string& bounds_path,
                                                              const std::string&  architecture_params_path,
-                                                             const std::string& primary_input_path):
+                                                             const std::string& primary_input_path,
+                                                             const std::string& auxiliary_input_path):
     assemble_file_name(assemble_file_name),
     bounds_path(bounds_path),
     architecture_params_path(architecture_params_path),
-    primary_input_path(primary_input_path){
+    primary_input_path(primary_input_path),
+    auxiliary_input_path(auxiliary_input_path){
         tinyram_r1cs_params::init_public_params();
         libff::start_profiling();
         assert(set_ram_architecture_params(this->architecture_params_path)==true);
@@ -43,6 +46,7 @@ namespace libserver{
         //assert(set_program(this->assemble_file_name,this->tinyram_ap)==true);
         assert(set_program(this->assemble_file_name,this->tinyram_ap)==true);
         assert(set_boot_trace(this->primary_input_path)==true);
+        assert(set_aux_input(this->auxiliary_input_path)==true);
     }
 
     template<typename tinyram_r1cs_params>
@@ -120,6 +124,24 @@ namespace libserver{
                 return true;
             }
 
+    template<typename tinyram_r1cs_params>
+    bool tinyram_circuit<tinyram_r1cs_params>::set_aux_input(const std::string &aux_input_path) {
+        try{
+            std::ifstream aux(aux_input_path);
+            libff::enter_block("Loading auxiliary input");
+            auxiliary_input_tap = tinyram_snark::load_tape(aux);
+            libff::leave_block("Loading auxiliary input");
+            return true;
+        }
+        catch (std::exception &e){
+            return false;
+        }
+    }
+
+    template<typename tinyram_r1cs_params>
+    const tinyram_snark::tinyram_input_tape &tinyram_circuit<tinyram_r1cs_params>::get_auxiliary_input_tap() {
+        return auxiliary_input_tap;
+    }
 
 
 }

@@ -35,6 +35,7 @@ public:
     ram_to_r1cs(const ram_architecture_params<ramT> &ap,
                 const size_t boot_trace_size_bound,
                 const size_t time_bound);
+    ram_to_r1cs()=default;
     void instance_map();
     r1cs_constraint_system<FieldT> get_constraint_system() const;
     r1cs_auxiliary_input<FieldT> auxiliary_input_map(const ram_boot_trace<ramT> &boot_trace,

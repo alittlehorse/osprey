@@ -2,7 +2,6 @@
 // Created by alittlehorse on 3/16/21.
 //
 #include<libserver/proof_systems/tinyram_circuit.hpp>
-#include<tinyram_snark/common/default_types/tinyram_gg_ppzksnark_pp.hpp>
 #include <libserver/proof_systems/tinyram_r1cs_pp.hpp>
 
 using namespace libserver;
@@ -11,7 +10,8 @@ int main(){
     tinyram_circuit<params> ppp("avarage/avarage-processed_assembly.txt",
                                 "avarage/avarage-computation_bounds.txt",
                                 "avarage/avarage-architecture_params.txt",
-                                "avarage/avarage-primary_input.txt");
+                                "avarage/avarage-primary_input.txt",
+                                "avarage/avarage-auxiliary_input.txt");
 
     const int a = ppp.get_bounds().find("time_bound")->second;
     assert(a==64);
@@ -29,6 +29,8 @@ int main(){
     //printf("%d",d.get_all_trace_entries().size());
     assert(d.get_all_trace_entries().empty()==false);
     assert(d.get_all_trace_entries().size()==20);
+    auto x = ppp.get_auxiliary_input_tap();
+    assert(x.at(0) == 1);
     return 0;
 }
 

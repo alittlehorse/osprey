@@ -17,14 +17,21 @@ Declaration of interface of r1cs_adapter.
 #define OSPREY_R1CS_ADAPTER_HPP
 
 #include <libserver/proof_systems/tinyram_circuit.hpp>
-#include<tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
+#include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
 #include <tinyram_snark/relations/constraint_satisfaction_problems/r1cs/r1cs.hpp>
 #include <libserver/aux/proof_params_config.hpp>
+#include <libserver/ram_compiler/tinyram_compiler_server.hpp>
+
 using tinyram_snark::ram_to_r1cs;
 using tinyram_snark::r1cs_constraint_system;
 using tinyram_snark::r1cs_primary_input;
 using tinyram_snark::r1cs_auxiliary_input;
+
 namespace libserver{
+    ///
+    /// \tparam tinyram_r1cs_params
+    /// r1cs_adapter is adapter to translating tinyram circuit,witness,statement to r1cs format
+    /// which zk proof system interface used as params
     template<typename tinyram_r1cs_params>
     class r1cs_adapter {
     private:
@@ -37,7 +44,7 @@ namespace libserver{
 
     public:
         explicit r1cs_adapter(const proof_params_config& p):p(p){
-            _tinyram_ciruit = new tinyram_circuit<tinyram_r1cs_params>(p.get_processed_assembly_path(),p.get_computation_bounds_path(),p.get_architecture_params_path(),p.get_primary_input_path());
+            _tinyram_ciruit = new tinyram_circuit<tinyram_r1cs_params>(p.get_processed_assembly_path(),p.get_computation_bounds_path(),p.get_architecture_params_path(),p.get_primary_input_path(),p.get_auxiliary_input_path());
             auto ap = _tinyram_ciruit->get_ram_architecture_params();
             auto bounds = _tinyram_ciruit->get_bounds();
             
@@ -51,30 +58,31 @@ namespace libserver{
 
             const size_t boot_trace_size_bound = tinyram_input_size_bound + tinyram_program_size_bound;
 
-            //typedef default_tinyram_gg_ppzksnark_pp::machine_pp default_ram_with_Fr;
-            //
+
             ram_to_r1cs<typename tinyram_r1cs_params::machine_pp> r(ap, boot_trace_size_bound, time_bound);
             r.instance_map();
-            std::ifstream f_auxiliary_input(p.get_auxiliary_input_path());
 
-            libff::enter_block("Loading auxiliary input");
-            tinyram_snark::tinyram_input_tape aux_input = tinyram_snark::load_tape(f_auxiliary_input);
-            libff::leave_block("Loading auxiliary input");
+            auto aux_input_tape = _tinyram_ciruit->get_auxiliary_input_tap();
 
 
-            primary_input = ram_to_r1cs<typename tinyram_r1cs_params::machine_pp>::primary_input_map(ap, boot_trace_size_bound, boot_trace);
-            auxiliary_input = r.auxiliary_input_map(boot_trace, aux_input);
-            cs = r.get_constraint_system();
-
+            //primary_input = ram_to_r1cs<typename tinyram_r1cs_params::machine_pp>::primary_input_map(ap, boot_trace_size_bound, boot_trace);
+            //auxiliary_input = r.auxiliary_input_map(boot_trace, aux_input_tape);
+            //cs = r.get_constraint_system();
             //r.print_execution_trace();
+             tinyram_compiler_server<tinyram_r1cs_params> compiler(p.get_log_path());
+             compiler.specialization(ap,boot_trace_size_bound,time_bound);
+             cs = compiler.compile_r1cs_constrain_system().value();
+            primary_input = compiler.compile_r1cs_primary_input(boot_trace).value();
+            auxiliary_input = compiler.compile_r1cs_auxiliary_input(boot_trace,aux_input_tape).value();
+
             assert(cs.is_satisfied(primary_input, auxiliary_input)==true);
         }
 
-        const r1cs_primary_input<typename tinyram_r1cs_params::FieldT> get_r1cs_primary_input();
+        const r1cs_primary_input<typename tinyram_r1cs_params::FieldT> get_r1cs_primary_input() const;
 
-        const r1cs_auxiliary_input<typename tinyram_r1cs_params::FieldT> get_auxiliary_input();
+        const r1cs_auxiliary_input<typename tinyram_r1cs_params::FieldT> get_auxiliary_input()const;
 
-        const r1cs_constraint_system<typename tinyram_r1cs_params::FieldT> get_r1cs_constraint_system();
+        const r1cs_constraint_system<typename tinyram_r1cs_params::FieldT> get_r1cs_constraint_system()const;
     };
 
 

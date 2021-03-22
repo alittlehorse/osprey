@@ -8,15 +8,15 @@ namespace libserver{
     using FieldT = typename tinyram_r1cs_params::FieldT;
 
     template<typename tinyram_r1cs_params>
-    const r1cs_primary_input<typename tinyram_r1cs_params::FieldT> r1cs_adapter<tinyram_r1cs_params>::get_r1cs_primary_input() {
+    const r1cs_primary_input<typename tinyram_r1cs_params::FieldT> r1cs_adapter<tinyram_r1cs_params>::get_r1cs_primary_input() const{
         return primary_input;
     }
     template<typename tinyram_r1cs_params>
-    const r1cs_auxiliary_input<typename tinyram_r1cs_params::FieldT> r1cs_adapter<tinyram_r1cs_params>::get_auxiliary_input(){
+    const r1cs_auxiliary_input<typename tinyram_r1cs_params::FieldT> r1cs_adapter<tinyram_r1cs_params>::get_auxiliary_input() const{
         return auxiliary_input;
     }
     template<typename tinyram_r1cs_params>
-    const r1cs_constraint_system<typename tinyram_r1cs_params::FieldT> r1cs_adapter<tinyram_r1cs_params>::get_r1cs_constraint_system()
+    const r1cs_constraint_system<typename tinyram_r1cs_params::FieldT> r1cs_adapter<tinyram_r1cs_params>::get_r1cs_constraint_system()const
     {
         return cs;
     }
