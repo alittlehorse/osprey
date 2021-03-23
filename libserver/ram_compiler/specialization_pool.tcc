@@ -1,7 +1,7 @@
 /** @file
  *****************************************************************************
 
- Declaration of interfaces for r1cs_constrain_system_pool
+ Declaration of interfaces for specialization pool and specialization factor
 
 circuit generator is universal: when given input bounds l, n, T, it produces a circuit that can verify
 the execution of any program with ≤ l instructions, on any input of size ≤ n, for ≤ T steps.

@@ -26,6 +26,9 @@ namespace libserver{
         std::string auxiliary_input_fn;
         std::string _program_name;
         std::string log_path;
+        std::string proving_key_path;
+        std::string verification_key_path;
+        std::string proof_path;
 
         public:
         [[nodiscard]] const std::string& get_processed_assembly_path()const;
@@ -35,6 +38,9 @@ namespace libserver{
         [[nodiscard]] const std::string& get_auxiliary_input_path() const;
         [[nodiscard]] const std::string& get_program_name() const;
         [[nodiscard]] const std::string& get_log_path() const;
+        [[nodiscard]] const std::string& get_proving_key_path() const;
+        [[nodiscard]] const std::string& get_verification_key_path() const;
+        [[nodiscard]] const std::string& get_proof_path() const;
 
         bool set_processed_assembly_fn(const std::string&& processed_assemble_path);
         bool set_architecture_params_fn(const std::string&& architecture_params_fn);

@@ -1,7 +1,18 @@
-//
-// Created by alittlehorse on 3/18/21.
-//
+/** @file
+ *****************************************************************************
 
+Declaration of interface of r1cs_adapter.
+ r1cs_adapter translates three part:
+ 1. tinyram_circuit to r1cs constraint system
+ 2. tinyram_primary input to r1cs primary input
+ 3. tinyram aux input to r1cs aux input
+
+ this interface is like a adapter for tinyram circuit and zk proof system use them.
+
+ *****************************************************************************
+ * @author     This file is part of libserver, developed by alittlehorse
+ * @copyright  MIT license (see LICENSE file)
+ *****************************************************************************/
 namespace libserver{
 
     template<typename tinyram_r1cs_params>

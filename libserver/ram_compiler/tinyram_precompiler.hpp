@@ -1,6 +1,14 @@
-//
-// Created by alittlehorse on 3/19/21.
-//
+/** @file
+ *****************************************************************************
+
+ Declaration of interfaces for compiling tinyram(source language) to immediate language.
+
+
+ *****************************************************************************
+ * @author     This file is part of libserver, developed by alittlehorse
+ * @copyright  MIT license (see LICENSE file)
+ *****************************************************************************/
+
 
 #ifndef OSPREY_TINYRAM_PRECOMPILER_HPP
 #define OSPREY_TINYRAM_PRECOMPILER_HPP

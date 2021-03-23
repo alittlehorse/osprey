@@ -1,7 +1,10 @@
 /** @file
  *****************************************************************************
 
- Declaration of interfaces for compling the proof program which source langrauge is tinyram
+ Declaration of interfaces for compiling the proof program which source language is tinyram.
+ compiling primary input tape to r1cs primary input
+ compiling auxiliary input tape to r1cs auxiliary input
+ compiling tinyram circuit to r1cs constraint system
 
  *****************************************************************************
  * @author     This file is part of libserver, developed by alittlehorse

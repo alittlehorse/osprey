@@ -1,6 +1,19 @@
-//
-// Created by alittlehorse on 3/16/21.
-//
+/** @file
+ *****************************************************************************
+
+Declaration of interface of tinyram_circuit.
+ include:
+ 1. tinyram_program
+ 2. ram_boot_trace(similar to primary_input),which is embedding primary_input_tape into boot_trace(memory circuit)
+ 3. ram_architecture_params
+ 4. bounds
+ 5. auxiliary_input_tape
+
+
+ *****************************************************************************
+ * @author     This file is part of libserver, developed by alittlehorse
+ * @copyright  MIT license (see LICENSE file)
+ *****************************************************************************/
 
 #ifndef OSPREY_PROOF_PUBLIC_PARAMS_H
 #define OSPREY_PROOF_PUBLIC_PARAMS_H

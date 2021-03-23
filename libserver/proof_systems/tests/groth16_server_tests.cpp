@@ -1,21 +1,35 @@
-//
-// Created by alittlehorse on 3/8/21.
-//
+/** @file
+ *****************************************************************************
+tests for groth16 server
+ *****************************************************************************
+ * @author     This file is part of libserver, developed by alittlehorse
+ * @copyright  MIT license (see LICENSE file)
+ *****************************************************************************/
+
+
 #include <libserver/proof_systems/groth16_server.hpp>
 #include <libserver/aux/proof_params_config.hpp>
 #include <cassert>
 using namespace libserver;
 int main(){
-    libserver::groth16_server s("avarage");
-    //assert(s.get_bounds(p.get_computation_bounds_fn())!=nullopt);
-    //typedef ram_tinyram<default_r1cs_gg_ppzksnark_pp> default_ram_with_pp;
+    proof_params_config _vp("avarage");
+    libserver::groth16_server s(_vp);
+    auto keypair = s.generate_keypair().value();
+    assert(s.serialize_proveing_key(keypair.pk,_vp.get_proving_key_path()));
+    auto pk1 = s.get_proving_key_from_file(_vp.get_proving_key_path());
+    assert(pk1.has_value());
+    assert(pk1.value()==keypair.pk);
+    assert(s.serialize_verification_key(keypair.vk,_vp.get_verification_key_path()));
+    auto vk1 = s.get_verification_key_from_file(_vp.get_verification_key_path());
+    assert(vk1.has_value());
+    assert(vk1.value()==keypair.vk);
 
-    //default_r1cs_gg_ppzksnark_pp::init_public_params();
-
-    //auto ap = s.generate_ram_architecture_params<default_ram_with_pp>(p.get_architecture_params_path());
-    //assert(ap!=nullopt);
-    //assert(s.generate_program(p.get_processed_assembly_path(),ap.value())!=nullopt);
-    //s.construct_proof();
-    s.construct_proof1();
+    auto proof = s.generate_proof(pk1.value());
+    assert(proof!=std::nullopt);
+    assert(s.serialize_proof(proof.value(),_vp.get_proof_path()));
+    auto proof1 = s.get_proof_from_file(_vp.get_proof_path());
+    assert(proof1.value() == proof.value());
+    bool b = s.verify(keypair.vk,proof.value());
+    assert(b== true);
     return 0;
 }

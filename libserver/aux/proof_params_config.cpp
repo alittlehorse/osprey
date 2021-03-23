@@ -19,6 +19,9 @@ namespace libserver{
         auxiliary_input_fn = _program_name +"/"+ _program_name+"-auxiliary_input.txt";
         computation_bounds_fn = _program_name +"/"+ _program_name+"-computation_bounds.txt";
         log_path = _program_name +"/"+ _program_name+"-log.txt";
+        proving_key_path = _program_name +"/"+ _program_name+"-proving_key";
+        verification_key_path = _program_name +"/"+ _program_name+"-verification_key";
+        proof_path = _program_name +"/"+ _program_name+"-proof";
     }
 
     const std::string& proof_params_config::get_architecture_params_path()const {
@@ -45,5 +48,17 @@ namespace libserver{
 
     const std::string& proof_params_config::get_log_path() const{
         return log_path;
+    }
+
+    const std::string &proof_params_config::get_proving_key_path() const {
+        return proving_key_path;
+    }
+
+    const std::string &proof_params_config::get_verification_key_path() const {
+        return verification_key_path;
+    }
+
+    const std::string &proof_params_config::get_proof_path() const {
+        return proof_path;
     }
 }
