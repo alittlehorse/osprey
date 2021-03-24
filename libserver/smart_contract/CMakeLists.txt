@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.17)
+project(smart_contract)
 add_library(smart_contract
         connectEthereum.cpp)
 include_directories("/usr/include/python3.8")

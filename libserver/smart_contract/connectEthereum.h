@@ -1,4 +1,11 @@
+#include <iostream>
+#include <string>
+using namespace std;
 namespace libserver{
-    int connectEthereum(char const *functionName,char const *args[]);
+	// args:addr, priv_key，value
+	void SendTxnTransferToContract(string addr,string priv_key,int value);
+
+	// args:addr
+	void SendTxnTransfer(string addr);
 }
 
