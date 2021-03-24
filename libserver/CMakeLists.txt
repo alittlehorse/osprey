@@ -28,10 +28,19 @@ target_link_libraries(libserver
 
 
 # Tests
+#===========================
+
+add_executable(
+        tests
+        tests.cpp)
+target_link_libraries(tests smart_contract)
+#=======================
+
+
 add_executable(
         simulate
         osprey_server.cpp)
-target_link_libraries(simulate libserver)
+target_link_libraries(simulate libserver smart_contract)
 
 add_executable(
         proof_program_tests

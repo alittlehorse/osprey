@@ -32,30 +32,29 @@ class server_requester {
 public:
     bool on_complier_tinyram();
     bool on_generate_key_pair();
-    bool on_verify();
-    bool on_lock_pay(double money);
-    void on_ready(const std::string&& config,const std::string& smart_contract_address);
+    bool on_lock_pay(int money);
+    void on_ready(const std::string&& config,const std::string& smart_contract_address,const std::string& private_key);
     const std::string& get_address();
 
 private:
     libserver::proof_params_config* _vp;
     libserver::groth16_server* s;
-    std::string smart_contract_address;
+    std::string account;
+    std::string private_key;
+    const std::string& get_private_key();
 };
 
 class osprey_plateform{
 private:
-    //TODO: embedded plateform_address;
-    static std::string plateform_address;
+    //static std::string plateform_address ;
     std::string server_address;
-    std::string requester_address;
-    double lock_money;
+    libserver::proof_params_config* _vp;
+    libserver::groth16_server* s;
 public:
-    static const std::string& get_address();
-    void submit_requester_address(const std::string& requester_address);
-    void submit_server_address(const std::string&);
-    static bool on_lock(double lock_money);
-    static bool on_finish_and_pay();
+    void set_server_address(const std::string& account);
+    bool on_finish_and_pay();
+    bool on_verify();
+    bool on_ready(const std::string& config);
 };
 
 

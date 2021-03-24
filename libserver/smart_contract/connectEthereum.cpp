@@ -2,29 +2,24 @@
 #include <Python.h>
 #include <iostream>
 #include <string>
+#include "connectEthereum.h"
+
 using namespace std;
 namespace libserver{
-	int connectEthereum(char const *functionName,char const *args[])
+	int smart_contract::connectEthereum(char const *functionName,char const *args[])
 		{
-		char const *pName_char = "connectEthereum";
-		PyObject *pName, *pModule, *pFunc;
-		PyObject *pArgs,*pValue;
-		int i;
+            Py_Initialize();
+            //判断初始化是否成功
+            if(!Py_IsInitialized())
+            {
+                printf("Python init failed!\n");
+            }
+            pName_char = "connectEthereum";
 
-		Py_Initialize();
-		//判断初始化是否成功
-		if(!Py_IsInitialized())
-		{
-		    printf("Python init failed!\n");
-		    return -1;
-		}
-		PyRun_SimpleString("import sys");
-		PyRun_SimpleString("sys.path.append('../../../libserver/smart_contract')");
-		pName = PyUnicode_DecodeFSDefault(pName_char);
-		/* Error checking of pName left out */
-
-		pModule = PyImport_Import(pName);
-		Py_DECREF(pName);
+            pName = PyUnicode_DecodeFSDefault(pName_char);
+            /* Error checking of pName left out */
+            pModule = PyImport_Import(pName);
+            //Py_DECREF(pName);
 		if (pModule != NULL) {
 		    pFunc = PyObject_GetAttrString(pModule, functionName);
 		    /* pFunc is a new reference */
@@ -79,7 +74,7 @@ namespace libserver{
 		}
 		return 0;
 	}
-	void SendTxnTransferToContract(string addr,string priv_key,int value){
+	void smart_contract::SendTxnTransferToContract(string addr,string priv_key,int value){
 		char const *args[4];
 		args[0] = addr.c_str();
 		args[1] = to_string(value).c_str();
@@ -87,11 +82,22 @@ namespace libserver{
 		args[3] = "null";
 		connectEthereum("SendTxnTransferToContract",args);
 	}
-	void SendTxnTransfer(string addr){
+	void smart_contract::SendTxnTransfer(string addr){
 		char const *args[2];
 		args[0] = addr.c_str();
 		args[1] = "null";
 		connectEthereum("SendTxnTransfer",args);
 	}
-	
+
+    libserver::smart_contract::smart_contract() {
+        Py_Initialize();
+        //判断初始化是否成功
+        if(!Py_IsInitialized())
+        {
+            printf("Python init failed!\n");
+        }
+        PyRun_SimpleString("import sys");
+        PyRun_SimpleString("sys.path.append('../../../libserver/smart_contract')");
+
+    }
 }

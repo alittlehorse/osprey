@@ -10,6 +10,7 @@ osprey server:
  *****************************************************************************/
 
 #include "osprey_server.hpp"
+#include <libserver/smart_contract/connectEthereum.h>
 
 
 bool server_provider::on_generate_and_serialize_proof() {
@@ -42,72 +43,97 @@ bool server_requester::on_generate_key_pair() {
 }
 
 void server_requester::on_ready(const std::string &&config,
-                                const std::string& smart_contract_address){
+                                const std::string& smart_contract_address,
+                                const std::string& private_key){
     _vp = new libserver::proof_params_config(std::move(config));
     s = new libserver::groth16_server(*_vp);
-    this->smart_contract_address = smart_contract_address;
+    this->account = smart_contract_address;
+    this->private_key = private_key;
 }
 
-bool server_requester::on_verify() {
+bool osprey_plateform::on_verify() {
     auto proof = s->get_proof_from_file(_vp->get_proof_path());
     assert(proof.has_value());
     auto vk = s->get_verification_key_from_file(_vp->get_verification_key_path());
     assert(vk.has_value());
     if(s->verify(vk.value(),proof.value())){
+        printf("=============================\n");
+        printf("pass the proof! \n");
+        printf("=============================\n");
         if(osprey_plateform::on_finish_and_pay())
             return true;
     }
     return false;
 }
 
-bool server_requester::on_lock_pay(double money) {
-    if(osprey_plateform::on_lock(money))return true;
-    else return false;
+bool server_requester::on_lock_pay(int money) {
+
+    //if(osprey_plateform::on_lock(money))return true;
+    //else return false;
+    try{
+        printf("=============================================================\n");
+        printf("pay......\n");
+        printf("====================================================================\n");
+        libserver::SendTxnTransferToContract(get_address(),get_private_key(),money);
+        return true;
+    }
+    catch(std::exception &e){
+        return false;
+    }
 }
 
 
 const std::string& server_requester::get_address() {
-    return smart_contract_address;
+    return account;
 }
 
-const std::string &osprey_plateform::get_address() {
-    return plateform_address;
-}
-
-void osprey_plateform::submit_requester_address(const std::string & requester_address) {
-    this->requester_address = requester_address;
-}
-
-void osprey_plateform::submit_server_address(const std::string &server_address) {
-    this->server_address = server_address;
-}
-
-bool osprey_plateform::on_lock(double lock_money) {
-    lock_money = lock_money;
-    //TODO:smart_contract:translate mony from requester to plateform address
+const std::string &server_requester::get_private_key() {
+    return private_key;
 }
 
 bool osprey_plateform::on_finish_and_pay() {
-    //TODO: smart contract: translate mony from plateform address to server address
+    printf("=============================================================");
+    printf("pay......");
+    printf("====================================================================");
+    libserver::SendTxnTransfer(server_address);
+    return true;
+}
+
+bool osprey_plateform::on_ready(const std::string& config) {
+    try{
+        _vp = new libserver::proof_params_config(std::move(config));
+        s = new libserver::groth16_server(*_vp);
+        return true;
+    }
+    catch(std::exception &e){
+        return false;
+    }
+}
+
+void osprey_plateform::set_server_address(const string &account) {
+    this->server_address = account;
 }
 
 
 int main(){
-    server_provider sp;
-    server_requester sq;
+    server_provider provider;
+    server_requester requester;
     osprey_plateform op;
 //simulate sq geneate keypair;
-    sq.on_ready("avarage");
-    assert(sq.on_generate_key_pair());
-    op.submit_requester_address(sq.get_address());
-    sq.on_lock_pay(0.3);
+    requester.on_ready("avarage","0xAa3d7608ed56FCbE7aA5c75a5af180eB9Fd0133e","0xfabde6ac6b55fc46677d9453545e699b0cfe3a244a4418e357c97e6a3f56ec9d");
+    assert(requester.on_generate_key_pair());
+    //op.submit_requester_address(sq.get_address());
+    printf("begin lock\n");
+    assert(requester.on_lock_pay(100000)== true);
+    printf("lock success\n");
+    provider.on_ready("avarage","0x57128a8c478B3fEab65866a9c39d06408c243ce9");
+    provider.on_generate_and_serialize_proof();
     //
-    sp.on_ready("avarage");
-    sp.on_generate_and_serialize_proof();
+    assert(op.on_ready("avarage"));
+    printf("/nplateform builed/n");
+    op.set_server_address(provider.get_address());
     //
-    op.submit_server_address(sp.get_address());
-    //
-    assert(sq.on_verify()==true);
+    assert(op.on_verify()==true);
     printf("OK!");
     return 0;
 }
