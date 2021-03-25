@@ -60,8 +60,19 @@ bool osprey_plateform::on_verify() {
         printf("=============================\n");
         printf("pass the proof! \n");
         printf("=============================\n");
+        printf("pay.................................\n");
         if(osprey_plateform::on_finish_and_pay())
+            printf("=============================================\n");
+            printf("pay success\n");
+            printf("=============================================\n");
             return true;
+
+    }
+    else{
+        printf("=============================================\n");
+        printf("pay failed!\n");
+        printf("=============================================\n");
+        return true;
     }
     return false;
 }
@@ -72,9 +83,9 @@ bool server_requester::on_lock_pay(int money) {
     //else return false;
     try{
         printf("=============================================================\n");
-        printf("pay......\n");
+        printf("locking......\n");
         printf("====================================================================\n");
-        libserver::SendTxnTransferToContract(get_address(),get_private_key(),money);
+        smart_contract::smart_contract::SendTxnTransferToContract(get_address(),get_private_key(),money);
         return true;
     }
     catch(std::exception &e){
@@ -95,7 +106,7 @@ bool osprey_plateform::on_finish_and_pay() {
     printf("=============================================================");
     printf("pay......");
     printf("====================================================================");
-    libserver::SendTxnTransfer(server_address);
+    smart_contract::smart_contract::SendTxnTransfer(server_address);
     return true;
 }
 
@@ -120,6 +131,9 @@ int main(){
     server_requester requester;
     osprey_plateform op;
 //simulate sq geneate keypair;
+
+    smart_contract::smart_contract::init();
+
     requester.on_ready("avarage","0xAa3d7608ed56FCbE7aA5c75a5af180eB9Fd0133e","0xfabde6ac6b55fc46677d9453545e699b0cfe3a244a4418e357c97e6a3f56ec9d");
     assert(requester.on_generate_key_pair());
     //op.submit_requester_address(sq.get_address());

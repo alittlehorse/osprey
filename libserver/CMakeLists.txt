@@ -28,13 +28,6 @@ target_link_libraries(libserver
 
 
 # Tests
-#===========================
-
-add_executable(
-        tests
-        tests.cpp)
-target_link_libraries(tests smart_contract)
-#=======================
 
 
 add_executable(

@@ -1,3 +1,13 @@
+/** @file
+ *****************************************************************************
+smart contract module
+ provide smart contract to libserver.
+ The contract address embedded in the platform
+
+ *****************************************************************************
+ * @author     This file is part of libserver, developed by xu chen
+ * @copyright  MIT license (see LICENSE file)
+ *****************************************************************************/
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <iostream>
@@ -5,9 +15,13 @@
 #include "connectEthereum.h"
 
 using namespace std;
-namespace libserver{
+namespace smart_contract{
 	int smart_contract::connectEthereum(char const *functionName,char const *args[])
 		{
+            char const *pName_char;
+            PyObject *pName, *pModule, *pFunc;
+            PyObject *pArgs,*pValue;
+            int i;
             Py_Initialize();
             //判断初始化是否成功
             if(!Py_IsInitialized())
@@ -69,9 +83,9 @@ namespace libserver{
 		    fprintf(stderr, "Failed to load \"%s\"\n", pName_char);
 		    return 1;
 		}
-		if (Py_FinalizeEx() < 0) {
-		    return 120;
-		}
+		//if (Py_FinalizeEx() < 0) {
+		 //   return 120;
+		//}
 		return 0;
 	}
 	void smart_contract::SendTxnTransferToContract(string addr,string priv_key,int value){
@@ -89,7 +103,7 @@ namespace libserver{
 		connectEthereum("SendTxnTransfer",args);
 	}
 
-    libserver::smart_contract::smart_contract() {
+    void smart_contract::init() {
         Py_Initialize();
         //判断初始化是否成功
         if(!Py_IsInitialized())
@@ -97,7 +111,7 @@ namespace libserver{
             printf("Python init failed!\n");
         }
         PyRun_SimpleString("import sys");
-        PyRun_SimpleString("sys.path.append('../../../libserver/smart_contract')");
+        PyRun_SimpleString("sys.path.append('../../libserver/smart_contract')");
 
     }
 }
