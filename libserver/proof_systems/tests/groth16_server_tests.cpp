@@ -8,7 +8,7 @@ tests for groth16 server
 
 
 #include <libserver/proof_systems/groth16_server.hpp>
-#include <libserver/aux/proof_params_config.hpp>
+#include <libserver/aux_struct/proof_params_config.hpp>
 #include <cassert>
 using namespace libserver;
 int main(){

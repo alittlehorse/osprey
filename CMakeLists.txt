@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.17)
 project(osprey)
 
+set(CMAKE_CXX_STANDARD 20)
+
 set(
         CURVE
         "BN128"
@@ -100,23 +102,23 @@ else()
     set(DEPENDS_DIR "${DEPENDS_DIR}")
 endif()
 
-if(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+#if(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     # Common compilation flags and warning configuration
-    set(
-            CMAKE_CXX_FLAGS
-            "${CMAKE_CXX_FLAGS} -std=c++2a -Wall -Wextra -Wfatal-errors"
-    )
-    if("${MULTICORE}")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
-    endif()
+#    set(
+#            CMAKE_CXX_FLAGS
+#            "${CMAKE_CXX_FLAGS} -std=c++2a -Wall -Wextra -Wfatal-errors"
+#    )
+    #if("${MULTICORE}")
+    #    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+    #endif()
     # Default optimizations flags (to override, use -DOPT_FLAGS=...)
-    if("${OPT_FLAGS}" STREQUAL "")
-        set(
-                OPT_FLAGS
-                "-ggdb3 -O2 -march=native -mtune=native"
-        )
-    endif()
-endif()
+    #if("${OPT_FLAGS}" STREQUAL "")
+    #    set(
+    #            OPT_FLAGS
+    #            "-ggdb3 -O2 -march=native -mtune=native"
+    #    )
+    #endif()
+#endif()
 
 set(
         CMAKE_CXX_FLAGS
