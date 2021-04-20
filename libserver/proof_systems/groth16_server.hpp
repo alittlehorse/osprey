@@ -22,9 +22,9 @@ the server of zksnark using the Groth16 algorithm
 #include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_params.hpp>
 #include <tinyram_snark/zk_proof_systems/r1cs_gg_ppzksnark/r1cs_gg_ppzksnark.hpp>
 #include <libserver/proof_systems/tinyram_circuit.hpp>
-#include <libserver/aux/Log.hpp>
-#include <libserver/aux/proof_params_config.hpp>
-#include <libserver/aux/Log.hpp>
+#include <libserver/aux_struct/Log.hpp>
+#include <libserver/aux_struct/proof_params_config.hpp>
+#include <libserver/aux_struct/Log.hpp>
 
 #include <depends/fmt/include/fmt/ostream.h>
 

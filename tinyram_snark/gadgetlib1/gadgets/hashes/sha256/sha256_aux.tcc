@@ -267,9 +267,9 @@ void majority_gadget<FieldT>::generate_r1cs_constraints()
     for (size_t i = 0; i < 32; ++i)
     {
         /*
-          2*result + aux = x + y + z
-          x, y, z, aux -- bits
-          aux = x + y + z - 2*result
+          2*result + aux_struct = x + y + z
+          x, y, z, aux_struct -- bits
+          aux_struct = x + y + z - 2*result
         */
         generate_boolean_r1cs_constraint<FieldT>(this->pb, result_bits[i], FMT(this->annotation_prefix, " result_%zu", i));
         this->pb.add_r1cs_constraint(r1cs_constraint<FieldT>(X[i] + Y[i] + Z[i] - 2 * result_bits[i],

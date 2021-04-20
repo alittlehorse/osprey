@@ -5,7 +5,7 @@ Declaration of interface of r1cs_adapter.
  r1cs_adapter translates three part:
  1. tinyram_circuit to r1cs constraint system
  2. tinyram_primary input to r1cs primary input
- 3. tinyram aux input to r1cs aux input
+ 3. tinyram aux_struct input to r1cs aux_struct input
 
  this interface is like a adapter for tinyram circuit and zk proof system use them.
 
@@ -19,7 +19,7 @@ Declaration of interface of r1cs_adapter.
 #include <libserver/proof_systems/tinyram_circuit.hpp>
 #include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
 #include <tinyram_snark/relations/constraint_satisfaction_problems/r1cs/r1cs.hpp>
-#include <libserver/aux/proof_params_config.hpp>
+#include <libserver/aux_struct/proof_params_config.hpp>
 #include <libserver/ram_compiler/tinyram_compiler_server.hpp>
 
 using tinyram_snark::ram_to_r1cs;

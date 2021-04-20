@@ -618,10 +618,10 @@ EqualsConst_GadgetBase::~EqualsConst_GadgetBase() {};
     Constraint breakdown:
 
     (1) (input - n) * result = 0
-    (2) (input - n) * aux = 1 - result
+    (2) (input - n) * aux_struct = 1 - result
 
-    [ input == n ] (2)==> [result == 1]    (aux can ake any value)
-    [ input != n ] (1)==> [result == 0]    (aux == inverse(input - n))
+    [ input == n ] (2)==> [result == 1]    (aux_struct can ake any value)
+    [ input != n ] (1)==> [result == 0]    (aux_struct == inverse(input - n))
 */
 
 R1P_EqualsConst_Gadget::R1P_EqualsConst_Gadget(ProtoboardPtr pb,
@@ -629,13 +629,13 @@ R1P_EqualsConst_Gadget::R1P_EqualsConst_Gadget(ProtoboardPtr pb,
                                                const LinearCombination &input,
                                                const Variable &result)
         : Gadget(pb), EqualsConst_GadgetBase(pb), R1P_Gadget(pb), n_(n),
-          aux_("aux (R1P_EqualsConst_Gadget)"), input_(input), result_(result) {}
+          aux_("aux_struct (R1P_EqualsConst_Gadget)"), input_(input), result_(result) {}
 
 void R1P_EqualsConst_Gadget::init() {}
 
 void R1P_EqualsConst_Gadget::generateConstraints() {
     addRank1Constraint(input_ - n_, result_, 0, "(input - n) * result = 0");
-    addRank1Constraint(input_ - n_, aux_, 1 - result_, "(input - n) * aux = 1 - result");
+    addRank1Constraint(input_ - n_, aux_, 1 - result_, "(input - n) * aux_struct = 1 - result");
 }
 
 void R1P_EqualsConst_Gadget::generateWitness() {

@@ -14,7 +14,7 @@
 #include <fstream>
 #include <cassert>
 #include<functional>
-#include <libserver/aux/string_helper.hpp>
+#include <libserver/aux_struct/string_helper.hpp>
 namespace libserver{
     bool tinyram_precompiler::complie_tinyram(std::string &&file_path, std::string &&out_name) {
         //turn file content to string and process the information

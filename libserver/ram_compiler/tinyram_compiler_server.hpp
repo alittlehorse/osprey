@@ -15,7 +15,7 @@
 #define OSPREY_TINYRAM_COMPLIER_SERVER_H
 #include <unordered_map>
 #include <vector>
-#include <libserver/aux/Log.hpp>
+#include <libserver/aux_struct/Log.hpp>
 #include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
 #include <tinyram_snark/relations/constraint_satisfaction_problems/r1cs/r1cs.hpp>
 #include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_aux.hpp>

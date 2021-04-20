@@ -15,7 +15,7 @@
 #include <string>
 #include <unordered_map>
 #include<vector>
-#include<libserver/aux/Log.hpp>
+#include<libserver/aux_struct/Log.hpp>
 namespace libserver{
     class tinyram_precompiler {
     public:

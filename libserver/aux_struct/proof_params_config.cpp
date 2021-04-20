@@ -9,7 +9,7 @@
  *****************************************************************************/
 #include <string>
 #include <utility>
-#include <libserver/aux/proof_params_config.hpp>
+#include <libserver/aux_struct/proof_params_config.hpp>
 namespace libserver{
     proof_params_config::proof_params_config(const std::string&& program_name) {
         _program_name = program_name;

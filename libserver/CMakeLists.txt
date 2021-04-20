@@ -9,9 +9,9 @@ add_library(libserver
         #ram_compiler/tinyram_compiler_server.hpp
         #proof_systems/ram_ppsnark_server.cpp
         proof_systems/groth16_server.hpp
-        aux/proof_params_config.cpp
-        aux/Log.hpp
-        aux/string_helper.hpp
+        aux_struct/proof_params_config.cpp
+        aux_struct/Log.hpp
+        aux_struct/string_helper.hpp
         proof_systems/tinyram_circuit.hpp
         proof_systems/tinyram_r1cs_pp.hpp
         proof_systems/r1cs_adapter.hpp
@@ -38,13 +38,13 @@ target_link_libraries(simulate libserver smart_contract)
 add_executable(
         proof_program_tests
         EXCLUDE_FROM_ALL
-        aux/tests/proof_program_tests.cpp)
+        aux_struct/tests/proof_program_tests.cpp)
 target_link_libraries(proof_program_tests libserver)
 
 add_executable(
         log_tests
         EXCLUDE_FROM_ALL
-        aux/tests/log_tests.cpp)
+        aux_struct/tests/log_tests.cpp)
 target_link_libraries(log_tests fmt::fmt)
 
 add_executable(

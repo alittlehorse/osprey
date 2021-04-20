@@ -14,7 +14,7 @@
 
 #include <utility>
 #include <fstream>
-#include <libserver/aux/string_helper.hpp>
+#include <libserver/aux_struct/string_helper.hpp>
 
 #include<depends/fmt/include/fmt/format.h>
 #include<depends/fmt/include/fmt/ostream.h>

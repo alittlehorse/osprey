@@ -17,13 +17,13 @@ the server of zksnark using the Groth16 algorithm
 #ifndef OSPREY_GROTH16_SERVER_TCC_
 #define OSPREY_GROTH16_SERVER_TCC_
 
-#include <libserver/aux/Log.hpp>
+#include <libserver/aux_struct/Log.hpp>
 #include <tuple>
 #include <tinyram_snark/common/default_types/tinyram_gg_ppzksnark_pp.hpp>
 #include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
 #include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_params.hpp>
 #include <tinyram_snark/zk_proof_systems/r1cs_gg_ppzksnark/r1cs_gg_ppzksnark.hpp>
-#include <libserver/aux/Log.hpp>
+#include <libserver/aux_struct/Log.hpp>
 
 
 
