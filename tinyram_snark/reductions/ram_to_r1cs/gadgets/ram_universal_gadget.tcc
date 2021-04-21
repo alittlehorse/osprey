@@ -229,9 +229,9 @@ void ram_universal_gadget<ramT>::generate_r1cs_witness(const ram_boot_trace<ramT
     /* assign correct timestamps to all lines */
     for (size_t i = 0; i < num_memory_lines; ++i)
     {
-        auto a = unrouted_memory_lines[i];
-        auto b = a->timestamp->packed;
-        this->pb.val(b) = FieldT(i);
+        //auto a = unrouted_memory_lines[i];
+        //auto b = a->timestamp->packed;
+        this->pb.val(unrouted_memory_lines[i]->timestamp->packed) = FieldT(i);
         unrouted_memory_lines[i]->timestamp->generate_r1cs_witness_from_packed();
     }
 

@@ -13,15 +13,15 @@
 namespace libserver{
     proof_params_config::proof_params_config(const std::string&& program_name) {
         _program_name = program_name;
-        processed_assembly_fn = _program_name +"/"+ _program_name+"-processed_assembly.txt";
-        architecture_params_fn = _program_name +"/"+ _program_name+"-architecture_params.txt";
-        primary_input_fn = _program_name +"/"+ _program_name+"-primary_input.txt";
-        auxiliary_input_fn = _program_name +"/"+ _program_name+"-auxiliary_input.txt";
-        computation_bounds_fn = _program_name +"/"+ _program_name+"-computation_bounds.txt";
-        log_path = _program_name +"/"+ _program_name+"-log.txt";
-        proving_key_path = _program_name +"/"+ _program_name+"-proving_key";
-        verification_key_path = _program_name +"/"+ _program_name+"-verification_key";
-        proof_path = _program_name +"/"+ _program_name+"-proof";
+        processed_assembly_fn = _program_name +"/"+"processed_assembly.txt";
+        architecture_params_fn = _program_name +"/"+ "architecture_params.txt";
+        primary_input_fn = _program_name +"/"+ "primary_input.txt";
+        auxiliary_input_fn = _program_name +"/"+ "auxiliary_input.txt";
+        computation_bounds_fn = _program_name +"/"+ "computation_bounds.txt";
+        log_path = _program_name +"/"+ "log.txt";
+        proving_key_path = _program_name +"/"+ "proving_key";
+        verification_key_path = _program_name +"/"+ "verification_key";
+        proof_path = _program_name +"/"+ "proof";
     }
 
     const std::string& proof_params_config::get_architecture_params_path()const {

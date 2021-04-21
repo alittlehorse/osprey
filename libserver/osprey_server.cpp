@@ -103,9 +103,9 @@ const std::string &server_requester::get_private_key() {
 }
 
 bool osprey_plateform::on_finish_and_pay() {
-    printf("=============================================================");
-    printf("pay......");
-    printf("====================================================================");
+    printf("=============================================================\n");
+    printf("pay......\n");
+    printf("====================================================================\n");
     smart_contract::smart_contract::SendTxnTransfer(server_address);
     return true;
 }
