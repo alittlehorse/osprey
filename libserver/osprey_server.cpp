@@ -144,10 +144,10 @@ int main(){
     printf("begin lock\n");
     assert(requester.on_lock_pay(100000)== true);
     printf("lock success\n");
-    provider.on_ready("avarage","0x57128a8c478B3fEab65866a9c39d06408c243ce9");
+    provider.on_ready(path_string+"/libserver/tutorial/avarage","0x57128a8c478B3fEab65866a9c39d06408c243ce9");
     provider.on_generate_and_serialize_proof();
     //
-    assert(op.on_ready("avarage"));
+    assert(op.on_ready(path_string+"/libserver/tutorial/avarage"));
     printf("/nplateform builed/n");
     op.set_server_address(provider.get_address());
     //
