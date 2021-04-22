@@ -11,6 +11,7 @@ osprey server:
 
 #include "osprey_server.hpp"
 #include <libserver/smart_contract/connectEthereum.h>
+#include <filesystem>
 
 
 bool server_provider::on_generate_and_serialize_proof() {
@@ -134,7 +135,10 @@ int main(){
 
     smart_contract::smart_contract::init();
 
-    requester.on_ready("avarage","0xAa3d7608ed56FCbE7aA5c75a5af180eB9Fd0133e","0xfabde6ac6b55fc46677d9453545e699b0cfe3a244a4418e357c97e6a3f56ec9d");
+    std::string path_string{std::filesystem::current_path().parent_path().parent_path().string()};
+    std::cout<<path_string+"/libserver/tutorial/avarage";
+
+    requester.on_ready(path_string+"/libserver/tutorial/avarage","0xAa3d7608ed56FCbE7aA5c75a5af180eB9Fd0133e","0xfabde6ac6b55fc46677d9453545e699b0cfe3a244a4418e357c97e6a3f56ec9d");
     assert(requester.on_generate_key_pair());
     //op.submit_requester_address(sq.get_address());
     printf("begin lock\n");
