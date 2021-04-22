@@ -15,7 +15,6 @@ using namespace std::filesystem;
 using namespace libserver;
 int main(){
     std::string path_string{std::filesystem::current_path().parent_path().parent_path().string()};
-    std::cout<<path_string;
     proof_params_config _vp(path_string+("/libserver/tutorial/avarage"));
     libserver::groth16_server s(_vp);
     auto keypair = s.generate_keypair().value();
