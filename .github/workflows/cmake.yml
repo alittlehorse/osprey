@@ -52,8 +52,3 @@ jobs:
       working-directory: ${{github.workspace}}/build
       shell: bash
       run: ./libserver/simulate
-
-    - name: Run target:groth16_server_tests
-      working-directory: ${{github.workspace}}/build
-      shell: bash
-      run: ./libserver/groth16_server_tests
