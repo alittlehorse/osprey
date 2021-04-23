@@ -1,5 +1,6 @@
 add_subdirectory(gtest EXCLUDE_FROM_ALL)
 add_subdirectory(fmt)
+add_subdirectory(drogon)
 if(${CURVE} STREQUAL "BN128")
   include_directories(ate-pairing/include)
   include_directories(xbyak)
@@ -10,6 +11,7 @@ if(${CURVE} STREQUAL "BN128")
     ate-pairing/src/zm.cpp
     ate-pairing/src/zm2.cpp
   )
+
 endif()
 
 if("${WITH_SUPERCOP}")

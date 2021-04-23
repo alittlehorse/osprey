@@ -1,8 +1,3 @@
-include(FindPkgConfig)
-pkg_check_modules(LIBEVENT REQUIRED libevent>2.1.10)
-
-#find_package(fmt)
-
 add_library(libserver
         STATIC
 
@@ -26,14 +21,11 @@ target_link_libraries(libserver
         fmt::fmt
 )
 
-
 # Tests
-
 
 add_executable(
         simulate
         osprey_server.cpp)
-target_link_libraries(simulate libserver smart_contract)
 
 add_executable(
         proof_program_tests
@@ -60,8 +52,6 @@ add_executable(
         ram_compiler/tests/tinyram_precompiler_tests.cpp
 )
 target_link_libraries(tinyram_compiler_server_test libserver)
-
-
 
 add_executable(
         groth16_server_tests

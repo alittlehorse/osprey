@@ -59,6 +59,10 @@ So far we have tested these only on Linux. On Debian 10 (buster), Ubuntu 18.04 L
   $ sudo apt install build-essential cmake git libgmp3-dev libprocps-dev python3-markdown libboost-program-options-dev libssl-dev python3 pkg-config python3-dev libevent-dev
   $ sudo apt install libjsoncpp-dev uuid-dev openssl libssl-dev zlib1g-dev # for drogon
 ```
+```asm
+git submodule init
+git submodule update --recursive
+```
 
 ### Building
 Create the Makefile:
