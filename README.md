@@ -61,8 +61,7 @@ So far we have tested these only on Linux. On Debian 10 (buster), Ubuntu 18.04 L
 ```
 after cloning, you should download submodule:
 ```asm
-git submodule init
-git submodule update --recursive
+git submodule update --init --recursive
 ```
 
 ### Building
