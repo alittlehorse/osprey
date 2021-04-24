@@ -5,7 +5,7 @@ int main()
 
     app().setLogPath("./")
             .setLogLevel(trantor::Logger::kWarn)
-            .addListener("0.0.0.0", 80)
+            .addListener("0.0.0.0", 3498)
             .setThreadNum(16)
             .enableRunAsDaemon()
             .run();
