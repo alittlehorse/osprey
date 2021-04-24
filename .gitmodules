@@ -1,6 +1,15 @@
 [submodule "depends/fmt"]
 	path = depends/fmt
-	url = https://github.com/fmtlib/fmt.git
+	url = https://github.com/fmtlib/fmt
 [submodule "depends/drogon"]
 	path = depends/drogon
 	url = https://github.com/an-tao/drogon.git
+[submodule "depends/ate-pairing"]
+	path = depends/ate-pairing
+	url = https://github.com/herumi/ate-pairing
+[submodule "depends/libsnark-supercop"]
+	path = depends/libsnark-supercop
+	url = https://github.com/mbbarbosa/libsnark-supercop.git
+[submodule "depends/xbyak"]
+	path = depends/xbyak
+	url = https://github.com/herumi/xbyak.git
