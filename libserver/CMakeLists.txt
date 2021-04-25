@@ -13,6 +13,7 @@ add_library(libserver
         ram_compiler/tinyram_precompiler.cpp
         ram_compiler/tinyram_compiler_server.hpp
         ram_compiler/specialization_pool.hpp
+        analysis_program/analysis_program.cpp
         )
 
 add_subdirectory(smart_contract)
@@ -23,12 +24,19 @@ target_link_libraries(libserver
 )
 
 # Tests
-
+#Integration Testing
 add_executable(
         simulate
         simulate.cpp
         osprey_server.cpp)
 target_link_libraries(simulate libserver)
+
+#module testing
+
+add_executable(analysis_program_tests
+        analysis_program/tests/analysis_program_tests.cpp)
+target_link_libraries(analysis_program_tests
+        libserver)
 
 add_executable(
         proof_program_tests

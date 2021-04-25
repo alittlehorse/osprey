@@ -3,7 +3,7 @@ Osprey
 ---------------------------
 ### Author and Contract
 
-osprey is developed by alittlehorse and is released under the MIT license.
+osprey is developed by *alittlehorse,syheliel,cx19981114,Zirui Hu* and is released under the MIT license.
 
 ------------------------------
 **NOTE**:this project is a Big data PaaS(Processing as a Server) trading platform based on zero-knowledge proof and blockchain with the protection of data privacy and functional privacy.
