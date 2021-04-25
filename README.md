@@ -55,28 +55,33 @@ The libsnark library relies on the following:
 + libevent for network
 
 So far we have tested these only on Linux. On Debian 10 (buster), Ubuntu 18.04 LTS, Ubuntu 20.04 LTS:
-```asm
+```bash
   $ sudo apt install build-essential cmake git libgmp3-dev libprocps-dev python3-markdown libboost-program-options-dev libssl-dev python3 pkg-config python3-dev libevent-dev
   $ sudo apt install libjsoncpp-dev uuid-dev openssl libssl-dev zlib1g-dev # for drogon
 ```
 after cloning, you should download submodule:
-```asm
+```bash
 git submodule update --init --recursive
 ```
 
 ### Building
 Create the Makefile:
-```asm
+```bash
 $ mkdir build && cd build && cmake ..
 ```
+If you want to build one specific target, for example, platform_server:
+```bash
+cmake --build . --target platform_server
+```
 then, to compile the library, tests, and profiling harness, run this within the build directory:
-```asm
+```bash
 $ make
 ```
 To compile and run the tests for this library, run:
-```asm
+```bash
 $ make check
 ```
+
 ----------------------------------------
 ## References
 + libsnark developed by SCIPR: https://github.com/scipr-lab/libsnark
