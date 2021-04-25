@@ -1,3 +1,1 @@
 16 16
-//register count
-//word size(bits)

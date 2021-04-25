@@ -74,8 +74,6 @@ namespace  libserver{
     };
 }
 
-#include <libserver/proof_systems/groth16_server.tcc>
-
 #endif //OSPREY_GROTH16_SERVER_HPP_
 
 

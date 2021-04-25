@@ -3,16 +3,12 @@
 osprey server:
  1. server_provider class provide the server of prover(Data Seller)
  2. server_requester class provide the server of requester(Data Buyer)
-
- *****************************************************************************
+*****************************************************************************
  * @author     This file is part of libserver, developed by alittlehorse
  * @copyright  MIT license (see LICENSE file)
  *****************************************************************************/
 #ifndef OSPREY_OSPREY_SERVER_HPP
 #define OSPREY_OSPREY_SERVER_HPP
-
-//TODO::add network socket
-
 
 #include<libserver/proof_systems/groth16_server.hpp>
 

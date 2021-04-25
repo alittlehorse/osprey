@@ -3,7 +3,7 @@ add_library(libserver
 
         #ram_compiler/tinyram_compiler_server.hpp
         #proof_systems/ram_ppsnark_server.cpp
-        proof_systems/groth16_server.hpp
+        proof_systems/groth16_server.cpp
         aux_struct/proof_params_config.cpp
         aux_struct/Log.hpp
         aux_struct/string_helper.hpp
@@ -19,13 +19,16 @@ add_subdirectory(smart_contract)
 target_link_libraries(libserver
         tinyram_snark
         fmt::fmt
+        smart_contract
 )
 
 # Tests
 
 add_executable(
         simulate
+        simulate.cpp
         osprey_server.cpp)
+target_link_libraries(simulate libserver)
 
 add_executable(
         proof_program_tests
