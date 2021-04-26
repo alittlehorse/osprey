@@ -33,20 +33,10 @@ const std::string &server_provider::get_address() {
     return smart_contract_address;
 }
 
-bool server_requester::on_generate_key_pair() {
-
-    auto keypair = s->generate_keypair();
-    assert(keypair!= std::nullopt);
-    s->serialize_proveing_key(keypair.value().pk,_vp->get_proving_key_path());
-    s->serialize_verification_key(keypair.value().vk,_vp->get_verification_key_path());
-    return true;
-}
 
 void server_requester::on_ready(const std::string &&config,
                                 const std::string& smart_contract_address,
                                 const std::string& private_key){
-    _vp = new libserver::proof_params_config(std::move(config));
-    s = new libserver::groth16_server(*_vp);
     this->account = smart_contract_address;
     this->private_key = private_key;
 }
@@ -60,7 +50,6 @@ bool osprey_plateform::on_verify() {
         printf("=============================\n");
         printf("pass the proof! \n");
         printf("=============================\n");
-        printf("pay.................................\n");
         if(osprey_plateform::on_finish_and_pay())
             printf("=============================================\n");
             printf("pay success\n");
@@ -123,6 +112,14 @@ bool osprey_plateform::on_ready(const std::string& config) {
 
 void osprey_plateform::set_server_address(const string &account) {
     this->server_address = account;
+}
+
+bool osprey_plateform::on_generate_keypair() {
+    auto keypair = s->generate_keypair();
+    if(keypair== std::nullopt) return false;
+    s->serialize_proveing_key(keypair.value().pk,_vp->get_proving_key_path());
+    s->serialize_verification_key(keypair.value().vk,_vp->get_verification_key_path());
+    return true;
 }
 
 

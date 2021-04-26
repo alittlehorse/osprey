@@ -12,6 +12,7 @@ osprey server:
 
 #include<libserver/proof_systems/groth16_server.hpp>
 
+
 class server_provider {
 public:
     void on_ready(const std::string&& config,const std::string& smart_contract_address);
@@ -26,15 +27,12 @@ private:
 
 class server_requester {
 public:
-    bool on_complier_tinyram();
-    bool on_generate_key_pair();
+    //bool on_complier_tinyram();
     bool on_lock_pay(int money);
     void on_ready(const std::string&& config,const std::string& smart_contract_address,const std::string& private_key);
     const std::string& get_address();
 
 private:
-    libserver::proof_params_config* _vp;
-    libserver::groth16_server* s;
     std::string account;
     std::string private_key;
     const std::string& get_private_key();
@@ -42,7 +40,6 @@ private:
 
 class osprey_plateform{
 private:
-    //static std::string plateform_address ;
     std::string server_address;
     libserver::proof_params_config* _vp;
     libserver::groth16_server* s;
@@ -51,6 +48,7 @@ public:
     bool on_finish_and_pay();
     bool on_verify();
     bool on_ready(const std::string& config);
+    bool on_generate_keypair();
 };
 
 

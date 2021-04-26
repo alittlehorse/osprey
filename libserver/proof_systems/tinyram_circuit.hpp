@@ -14,7 +14,6 @@ Declaration of interface of tinyram_circuit.
  * @author     This file is part of libserver, developed by alittlehorse
  * @copyright  MIT license (see LICENSE file)
  *****************************************************************************/
-
 #ifndef OSPREY_PROOF_PUBLIC_PARAMS_H
 #define OSPREY_PROOF_PUBLIC_PARAMS_H
 #include<string>
