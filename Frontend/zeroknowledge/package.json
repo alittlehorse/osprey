@@ -53,8 +53,9 @@
     ]
   },
   "devDependencies": {
+    "@types/codemirror": "^0.0.109",
     "@types/react-router-dom": "^5.1.7",
     "babel-plugin-import": "^1.13.3"
   },
-  "homepage": "./" 
+  "homepage": "./"
 }

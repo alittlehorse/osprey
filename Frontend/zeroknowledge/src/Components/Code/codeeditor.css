@@ -20,10 +20,12 @@
   font-size: 50px;
 }
 
-/* .head-upload{
-  text-align: center;
+.cm-s-monokai.CodeMirror {
+  background: #272822;
+  color: #f8f8f2;
 }
 
-#img-upload{
-  display: none;
+/* .singlefunction-toolBar {
+  border: 1px solid;
+  height: 20px;
 } */

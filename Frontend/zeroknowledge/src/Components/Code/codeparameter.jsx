@@ -13,7 +13,7 @@ function Codeparameter(props) {
     // const [tinyram_input_size_bound, settinyram_input_size_bound] = useState("25");
     // const [program, setprogram] = useState("20");
     // const [time_bound, settime_bound] = useState("64");
-    const { OutputText } = props;
+    const { verify_program } = props;
     const showDrawer = () => {
         setVisible(true);
     };
@@ -37,33 +37,18 @@ function Codeparameter(props) {
             setValues({ ...values, [event.target.name]: event.target.value })
         }, 0);
         console.log("4", values.word_size)
-        // setValues();
+        console.log("5", values.register_count)
+        console.log("hzr",JSON.stringify(values))
     };
-
-
-
-    // const onChangeRegister = (value) => {
-    //     setregister_count(value);
-    // }
-    // const onChangeWordSize = (value) => {
-    //     setword_size(value);
-    //     console.log(value);
-    // }
-    // const onChangeTinyram = (value) => {
-    //     settinyram_input_size_bound(value);
-    // }
-    // const onChangeProgram = (value) => {
-    //     setprogram(value);
-    // }
-    // const onChangeTimebound = (value) => {
-    //     settime_bound(value);
-    // }
     const onSubmit = (e) => {
         // 把表单用的最终数据从state中提取出来,传入请求
         e.preventDefault();
         console.log("sze", values);
-        console.log("aaa", OutputText);
-        fetch('http://localhost:8080/thirdParty/buyer?values=' + values.program)
+        console.log("aaa", verify_program);
+        fetch('http://106.13.125.83:3498/compute_query', {
+            method: 'POST',
+            body: JSON.stringify(values),
+        })
             .then(res => res.text())
             .catch(e => console.log('错误:', e))
         handleClick();
@@ -167,18 +152,18 @@ function Codeparameter(props) {
                     <Row gutter={30}>
                         <Col span={24}>
                             <Form.Item
-                                name="OutputText"
-                                label="OutputText"
-                                initialValue={OutputText.toString()}
+                                name="verify_program"
+                                label="verify_program"
+                                initialValue={verify_program.toString()}
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'please enter OutputText',
+                                        message: 'please enter verify_program',
                                     },
                                 ]
                                 }
                             >
-                                <Input.TextArea rows={30} placeholder={OutputText.toString()} onChange={onChange} name="OutputText" />
+                                <Input.TextArea rows={30} placeholder={verify_program.toString()} onChange={onChange} name="verify_program" />
                             </Form.Item>
                         </Col>
                     </Row>

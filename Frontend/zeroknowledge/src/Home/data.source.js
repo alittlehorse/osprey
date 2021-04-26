@@ -43,7 +43,7 @@ export const Nav01DataSource = {
                 {
                   name: 'title',
                   className: 'item-title',
-                  children: 'Ant Design',
+                  children: 'Osprey',
                 },
                 {
                   name: 'content',
@@ -198,9 +198,9 @@ export const Content00DataSource = {
             {
               name: 'title',
               className: 'content0-block-title',
-              children: '一站式业务接入',
+              children: '数据隐私保护',
             },
-            { name: 'content', children: '支付、结算、核算接入产品效率翻四倍' },
+            { name: 'content', children: '保护您珍贵的隐私信息' },
           ],
         },
       },
@@ -225,7 +225,7 @@ export const Content00DataSource = {
             },
             {
               name: 'content',
-              children: '在所有需求配置环节事前风险控制和质量控制能力',
+              children: '区块链保证公平交易',
             },
           ],
         },
@@ -251,7 +251,7 @@ export const Content00DataSource = {
             },
             {
               name: 'content',
-              children: '沉淀产品接入效率和运营小二工作效率数据',
+              children: '沉淀产品接入效率和数据运营',
             },
           ],
         },
@@ -320,7 +320,7 @@ export const Teams10DataSource = {
               name: 'content1',
               className: 'teams1-content',
               children:
-                'AntV 是蚂蚁金服全新一代数据可视化解决方案，致力于提供一套简单方便、专业可靠、无限可能的数据可视化最佳实践。',
+                'Osprey 是华东师范大学全新一代大数据安全交易解决方案，致力于提供一套简单方便、专业可靠、无限可能的大数据安全交易最佳实践。',
             },
           ],
         },
@@ -360,7 +360,7 @@ export const Teams10DataSource = {
               name: 'content1',
               className: 'teams1-content',
               children:
-                '语雀是一款优雅高效的在线文档编辑与协同工具， 让每个企业轻松拥有文档中心阿里巴巴集团内部使用多年，众多中小企业首选。',
+                'Osprey也是一款优雅高效的在线文档编辑与协同工具， 让每个企业轻松拥有文档中心阿里巴巴集团内部使用多年，众多中小企业首选。',
             },
           ],
         },
@@ -400,7 +400,7 @@ export const Teams10DataSource = {
               name: 'content1',
               className: 'teams1-content',
               children:
-                'AntV 是蚂蚁金服全新一代数据可视化解决方案，致力于提供一套简单方便、专业可靠、无限可能的数据可视化最佳实践。',
+                'Osprey 是华东师范大学全新一代大数据安全交易解决方案，致力于提供一套简单方便、专业可靠、无限可能的大数据安全交易最佳实践。',
             },
           ],
         },
