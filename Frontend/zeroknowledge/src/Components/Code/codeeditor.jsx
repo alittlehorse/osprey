@@ -1,5 +1,5 @@
 import CodeMirror from '@uiw/react-codemirror';
-import React, { useRef, useEffect, useImperativeHandle, useState, useMemo } from 'react';
+import { useState } from 'react';
 import 'codemirror/addon/display/autorefresh';
 import 'codemirror/addon/comment/comment';
 import 'codemirror/addon/edit/matchbrackets';
@@ -9,12 +9,9 @@ import 'codemirror/addon/hint/show-hint.js';
 import 'codemirror/theme/monokai.css';
 import 'codemirror/theme/ambiance.css';
 import "./codeeditor.css";
-import { Upload, message, Button, Select, BackTop } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Select } from 'antd';
 import { Divider } from 'antd';
 import Codeparameter from './codeparameter';
-import { notification } from 'antd';
-import { SmileOutlined, ItalicOutlined } from '@ant-design/icons';
 import 'codemirror/theme/3024-day.css';
 import 'codemirror/theme/3024-night.css';
 import 'codemirror/theme/abcdef.css';
@@ -70,6 +67,8 @@ import 'codemirror/theme/xq-dark.css';
 import 'codemirror/theme/xq-light.css';
 import 'codemirror/theme/yeti.css';
 import 'codemirror/theme/zenburn.css';
+import WebSocket from "../../Socket";
+import TextArea from 'antd/lib/input/TextArea';
 const { Option } = Select;
 
 
@@ -130,11 +129,6 @@ const SelectFontSize = ({ onChange }) => {
 };
 
 const themes = ['3024-day', '3024-night', 'abcdef', 'ambiance-mobile', 'ambiance', 'base16-dark', 'base16-light', 'bespin', 'blackboard', 'cobalt', 'colorforth', 'darcula', 'dracula', 'duotone-dark', 'duotone-light', 'eclipse', 'elegant', 'erlang-dark', 'gruvbox-dark', 'hopscotch', 'icecoder', 'idea', 'isotope', 'lesser-dark', 'liquibyte', 'lucario', 'material', 'mbo', 'mdn-like', 'midnight', 'monokai', 'neat', 'neo', 'night', 'oceanic-next', 'panda-syntax', 'paraiso-dark', 'paraiso-light', 'pastel-on-dark', 'railscasts', 'rubyblue', 'seti', 'shadowfox', 'solarized', 'ssms', 'the-matrix', 'tomorrow-night-bright', 'tomorrow-night-eighties', 'ttcn', 'twilight', 'vibrant-ink', 'xq-dark', 'xq-light', 'yeti', 'zenburn'];
-// const codethemeoptions = themes.forEach(function (element) {
-//     console.log("jiijiji" + element);
-//     <Option value={element}>{element}</Option>;
-// });
-// const codethemeoptions = themes.map(d => <Option value={d.value + ""}>{d.text}</Option>);
 const SelectFontTheme = ({ onChange }) => {
     return (
         <Select style={{ width: 120 }} onChange={onChange} defaultValue="字体">
@@ -148,13 +142,13 @@ const SelectFontTheme = ({ onChange }) => {
     );
 };
 
-
 function Editor(props) {
     const [tabSize, setTabSize] = useState('40');
     const [FontSize, setFontSize] = useState('16px')
     const [FontTheme, setFontTheme] = useState('FangSong')
     const [verify_program, setVerify_program] = useState('')
     const [theme, setTheme] = useState('monokai')
+    const [compile_info, setcompile_info] = useState("")
 
     const SelectTheme = ({ onChange }) => {
         return (
@@ -205,7 +199,7 @@ function Editor(props) {
                 <SelectTheme value={theme} onChange={onChangeCodeTheme} />
                 <SelectFontSize value={FontSize} onChange={onChangeFontSize} />
                 <SelectFontTheme value={FontTheme} onChange={onChangeFontTheme} />
-                <Codeparameter verify_program={verify_program}></Codeparameter>
+                <Codeparameter verify_program={verify_program} compile_info={compile_info} changeInfo={(compile_info)=>setcompile_info(compile_info)}></Codeparameter>
                 <input type="file" className="file" onChange={my_fileReader} id="img-upload" />
                 <Divider />
             </div>
@@ -228,6 +222,9 @@ function Editor(props) {
                     }}
 
                 />
+            </div>
+            <div>
+                <TextArea rows={10} value={compile_info}></TextArea>
             </div>
         </div>
     )
