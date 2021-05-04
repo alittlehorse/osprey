@@ -4,16 +4,45 @@ import { Drawer, Form, Button, Col, Row, Input, Select, DatePicker } from 'antd'
 import { PlusOutlined } from '@ant-design/icons';
 const { Option } = Select;
 
-
-
+var stompClient = null; // 设置 STOMP 客户端
+var SOCKET_ENDPOINT = "/osprey"; // 设置 WebSocket 进入端点
+var SUBSCRIBE_PREFIX = "/topic/public" // 设置订阅消息的请求前缀
+var SUBSCRIBE = ""; // 设置订阅消息的请求地址
+var SEND_ENDPOINT = "/app/test"; // 设置服务器端点，访问服务器中哪个接口
+var message2 = "";
 function Codeparameter(props) {
     const [visible, setVisible] = useState(false);
-    // const [register_count, setregister_count] = useState("20");
-    // const [word_size, setword_size] = useState("8");
-    // const [tinyram_input_size_bound, settinyram_input_size_bound] = useState("25");
-    // const [program, setprogram] = useState("20");
-    // const [time_bound, settime_bound] = useState("64");
-    const { OutputText } = props;
+    const [error, seterror] = useState("");
+    const [channelConnected, setchannelConnected] = useState(false)
+    const { compile_info, changeInfo } = props;
+    const connect = () => {
+        const Stomp = require('stompjs')
+        var SockJS = require('sockjs-client')
+        SockJS = new SockJS('http://localhost:8080/' + SOCKET_ENDPOINT)
+        stompClient = Stomp.over(SockJS);
+        stompClient.connect({}, onConnected, onError);
+    }
+    const onConnected = () => {
+        setchannelConnected(true);
+        stompClient.subscribe(SUBSCRIBE_PREFIX, onMessageReceived);
+        sendMessage();
+    }
+    const sendMessage = () => {
+        // 设置待发送的消息内容
+        var message = '{"destination": "' + SUBSCRIBE_PREFIX + '", "register_count": "' + values.register_count + '", "tinyram_input_size_bound": "' + values.tinyram_input_size_bound + '", "word_size": "' + values.word_size + '", "program": "' + values.program + '", "tinyram_input_size_bound": "' + values.tinyram_input_size_bound + '"}';
+        stompClient.send(SEND_ENDPOINT, {}, message);
+    }
+    const onMessageReceived = (payload) => {
+        message2 += payload.body;
+        changeInfo(compile_info + message2);
+        console.log("shoudao", message2);
+        if (payload.body === "exit")
+            handleClick()
+    }
+    const onError = () => {
+        seterror('Could not connect you to the Chat Room Server. Please refresh this page and try again!');
+    }
+    const { verify_program } = props;
     const showDrawer = () => {
         setVisible(true);
     };
@@ -27,6 +56,7 @@ function Codeparameter(props) {
         tinyram_input_size_bound: "",
         program: "",
         time_bound: "",
+        tinyram_program_size_bound: ""
     });
 
     const onChange = event => {
@@ -37,36 +67,21 @@ function Codeparameter(props) {
             setValues({ ...values, [event.target.name]: event.target.value })
         }, 0);
         console.log("4", values.word_size)
-        // setValues();
+        console.log("5", values.register_count)
+        console.log("6", values.tinyram_program_size_bound)
+        console.log("hzr", JSON.stringify(values))
     };
-
-
-
-    // const onChangeRegister = (value) => {
-    //     setregister_count(value);
-    // }
-    // const onChangeWordSize = (value) => {
-    //     setword_size(value);
-    //     console.log(value);
-    // }
-    // const onChangeTinyram = (value) => {
-    //     settinyram_input_size_bound(value);
-    // }
-    // const onChangeProgram = (value) => {
-    //     setprogram(value);
-    // }
-    // const onChangeTimebound = (value) => {
-    //     settime_bound(value);
-    // }
     const onSubmit = (e) => {
-        // 把表单用的最终数据从state中提取出来,传入请求
-        e.preventDefault();
-        console.log("sze", values);
-        console.log("aaa", OutputText);
-        fetch('http://localhost:8080/thirdParty/buyer?values=' + values.program)
-            .then(res => res.text())
-            .catch(e => console.log('错误:', e))
-        handleClick();
+        connect();
+        onClose();
+        scrollToAnchor('result');
+    };
+    const scrollToAnchor = (anchorName) => {
+        if (anchorName) {
+            // 找到锚点
+            let anchorElement = document.getElementById(anchorName);
+            if(anchorElement) { anchorElement.scrollIntoView({block: 'start', behavior: 'smooth'}); }
+        }
     }
     let history = useHistory();
     function handleClick() {
@@ -153,32 +168,29 @@ function Codeparameter(props) {
                         </Col>
                         <Col span={12}>
                             <Form.Item
-                                name="dateTime"
-                                label="DateTime"
-                                rules={[{ required: true, message: 'Please choose the dateTime' }]}
+                                name="tinyram_program_size_bound"
+                                label="Tinyram_program_size_bound"
+                                rules={[{ required: true, message: 'Please enter Tinyram_program_size_bound' }]}
                             >
-                                <DatePicker.RangePicker
-                                    style={{ width: '100%' }}
-                                    getPopupContainer={trigger => trigger.parentElement}
-                                />
+                                <Input placeholder="Please enter Tinyram_program_size_bound" onChange={onChange} name="tinyram_program_size_bound" />
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={30}>
                         <Col span={24}>
                             <Form.Item
-                                name="OutputText"
-                                label="OutputText"
-                                initialValue={OutputText.toString()}
+                                name="verify_program"
+                                label="verify_program"
+                                initialValue={verify_program.toString()}
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'please enter OutputText',
+                                        message: 'please enter verify_program',
                                     },
                                 ]
                                 }
                             >
-                                <Input.TextArea rows={30} placeholder={OutputText.toString()} onChange={onChange} name="OutputText" />
+                                <Input.TextArea rows={30} placeholder={verify_program.toString()} onChange={onChange} name="verify_program" />
                             </Form.Item>
                         </Col>
                     </Row>
