@@ -14,10 +14,6 @@ Declaration of interface of r1cs_adapter.
  * @copyright  MIT license (see LICENSE file)
  *****************************************************************************/
 namespace libserver{
-
-    template<typename tinyram_r1cs_params>
-    using FieldT = typename tinyram_r1cs_params::FieldT;
-
     template<typename tinyram_r1cs_params>
     const r1cs_primary_input<typename tinyram_r1cs_params::FieldT> r1cs_adapter<tinyram_r1cs_params>::get_r1cs_primary_input() const{
         return primary_input;

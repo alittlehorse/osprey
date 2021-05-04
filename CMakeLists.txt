@@ -153,7 +153,7 @@ else()
 endif()
 
 # Enable Boost for program_options
-FIND_PACKAGE( Boost 1.40 COMPONENTS program_options REQUIRED )
+FIND_PACKAGE( Boost 1.75.0 COMPONENTS program_options json REQUIRED )
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
 add_definitions(

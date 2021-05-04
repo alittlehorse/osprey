@@ -32,8 +32,8 @@ namespace  libserver{
         try{
             const r1cs_gg_ppzksnark_proof<tinyram_r1cs_params::snark_pp>
                     proof = r1cs_gg_ppzksnark_prover<tinyram_r1cs_params::snark_pp>(proving_key,
-                                                                                    _r1cs_adapter->get_r1cs_primary_input(),
-                                                                                    _r1cs_adapter->get_auxiliary_input());
+                                                                                    r1cs_adapter_->get_r1cs_primary_input(),
+                                                                                    r1cs_adapter_->get_auxiliary_input());
             return {proof};
         }
        catch (std::exception &e){
@@ -43,7 +43,7 @@ namespace  libserver{
 
     std::optional<const r1cs_gg_ppzksnark_keypair<default_r1cs_gg_ppzksnark_pp>> groth16_server::generate_keypair() {
         try{
-            auto keypair = r1cs_gg_ppzksnark_generator<tinyram_r1cs_params::snark_pp>(_r1cs_adapter->get_r1cs_constraint_system());//OK!
+            auto keypair = r1cs_gg_ppzksnark_generator<tinyram_r1cs_params::snark_pp>(r1cs_adapter_->get_r1cs_constraint_system());//OK!
             return {keypair};
         }
        catch (std::exception &e){
@@ -52,7 +52,7 @@ namespace  libserver{
     }
     bool groth16_server::verify(const r1cs_gg_ppzksnark_verification_key<default_r1cs_gg_ppzksnark_pp>& verification_key,
                                 const r1cs_gg_ppzksnark_proof<default_r1cs_gg_ppzksnark_pp>& proof){
-        bool b = r1cs_gg_ppzksnark_verifier_strong_IC<tinyram_r1cs_params::snark_pp>(verification_key, _r1cs_adapter->get_r1cs_primary_input(), proof);
+        bool b = r1cs_gg_ppzksnark_verifier_strong_IC<tinyram_r1cs_params::snark_pp>(verification_key, r1cs_adapter_->get_r1cs_primary_input(), proof);
         return b;
     }
 

@@ -14,13 +14,14 @@ add_library(libserver
         ram_compiler/tinyram_compiler_server.hpp
         ram_compiler/specialization_pool.hpp
         analysis_program/analysis_program.cpp
-        )
+        aux_struct/params_config.cpp)
 
 add_subdirectory(smart_contract)
 target_link_libraries(libserver
         tinyram_snark
         fmt::fmt
         smart_contract
+        ${Boost_LIBRARIES}
 )
 
 # Tests
@@ -39,10 +40,9 @@ target_link_libraries(analysis_program_tests
         libserver)
 
 add_executable(
-        proof_program_tests
-        EXCLUDE_FROM_ALL
-        aux_struct/tests/proof_program_tests.cpp)
-target_link_libraries(proof_program_tests libserver)
+        params_config_tests
+        aux_struct/tests/params_config_tests.cpp)
+target_link_libraries(params_config_tests libserver)
 
 add_executable(
         log_tests
@@ -111,6 +111,7 @@ include(CTest)
 enable_testing()
 add_test(NAME groth16_server_tests COMMAND groth16_server_tests)
 add_test(NAME simulate COMMAND simulate)
+add_test(NAME params_config_tests COMMAND params_config_tests)
 #add_test(NAME proof_program_tests COMMAND proof_program_tests)
 #add_test(NAME log_tests COMMAND log_tests)
 #add_test(NAME ram_ppsnark_server_test COMMAND ram_ppsnark_server_test)
@@ -126,3 +127,4 @@ add_test(NAME simulate COMMAND simulate)
 #add_dependencies(check tinyram_compiler_server_test)
 add_dependencies(check groth16_server_tests)
 add_dependencies(check simulate)
+add_dependencies(check params_config_tests)

@@ -9,6 +9,7 @@ tests for groth16 server
 
 #include <libserver/proof_systems/groth16_server.cpp>
 #include <libserver/aux_struct/proof_params_config.hpp>
+#include <libserver/aux_struct/params_config.hpp>
 #include <cassert>
 #include <filesystem>
 using namespace std::filesystem;
@@ -16,7 +17,10 @@ using namespace libserver;
 int main(){
     std::string path_string{std::filesystem::current_path().parent_path().parent_path().string()};
     proof_params_config _vp(path_string+("/libserver/tutorial/avarage"));
-    libserver::groth16_server s(_vp);
+
+    std::unique_ptr<params_config> v(new params_config());
+    v->init("../../libserver/tutorial/avarage/avarage.json");
+    libserver::groth16_server s(std::move(v));
     auto keypair = s.generate_keypair().value();
     assert(s.serialize_proveing_key(keypair.pk,_vp.get_proving_key_path()));
     auto pk1 = s.get_proving_key_from_file(_vp.get_proving_key_path());
