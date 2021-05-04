@@ -74,6 +74,14 @@ function Codeparameter(props) {
     const onSubmit = (e) => {
         connect();
         onClose();
+        scrollToAnchor('result');
+    };
+    const scrollToAnchor = (anchorName) => {
+        if (anchorName) {
+            // 找到锚点
+            let anchorElement = document.getElementById(anchorName);
+            if(anchorElement) { anchorElement.scrollIntoView({block: 'start', behavior: 'smooth'}); }
+        }
     }
     let history = useHistory();
     function handleClick() {

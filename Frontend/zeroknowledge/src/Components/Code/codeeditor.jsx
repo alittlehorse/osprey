@@ -67,8 +67,9 @@ import 'codemirror/theme/xq-dark.css';
 import 'codemirror/theme/xq-light.css';
 import 'codemirror/theme/yeti.css';
 import 'codemirror/theme/zenburn.css';
-import WebSocket from "../../Socket";
 import TextArea from 'antd/lib/input/TextArea';
+import { Upload, message, Button } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 const { Option } = Select;
 
 
@@ -192,6 +193,17 @@ function Editor(props) {
             setVerify_program(e.target.result);　　　//直接保存全部数据为一个字符串
         }.bind(this);
     };
+    function setFileVisible(){
+        var fileInput = document.getElementById("img-upload");
+        fileInput.click();
+    }
+    const scrollToAnchor = (anchorName) => {
+        if (anchorName) {
+            // 找到锚点
+            let anchorElement = document.getElementById(anchorName);
+            if(anchorElement) { anchorElement.scrollIntoView({block: 'start', behavior: 'smooth'}); }
+        }
+    }
     return (
         <div >
             <div className="ToolBar">
@@ -199,8 +211,9 @@ function Editor(props) {
                 <SelectTheme value={theme} onChange={onChangeCodeTheme} />
                 <SelectFontSize value={FontSize} onChange={onChangeFontSize} />
                 <SelectFontTheme value={FontTheme} onChange={onChangeFontTheme} />
-                <Codeparameter verify_program={verify_program} compile_info={compile_info} changeInfo={(compile_info)=>setcompile_info(compile_info)}></Codeparameter>
-                <input type="file" className="file" onChange={my_fileReader} id="img-upload" />
+                <Button icon={<UploadOutlined />} onClick = {setFileVisible} >上传文件</Button>
+                <Codeparameter verify_program={verify_program} compile_info={compile_info} changeInfo={(compile_info) => setcompile_info(compile_info)}></Codeparameter>
+                <input type="file" className="file" onChange={my_fileReader} id="img-upload" style={{display: 'none'}}/>
                 <Divider />
             </div>
             <div >
@@ -224,7 +237,7 @@ function Editor(props) {
                 />
             </div>
             <div>
-                <TextArea rows={10} value={compile_info}></TextArea>
+                <TextArea rows={10} value={compile_info} id='result'></TextArea>
             </div>
         </div>
     )

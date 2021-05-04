@@ -7,7 +7,6 @@ import {
 import Editor from './codeeditor';
 import "./codecontent.css";
 import Codeparameter from './codeparameter';
-import Tool from './Tool';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;

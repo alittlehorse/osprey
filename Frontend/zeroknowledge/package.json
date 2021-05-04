@@ -16,7 +16,7 @@
     "customize-cra": "^1.0.0",
     "enquire-js": "^0.2.1",
     "http-proxy-middleware": "^0.19.1",
-    "less": "^2.7.3",
+    "less": "^4.1.1",
     "less-loader": "^4.1.0",
     "rc-banner-anim": "^2.4.5",
     "rc-queue-anim": "^1.8.5",

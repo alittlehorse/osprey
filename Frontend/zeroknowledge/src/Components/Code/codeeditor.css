@@ -1,7 +1,8 @@
 .CodeMirror {
   height: 630px;
   max-width: 1195px;
-  margin: 50px auto;
+  margin: 40px auto;
+  margin-top: -5px;
   position: relative;
   font-size: 18px;
 }
@@ -24,6 +25,7 @@
   background: #272822;
   color: #f8f8f2;
 }
+
 
 /* .singlefunction-toolBar {
   border: 1px solid;
