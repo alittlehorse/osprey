@@ -51,12 +51,18 @@ The libsnark library relies on the following:
 + CMake build infrastructure
 + GMP for certain bit-integer arithmetic
 + libprocps for reporting memory usage
-+ Boost for command lines usage
-+ libevent for network
++ [Boost1.75](https://www.boost.org/users/history/version_1_75_0.html)
+```asm
+downlaod boost_1_75_0.tar.bz2
+$tar -xvf boost_1_75_0.tar.bz2
+$cd ./boost_1_75_0
+$./bootstrap.sh
+$sudo ./b2 install
+```
 
 So far we have tested these only on Linux. On Debian 10 (buster), Ubuntu 18.04 LTS, Ubuntu 20.04 LTS:
 ```asm
-  $ sudo apt install build-essential cmake git libgmp3-dev libprocps-dev python3-markdown libboost-program-options-dev libssl-dev python3 pkg-config python3-dev libevent-dev
+  $ sudo apt install build-essential cmake git libgmp3-dev libprocps-dev python3-markdown libssl-dev python3 pkg-config python3-dev
   $ sudo apt install libjsoncpp-dev uuid-dev openssl libssl-dev zlib1g-dev # for drogon
 ```
 after cloning, you should download submodule:

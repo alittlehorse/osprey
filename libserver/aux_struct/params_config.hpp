@@ -5,6 +5,8 @@
 #ifndef OSPREY_LIBSERVER_AUX_STRUCT_PARAMS_CONFIG_HPP_
 #define OSPREY_LIBSERVER_AUX_STRUCT_PARAMS_CONFIG_HPP_
 #include <string>
+#include <libserver/ram_compiler/tinyram_precompiler.hpp>
+
 
 class params_config {
  public:
@@ -17,6 +19,7 @@ class params_config {
   [[nodiscard]] const size_t get_tinyram_program_size_bound() const;
   [[nodiscard]] const std::string& get_program() const;
   [[nodiscard]] const std::string& get_verify_program() const;
+  bool precompiler(const std::string& tinyram_program);
  private:
   size_t register_count;
   size_t word_size;
@@ -25,6 +28,7 @@ class params_config {
   size_t tinyram_program_size_bound;
   std::string program;
   std::string verify_program;
+
 };
 
 #endif //OSPREY_LIBSERVER_AUX_STRUCT_PARAMS_CONFIG_HPP_

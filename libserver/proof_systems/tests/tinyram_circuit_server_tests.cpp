@@ -16,6 +16,7 @@ int main(){
   typedef tinyram_r1cs_pp<tinyram_snark::default_r1cs_gg_ppzksnark_pp> params;
   std::unique_ptr<params_config> config(new params_config());
   config->init("../../libserver/tutorial/avarage/avarage.json");
+  config->precompiler(config->get_verify_program());
   tinyram_circuit<params> ppp(std::move(config));
   assert(ppp.get_bounds().find("time_bound")->second==64);
   auto b = ppp.get_ram_architecture_params();
@@ -38,7 +39,7 @@ int main(){
 
   ppp.initial_aux_input("../../libserver/tutorial/avarage/auxiliary_input.txt");
   auto x = ppp.get_auxiliary_input_tap();
-  assert(x.at(0) == 1);
+  assert(x.at(0) == 2);
   return 0;
 }
 
