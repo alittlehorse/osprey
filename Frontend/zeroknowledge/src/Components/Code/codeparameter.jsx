@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from "react-router-dom";
 import { Drawer, Form, Button, Col, Row, Input, Select, DatePicker } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import io from 'socket.io-client'
 const { Option } = Select;
 
 var stompClient = null; // 设置 STOMP 客户端
@@ -10,39 +11,48 @@ var SUBSCRIBE_PREFIX = "/topic/public" // 设置订阅消息的请求前缀
 var SUBSCRIBE = ""; // 设置订阅消息的请求地址
 var SEND_ENDPOINT = "/app/test"; // 设置服务器端点，访问服务器中哪个接口
 var message2 = "";
+let ws = "";
 function Codeparameter(props) {
     const [visible, setVisible] = useState(false);
     const [error, seterror] = useState("");
     const [channelConnected, setchannelConnected] = useState(false)
     const { compile_info, changeInfo } = props;
+
+    var wsUrl = "ws://106.13.125.83:3498/compute_query";//必须以ws开头
+    ws = new WebSocket(wsUrl);
     const connect = () => {
-        const Stomp = require('stompjs')
-        var SockJS = require('sockjs-client')
-        SockJS = new SockJS('http://localhost:8080/' + SOCKET_ENDPOINT)
-        stompClient = Stomp.over(SockJS);
-        stompClient.connect({}, onConnected, onError);
-    }
-    const onConnected = () => {
-        setchannelConnected(true);
-        stompClient.subscribe(SUBSCRIBE_PREFIX, onMessageReceived);
-        sendMessage();
+        ws.onopen = function () {
+            console.log('连接开始啦！');
+            // sendMessage();
+            onMessageReceived();
+
+        }
+        ws.onclose = function () {
+            console.log('连接关闭了');
+        }
+        ws.onerror = function () {
+            console.log('连接出错了');
+        }
     }
     const sendMessage = () => {
         // 设置待发送的消息内容
         var message = '{"destination": "' + SUBSCRIBE_PREFIX + '", "register_count": "' + values.register_count + '", "tinyram_input_size_bound": "' + values.tinyram_input_size_bound + '", "word_size": "' + values.word_size + '", "program": "' + values.program + '", "tinyram_input_size_bound": "' + values.tinyram_input_size_bound + '"}';
-        stompClient.send(SEND_ENDPOINT, {}, message);
+        ws.send(message);
     }
-    const onMessageReceived = (payload) => {
-        message2 += payload.body;
-        changeInfo(compile_info + message2);
-        console.log("shoudao", message2);
-        if (payload.body === "exit")
-            handleClick()
+    const onMessageReceived = () => {
+        ws.onmessage = function (payload) {
+            console.log('有消息过来');
+            console.log(payload.data);
+            message2 += payload.data;
+            changeInfo(compile_info + message2);
+            console.log("shoudao", message2);
+            if (payload.data === "exit")
+                handleClick()
+        }
     }
-    const onError = () => {
-        seterror('Could not connect you to the Chat Room Server. Please refresh this page and try again!');
-    }
+
     const { verify_program } = props;
+    const {userProgram} = props;
     const showDrawer = () => {
         setVisible(true);
     };
@@ -80,7 +90,7 @@ function Codeparameter(props) {
         if (anchorName) {
             // 找到锚点
             let anchorElement = document.getElementById(anchorName);
-            if(anchorElement) { anchorElement.scrollIntoView({block: 'start', behavior: 'smooth'}); }
+            if (anchorElement) { anchorElement.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
         }
     }
     let history = useHistory();
@@ -190,7 +200,25 @@ function Codeparameter(props) {
                                 ]
                                 }
                             >
-                                <Input.TextArea rows={30} placeholder={verify_program.toString()} onChange={onChange} name="verify_program" />
+                                <Input.TextArea rows={25} placeholder={verify_program.toString()} onChange={onChange} name="verify_program" />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={30}>
+                        <Col span={24}>
+                            <Form.Item
+                                name="userProgram"
+                                label="userProgram"
+                                initialValue={userProgram.toString()}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'please enter userProgram',
+                                    },
+                                ]
+                                }
+                            >
+                                <Input.TextArea rows={25} placeholder={userProgram.toString()} onChange={onChange} name="userProgram" />
                             </Form.Item>
                         </Col>
                     </Row>

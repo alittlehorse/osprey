@@ -9,7 +9,7 @@ import 'codemirror/addon/hint/show-hint.js';
 import 'codemirror/theme/monokai.css';
 import 'codemirror/theme/ambiance.css';
 import "./codeeditor.css";
-import { Select } from 'antd';
+import { Select, BackTop } from 'antd';
 import { Divider } from 'antd';
 import Codeparameter from './codeparameter';
 import 'codemirror/theme/3024-day.css';
@@ -69,9 +69,8 @@ import 'codemirror/theme/yeti.css';
 import 'codemirror/theme/zenburn.css';
 import TextArea from 'antd/lib/input/TextArea';
 import { Upload, message, Button } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
 const { Option } = Select;
-
 
 const setFontSizeByClassName = (value) => {
     var obj = document.getElementsByClassName("CodeMirror");
@@ -129,6 +128,19 @@ const SelectFontSize = ({ onChange }) => {
     );
 };
 
+const SelectLanguage = ({ onChange }) => {
+    return (
+        <Select style={{ width: 120 }} onChange={onChange} defaultValue="语言">
+            <Option value="c">c</Option>
+            <Option value="c++">c++</Option>
+            <Option value="java">java</Option>
+            <Option value="python">python</Option>
+            <Option value="csharp">c#</Option>
+        </Select>
+    );
+};
+
+
 const themes = ['3024-day', '3024-night', 'abcdef', 'ambiance-mobile', 'ambiance', 'base16-dark', 'base16-light', 'bespin', 'blackboard', 'cobalt', 'colorforth', 'darcula', 'dracula', 'duotone-dark', 'duotone-light', 'eclipse', 'elegant', 'erlang-dark', 'gruvbox-dark', 'hopscotch', 'icecoder', 'idea', 'isotope', 'lesser-dark', 'liquibyte', 'lucario', 'material', 'mbo', 'mdn-like', 'midnight', 'monokai', 'neat', 'neo', 'night', 'oceanic-next', 'panda-syntax', 'paraiso-dark', 'paraiso-light', 'pastel-on-dark', 'railscasts', 'rubyblue', 'seti', 'shadowfox', 'solarized', 'ssms', 'the-matrix', 'tomorrow-night-bright', 'tomorrow-night-eighties', 'ttcn', 'twilight', 'vibrant-ink', 'xq-dark', 'xq-light', 'yeti', 'zenburn'];
 const SelectFontTheme = ({ onChange }) => {
     return (
@@ -149,7 +161,9 @@ function Editor(props) {
     const [FontTheme, setFontTheme] = useState('FangSong')
     const [verify_program, setVerify_program] = useState('')
     const [theme, setTheme] = useState('monokai')
+    const [mode, setmode] = useState('text/x-c++src')
     const [compile_info, setcompile_info] = useState("")
+    const [userProgram, setuserProgram] = useState("")
 
     const SelectTheme = ({ onChange }) => {
         return (
@@ -179,6 +193,10 @@ function Editor(props) {
         console.log(value);
         setFontThemeByClassName(value);
     }
+    const onChangeLanguage = (value) => {
+        setmode(value);
+        console.log(value);
+    }
     const onChangeCodeTheme = (value) => {
         setTheme(value);
         console.log("huhu" + value)
@@ -193,30 +211,52 @@ function Editor(props) {
             setVerify_program(e.target.result);　　　//直接保存全部数据为一个字符串
         }.bind(this);
     };
-    function setFileVisible(){
-        var fileInput = document.getElementById("img-upload");
+    function my_fileReader2(e) {
+        console.log(e.target.files[0]);
+        const reader = new FileReader();
+        // 用readAsText读取TXT文件内容
+        reader.readAsText(e.target.files[0]);
+        reader.onload = function (e) {
+            console.log(e.target.result); 　　 //读取结果保存在字符串中
+            setuserProgram(e.target.result);　　　//直接保存全部数据为一个字符串
+        }.bind(this);
+        scrollToAnchor('program2')
+    };
+    function setFileVisible() {
+        var fileInput = document.getElementById("file-upload");
+        fileInput.click();
+    }
+    function setFileVisible2() {
+        var fileInput = document.getElementById("file-upload2");
         fileInput.click();
     }
     const scrollToAnchor = (anchorName) => {
         if (anchorName) {
             // 找到锚点
             let anchorElement = document.getElementById(anchorName);
-            if(anchorElement) { anchorElement.scrollIntoView({block: 'start', behavior: 'smooth'}); }
+            if (anchorElement) { anchorElement.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
         }
     }
+    
     return (
         <div >
+            <BackTop >
+            <Button type="Link" icon={<VerticalAlignTopOutlined />} />
+            </BackTop>
             <div className="ToolBar">
                 <SelectTabSize value={tabSize} onChange={onChangeTabSize} />
                 <SelectTheme value={theme} onChange={onChangeCodeTheme} />
                 <SelectFontSize value={FontSize} onChange={onChangeFontSize} />
                 <SelectFontTheme value={FontTheme} onChange={onChangeFontTheme} />
-                <Button icon={<UploadOutlined />} onClick = {setFileVisible} >上传文件</Button>
-                <Codeparameter verify_program={verify_program} compile_info={compile_info} changeInfo={(compile_info) => setcompile_info(compile_info)}></Codeparameter>
-                <input type="file" className="file" onChange={my_fileReader} id="img-upload" style={{display: 'none'}}/>
+                <SelectLanguage value={mode} onChange={onChangeLanguage} />
+                <Button icon={<UploadOutlined />} onClick={setFileVisible} >上传程序</Button>
+                <Button icon={<UploadOutlined />} onClick={setFileVisible2} >上传验证程序</Button>
+                <Codeparameter verify_program={verify_program} userProgram={userProgram} compile_info={compile_info} changeInfo={(compile_info) => setcompile_info(compile_info)}></Codeparameter>
+                <input type="file" className="file" onChange={my_fileReader} id="file-upload" style={{ display: 'none' }} />
+                <input type="file" className="file" onChange={my_fileReader2} id="file-upload2" style={{ display: 'none' }} />
                 <Divider />
             </div>
-            <div >
+            <div id='program1' >
                 <CodeMirror
                     value={verify_program}
                     options={{
@@ -226,7 +266,7 @@ function Editor(props) {
                         lineNumbers: true,
                         styleActiveLine: true,
                         keyMap: "sublime",
-                        mode: "c",
+                        mode,
                         matchBrackets: true,
                         extraKeys: { "Ctrl-Space": "autocomplete" }//ctrl-space唤起智能提示
                     }}
@@ -236,6 +276,27 @@ function Editor(props) {
 
                 />
             </div>
+            <div id='program2'>
+                <CodeMirror
+                    value={userProgram}
+                    options={{
+                        fullScreen: true,
+                        tabSize,
+                        theme,
+                        lineNumbers: true,
+                        styleActiveLine: true,
+                        keyMap: "sublime",
+                        mode,
+                        matchBrackets: true,
+                        extraKeys: { "Ctrl-Space": "autocomplete" }//ctrl-space唤起智能提示
+                    }}
+                    onBlur={editor => {
+                        setuserProgram(editor.getValue());
+                    }}
+
+                />
+            </div>
+            
             <div>
                 <TextArea rows={10} value={compile_info} id='result'></TextArea>
             </div>
