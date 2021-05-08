@@ -4,6 +4,9 @@
 #include <thread>
 #include <mutex>
 #include <string>
+
+#include <boost/json/src.hpp>
+
 using namespace drogon;
 class EchoWebsock : public drogon::WebSocketController<EchoWebsock> {
  public:
