@@ -44,9 +44,7 @@ void EchoWebsock::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr,
   std::thread t(performTask, std::ref(done), std::ref(m), std::ref(wsBuf));
   do {
     std::lock_guard<std::mutex> lock(m);
-    std::string cur;
     if (!ss.str().empty()) {
-      //ss >> cur;
       wsConnPtr->send(ss.str());
       ss.clear(); // clear state
       ss.str(""); // clear content
