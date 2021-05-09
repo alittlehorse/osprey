@@ -1,10 +1,11 @@
 import React from 'react';
+
 export const Nav01DataSource = {
   wrapper: { className: 'header0 home-page-wrapper' },
   page: { className: 'home-page' },
   logo: {
     className: 'header0-logo',
-    children: 'https://os.alipayobjects.com/rmsportal/mlcYmsRilwraoAe.svg',
+    // children: 'https://os.alipayobjects.com/rmsportal/mlcYmsRilwraoAe.svg',
   },
   Menu: {
     className: 'header0-menu',

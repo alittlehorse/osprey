@@ -11,48 +11,55 @@ var SUBSCRIBE_PREFIX = "/topic/public" // 设置订阅消息的请求前缀
 var SUBSCRIBE = ""; // 设置订阅消息的请求地址
 var SEND_ENDPOINT = "/app/test"; // 设置服务器端点，访问服务器中哪个接口
 var message2 = "";
-let ws = "";
+var wsUrl = "ws://106.13.125.83:3498/compute_query";//必须以ws开头
+let ws;
+
 function Codeparameter(props) {
     const [visible, setVisible] = useState(false);
     const [error, seterror] = useState("");
     const [channelConnected, setchannelConnected] = useState(false)
     const { compile_info, changeInfo } = props;
-
-    var wsUrl = "ws://106.13.125.83:3498/compute_query";//必须以ws开头
-    ws = new WebSocket(wsUrl);
     const connect = () => {
-        ws.onopen = function () {
-            console.log('连接开始啦！');
-            // sendMessage();
-            onMessageReceived();
-
+        ws = new WebSocket(wsUrl);
+        ws.onopen = function (evt) {
+            console.log("连接开始")
+            // ws.send('33');
+            sendMessage();
         }
+        onMessageReceived();
         ws.onclose = function () {
-            console.log('连接关闭了');
-        }
-        ws.onerror = function () {
-            console.log('连接出错了');
+            console.log("连接已关闭...");
+            handleClick()
         }
     }
-    const sendMessage = () => {
-        // 设置待发送的消息内容
-        var message = '{"destination": "' + SUBSCRIBE_PREFIX + '", "register_count": "' + values.register_count + '", "tinyram_input_size_bound": "' + values.tinyram_input_size_bound + '", "word_size": "' + values.word_size + '", "program": "' + values.program + '", "tinyram_input_size_bound": "' + values.tinyram_input_size_bound + '"}';
-        ws.send(message);
-    }
+    
     const onMessageReceived = () => {
         ws.onmessage = function (payload) {
             console.log('有消息过来');
             console.log(payload.data);
             message2 += payload.data;
             changeInfo(compile_info + message2);
-            console.log("shoudao", message2);
-            if (payload.data === "exit")
-                handleClick()
         }
+    }
+    const sendMessage = () => {
+        // 设置待发送的消息内容
+        var message3 = {
+            "register_count": values.register_count,
+            "tinyram_input_size_bound": values.tinyram_input_size_bound,
+            "word_size": values.word_size,
+            "verify_program": verify_program,
+            "tinyram_input_size_bound": values.tinyram_input_size_bound,
+            "userProgram": userProgram,
+            "program": values.program,
+            "destination": SUBSCRIBE_PREFIX
+        }
+        console.log("aaaa", message3);
+        console.log("bbbb", JSON.stringify(message3))
+        ws.send(JSON.stringify(message3));
     }
 
     const { verify_program } = props;
-    const {userProgram} = props;
+    const { userProgram } = props;
     const showDrawer = () => {
         setVisible(true);
     };

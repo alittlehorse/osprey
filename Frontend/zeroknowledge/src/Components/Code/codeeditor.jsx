@@ -161,7 +161,7 @@ function Editor(props) {
     const [FontTheme, setFontTheme] = useState('FangSong')
     const [verify_program, setVerify_program] = useState('')
     const [theme, setTheme] = useState('monokai')
-    const [mode, setmode] = useState('text/x-c++src')
+    const [mode, setmode] = useState('c++')
     const [compile_info, setcompile_info] = useState("")
     const [userProgram, setuserProgram] = useState("")
 

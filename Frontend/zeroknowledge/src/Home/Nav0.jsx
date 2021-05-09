@@ -2,7 +2,7 @@ import React from 'react';
 import TweenOne from 'rc-tween-one';
 import { Menu } from 'antd';
 import { getChildrenToRender } from './utils';
-
+import tsIcon from '../logo3.png';
 const { Item, SubMenu } = Menu;
 
 class Header extends React.Component {
@@ -85,7 +85,7 @@ class Header extends React.Component {
             animation={{ x: -30, type: 'from', ease: 'easeOutQuad' }}
             {...dataSource.logo}
           >
-            <img width="100%" src={dataSource.logo.children} alt="img" />
+            <img width="100%" src={tsIcon} alt="img" />
           </TweenOne>
           {isMobile && (
             <div
