@@ -53,11 +53,8 @@ The libsnark library relies on the following:
 + libprocps for reporting memory usage
 + [Boost1.75](https://www.boost.org/users/history/version_1_75_0.html)
 ```asm
-downlaod boost_1_75_0.tar.bz2
-$tar -xvf boost_1_75_0.tar.bz2
-$cd ./boost_1_75_0
-$./bootstrap.sh
-$sudo ./b2 install
+$ wget https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.tar.bz2 && tar -xvf ./boost_1_75_0.tar.bz2 
+$ cd ./boost_1_75_0 && ./bootstrap.sh && sudo ./b2 install
 ```
 
 So far we have tested these only on Linux. On Debian 10 (buster), Ubuntu 18.04 LTS, Ubuntu 20.04 LTS:
