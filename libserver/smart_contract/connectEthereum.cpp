@@ -10,7 +10,6 @@ smart contract module
  *****************************************************************************/
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
-#include <iostream>
 #include <string>
 #include "connectEthereum.h"
 
@@ -111,7 +110,6 @@ namespace smart_contract{
             printf("Python init failed!\n");
         }
         PyRun_SimpleString("import sys");
-        PyRun_SimpleString("sys.path.append('../../libserver/smart_contract')");
-
+        PyRun_SimpleString("sys.path.append('../libserver/smart_contract')");
     }
 }
