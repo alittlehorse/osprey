@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Menu, Breadcrumb, Switch, Divider, message } from 'antd';
+import { Layout, Menu, Breadcrumb, Switch, Divider, message, Image } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { useSprings, animated, interpolate } from 'react-spring'
+import tsIcon from '../../logo4.png';
 import { useGesture } from 'react-use-gesture'
 import {
     UserOutlined, LaptopOutlined, NotificationOutlined, MailOutlined,
@@ -94,6 +95,11 @@ const CodeContent = () => {
                             <Menu.Item key="11">积分商城</Menu.Item>
                             <Menu.Item key="12">操作记录</Menu.Item>
                         </SubMenu>
+                        <div id="menu-logo">
+                            <Image
+                                width={200}
+                                src={tsIcon} />
+                        </div>
                     </Menu>
                 </Sider>
                 <Layout style={{ padding: '0 24px 24px' }}>
