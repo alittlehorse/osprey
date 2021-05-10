@@ -1,6 +1,5 @@
 /** @file
  *****************************************************************************
-
 the server of zksnark using the proof program with tinyram
  + generate_proof
  + test_proof
@@ -22,8 +21,8 @@ the server of zksnark using the proof program with tinyram
 #include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
 #include <tinyram_snark/relations/ram_computations/rams/tinyram/tinyram_params.hpp>
 #include <tinyram_snark/zk_proof_systems/ppzksnark/ram_ppzksnark/ram_ppzksnark.hpp>
-#include <libserver/aux/proof_params_config.hpp>
-#include <libserver/aux/Log.hpp>
+#include <libserver/aux_struct/params_config.hpp>
+#include <libserver/aux_struct/Log.hpp>
 #include <libff/common/profiling.hpp>
 #include <iostream>
 #include <string>

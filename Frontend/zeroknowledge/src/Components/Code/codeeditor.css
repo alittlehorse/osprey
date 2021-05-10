@@ -1,0 +1,33 @@
+.CodeMirror {
+  height: 630px;
+  max-width: 1195px;
+  margin: 40px auto;
+  margin-top: -5px;
+  position: relative;
+  font-size: 18px;
+}
+
+.CodeMirror-scroll {
+  min-height: 630px;
+}
+.font-size-9 {
+  font-size: 9px;
+}
+
+.font-size-12 {
+  font-size: 12px;
+}
+.font-size-14 {
+  font-size: 50px;
+}
+
+.cm-s-monokai.CodeMirror {
+  background: #272822;
+  color: #f8f8f2;
+}
+
+
+/* .singlefunction-toolBar {
+  border: 1px solid;
+  height: 20px;
+} */

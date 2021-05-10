@@ -1,12 +1,14 @@
 #include <drogon/drogon.h>
-using namespace drogon;
-int main()
-{
 
-    app().setLogPath("./")
-            .setLogLevel(trantor::Logger::kWarn)
-            .addListener("0.0.0.0", 3498)
-            .setThreadNum(16)
-            .enableRunAsDaemon()
-            .run();
+#include <filesystem>
+using namespace drogon;
+int main() {
+  std::cout << "Current path is " << std::filesystem::current_path() << '\n';
+  app()
+      .setLogPath("./")
+      .setLogLevel(trantor::Logger::kWarn)
+      .addListener("0.0.0.0", 3498)
+          //.setThreadNum(16)
+          //.enableRunAsDaemon()
+      .run();
 }

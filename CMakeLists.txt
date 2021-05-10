@@ -153,8 +153,8 @@ else()
 endif()
 
 # Enable Boost for program_options
-FIND_PACKAGE(Boost 1.75.0 COMPONENTS program_options json REQUIRED)
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+FIND_PACKAGE( Boost 1.75.0 COMPONENTS program_options json REQUIRED )
+INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
 add_definitions(
         -DCURVE_${CURVE}
@@ -251,6 +251,11 @@ add_subdirectory(analysis_program)
 add_subdirectory(application)
 
 
+add_executable(
+        simulate
+        simulate.cpp
+        osprey_server.cpp)
+target_link_libraries(simulate libserver libanalysis)
 
 
 

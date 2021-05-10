@@ -3,9 +3,17 @@
 //
 #include <libserver/proof_systems/r1cs_adapter.hpp>
 #include <libserver/proof_systems/tinyram_r1cs_pp.hpp>
-#include <libserver/aux/proof_params_config.hpp>
+#include <libserver/aux_struct/params_config.hpp>
 using namespace libserver;
 int main(){
-    proof_params_config p("avarage");
-    r1cs_adapter<tinyram_r1cs_pp<tinyram_snark::default_r1cs_gg_ppzksnark_pp>> ra(p);
+  typedef tinyram_r1cs_pp<tinyram_snark::default_r1cs_gg_ppzksnark_pp> params;
+  std::unique_ptr<params_config> config(new params_config());
+  config->init("../../libserver/tutorial/avarage/avarage.json");
+  config->precompiler(config->get_verify_program());
+  r1cs_adapter<params> ra(std::move(config));
+  auto cs = ra.get_r1cs_constraint_system();
+  auto primary = ra.get_r1cs_primary_input("../../libserver/tutorial/avarage/primary_input.txt");
+  auto aux = ra.get_r1cs_auxiliary_input("../../libserver/tutorial/avarage/primary_input.txt","../../libserver/tutorial/avarage/auxiliary_input.txt");
+  assert(cs.is_satisfied(primary,aux));
+  return 0;
 }

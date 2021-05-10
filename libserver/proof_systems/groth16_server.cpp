@@ -13,10 +13,6 @@ the server of zksnark using the Groth16 algorithm
  * @copyright  MIT license (see LICENSE file)
  *****************************************************************************/
 
-
-#ifndef OSPREY_GROTH16_SERVER_TCC_
-#define OSPREY_GROTH16_SERVER_TCC_
-
 #include <libserver/aux_struct/Log.hpp>
 #include <tuple>
 #include <tinyram_snark/common/default_types/tinyram_gg_ppzksnark_pp.hpp>
@@ -28,12 +24,12 @@ using namespace tinyram_snark;
 namespace  libserver{
 
     std::optional<const r1cs_gg_ppzksnark_proof<default_r1cs_gg_ppzksnark_pp>>
-    groth16_server::generate_proof(const r1cs_gg_ppzksnark_proving_key<default_r1cs_gg_ppzksnark_pp>& proving_key) {
+    groth16_server::generate_proof(const r1cs_gg_ppzksnark_proving_key<default_r1cs_gg_ppzksnark_pp>& proving_key,const std::string& primary_input, const std::string& aux_input_path) {
         try{
             const r1cs_gg_ppzksnark_proof<tinyram_r1cs_params::snark_pp>
                     proof = r1cs_gg_ppzksnark_prover<tinyram_r1cs_params::snark_pp>(proving_key,
-                                                                                    _r1cs_adapter->get_r1cs_primary_input(),
-                                                                                    _r1cs_adapter->get_auxiliary_input());
+                                                                                    r1cs_adapter_->get_r1cs_primary_input(primary_input),
+                                                                                    r1cs_adapter_->get_r1cs_auxiliary_input(primary_input,aux_input_path));
             return {proof};
         }
        catch (std::exception &e){
@@ -43,7 +39,7 @@ namespace  libserver{
 
     std::optional<const r1cs_gg_ppzksnark_keypair<default_r1cs_gg_ppzksnark_pp>> groth16_server::generate_keypair() {
         try{
-            auto keypair = r1cs_gg_ppzksnark_generator<tinyram_r1cs_params::snark_pp>(_r1cs_adapter->get_r1cs_constraint_system());//OK!
+            auto keypair = r1cs_gg_ppzksnark_generator<tinyram_r1cs_params::snark_pp>(r1cs_adapter_->get_r1cs_constraint_system());//OK!
             return {keypair};
         }
        catch (std::exception &e){
@@ -51,8 +47,9 @@ namespace  libserver{
        }
     }
     bool groth16_server::verify(const r1cs_gg_ppzksnark_verification_key<default_r1cs_gg_ppzksnark_pp>& verification_key,
-                                const r1cs_gg_ppzksnark_proof<default_r1cs_gg_ppzksnark_pp>& proof){
-        bool b = r1cs_gg_ppzksnark_verifier_strong_IC<tinyram_r1cs_params::snark_pp>(verification_key, _r1cs_adapter->get_r1cs_primary_input(), proof);
+                                const r1cs_gg_ppzksnark_proof<default_r1cs_gg_ppzksnark_pp>& proof,
+                                const std::string& primary_input_path){
+        bool b = r1cs_gg_ppzksnark_verifier_weak_IC<tinyram_r1cs_params::snark_pp>(verification_key, r1cs_adapter_->get_r1cs_primary_input(primary_input_path), proof);
         return b;
     }
 
@@ -130,6 +127,3 @@ namespace  libserver{
     }
 
 }
-
-
-#endif
