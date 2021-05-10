@@ -248,6 +248,7 @@ add_subdirectory(tinyram_snark)
 add_subdirectory(depends)
 add_subdirectory(libserver)
 add_subdirectory(analysis_program)
+add_subdirectory(application)
 
 
 add_executable(

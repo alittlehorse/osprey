@@ -1,7 +1,7 @@
 // Copyright [2021] <Copyright syheliel>
 #include "BuyerCtrl.h"
 
-#include <libserver/osprey_server.hpp>
+//#include <libserver/osprey_server.hpp>
 
 void drogon::BuyerCtrl::compute_query(
     application::Requester &&requester,
@@ -14,7 +14,7 @@ void drogon::BuyerCtrl::compute_query(
   auto resp = HttpResponse::newHttpJsonResponse(ret);
   resp->setStatusCode(k200OK);
   resp->setContentTypeCode(CT_APPLICATION_JSON);
-  server_provider provider;
+//server_provider provider;
   callback(resp);
 }
 
