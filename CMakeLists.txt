@@ -153,8 +153,8 @@ else()
 endif()
 
 # Enable Boost for program_options
-FIND_PACKAGE( Boost 1.40 COMPONENTS program_options REQUIRED )
-INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
+FIND_PACKAGE(Boost 1.75.0 COMPONENTS program_options json REQUIRED)
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 
 add_definitions(
         -DCURVE_${CURVE}
@@ -247,6 +247,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
 add_subdirectory(tinyram_snark)
 add_subdirectory(depends)
 add_subdirectory(libserver)
+add_subdirectory(analysis_program)
 add_subdirectory(application)
 
 
