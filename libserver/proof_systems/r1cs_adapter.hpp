@@ -21,71 +21,51 @@ Declaration of interface of r1cs_adapter.
 #include <tinyram_snark/relations/constraint_satisfaction_problems/r1cs/r1cs.hpp>
 #include <libserver/aux_struct/proof_params_config.hpp>
 #include <libserver/ram_compiler/tinyram_compiler_server.hpp>
-
+#include <libserver/aux_struct/proof_params_config.hpp>
 using tinyram_snark::ram_to_r1cs;
 using tinyram_snark::r1cs_constraint_system;
 using tinyram_snark::r1cs_primary_input;
 using tinyram_snark::r1cs_auxiliary_input;
 
 namespace libserver{
-    ///
-    /// \tparam tinyram_r1cs_params
-    /// r1cs_adapter is adapter to translating tinyram circuit,witness,statement to r1cs format
-    /// which zk proof system interface used as params
-    template<typename tinyram_r1cs_params>
-    class r1cs_adapter {
-    private:
-        tinyram_circuit<tinyram_r1cs_params>* _tinyram_ciruit;
-        //ram_to_r1cs<typename tinyram_r1cs_params::machine_pp> r;
-        r1cs_constraint_system<typename tinyram_r1cs_params::FieldT> cs;
-        r1cs_primary_input<typename tinyram_r1cs_params::FieldT> primary_input;
-        r1cs_auxiliary_input<typename tinyram_r1cs_params::FieldT> auxiliary_input;
-        proof_params_config p;
+/// \tparam tinyram_r1cs_params
+/// r1cs_adapter is adapter to translating tinyram circuit,witness,statement to r1cs format
+/// which zk proof system interface used as params
+template<typename tinyram_r1cs_params>
+class r1cs_adapter {
+ public:
+  explicit r1cs_adapter(std::unique_ptr<params_config>&& p){
+    tinyram_r1cs_params::init_public_params();
+    tinyram_ciruit_ptr_ = std::make_unique<tinyram_circuit<tinyram_r1cs_params>>(std::move(p));
+    auto ap = tinyram_ciruit_ptr_->get_ram_architecture_params();
+    auto bounds = tinyram_ciruit_ptr_->get_bounds();
 
-    public:
-        explicit r1cs_adapter(const proof_params_config& p):p(p){
-            _tinyram_ciruit = new tinyram_circuit<tinyram_r1cs_params>(p.get_processed_assembly_path(),p.get_computation_bounds_path(),p.get_architecture_params_path(),p.get_primary_input_path(),p.get_auxiliary_input_path());
-            auto ap = _tinyram_ciruit->get_ram_architecture_params();
-            auto bounds = _tinyram_ciruit->get_bounds();
-            
-            size_t tinyram_input_size_bound, tinyram_program_size_bound, time_bound;
-            tinyram_input_size_bound = bounds["tinyram_input_size_bound"];
-            tinyram_program_size_bound = bounds["tinyram_program_size_bound"];
-            time_bound = bounds["time_bound"];
+    size_t tinyram_input_size_bound, tinyram_program_size_bound, time_bound;
+    tinyram_input_size_bound = bounds["tinyram_input_size_bound"];
+    tinyram_program_size_bound = bounds["tinyram_program_size_bound"];
+    time_bound = bounds["time_bound"];
+    const size_t boot_trace_size_bound = tinyram_input_size_bound + tinyram_program_size_bound;
 
-            auto program = _tinyram_ciruit->get_tinyram_program();
-            auto boot_trace = _tinyram_ciruit->get_boot_trace();
+    auto program = tinyram_ciruit_ptr_->get_tinyram_program();
 
-            const size_t boot_trace_size_bound = tinyram_input_size_bound + tinyram_program_size_bound;
+    //r.print_execution_trace();
+    compiler_ptr_ = std::make_unique<tinyram_compiler_server<tinyram_r1cs_params>>("avarage/avarage-log.txt");
+    compiler_ptr_->specialization(ap,boot_trace_size_bound,time_bound);
+    cs_ = compiler_ptr_->compile_r1cs_constrain_system().value();
+  }
 
+  const r1cs_primary_input<typename tinyram_r1cs_params::FieldT> get_r1cs_primary_input(const std::string& primary_input_path) const;
 
-            ram_to_r1cs<typename tinyram_r1cs_params::machine_pp> r(ap, boot_trace_size_bound, time_bound);
-            r.instance_map();
+  const r1cs_auxiliary_input<typename tinyram_r1cs_params::FieldT> get_r1cs_auxiliary_input(const std::string& primary_input_path,const std::string& aux_input_path)const;
 
-            auto aux_input_tape = _tinyram_ciruit->get_auxiliary_input_tap();
+  const r1cs_constraint_system<typename tinyram_r1cs_params::FieldT> get_r1cs_constraint_system()const;
 
-
-            //primary_input = ram_to_r1cs<typename tinyram_r1cs_params::machine_pp>::primary_input_map(ap, boot_trace_size_bound, boot_trace);
-            //auxiliary_input = r.auxiliary_input_map(boot_trace, aux_input_tape);
-            //cs = r.get_constraint_system();
-            //r.print_execution_trace();
-             tinyram_compiler_server<tinyram_r1cs_params> compiler(p.get_log_path());
-             compiler.specialization(ap,boot_trace_size_bound,time_bound);
-             cs = compiler.compile_r1cs_constrain_system().value();
-            primary_input = compiler.compile_r1cs_primary_input(boot_trace).value();
-            auxiliary_input = compiler.compile_r1cs_auxiliary_input(boot_trace,aux_input_tape).value();
-
-            assert(cs.is_satisfied(primary_input, auxiliary_input)==true);
-        }
-
-        const r1cs_primary_input<typename tinyram_r1cs_params::FieldT> get_r1cs_primary_input() const;
-
-        const r1cs_auxiliary_input<typename tinyram_r1cs_params::FieldT> get_auxiliary_input()const;
-
-        const r1cs_constraint_system<typename tinyram_r1cs_params::FieldT> get_r1cs_constraint_system()const;
-    };
-
-
+  bool verify(const r1cs_primary_input<typename tinyram_r1cs_params::FieldT> &primary_input, const r1cs_auxiliary_input<typename tinyram_r1cs_params::FieldT> &auxiliary_input);
+ private:
+  std::unique_ptr<tinyram_circuit<tinyram_r1cs_params>> tinyram_ciruit_ptr_;
+  r1cs_constraint_system<typename tinyram_r1cs_params::FieldT> cs_;
+  std::unique_ptr<tinyram_compiler_server<tinyram_r1cs_params>> compiler_ptr_ = nullptr;
+};
 }
 
 #include <libserver/proof_systems/r1cs_adapter.tcc>

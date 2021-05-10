@@ -3,7 +3,7 @@ Osprey
 ---------------------------
 ### Author and Contract
 
-osprey is developed by alittlehorse and is released under the MIT license.
+osprey is developed by *alittlehorse,syheliel,cx19981114,Zirui Hu* and is released under the MIT license.
 
 ------------------------------
 **NOTE**:this project is a Big data PaaS(Processing as a Server) trading platform based on zero-knowledge proof and blockchain with the protection of data privacy and functional privacy.
@@ -51,8 +51,11 @@ The libsnark library relies on the following:
 + CMake build infrastructure
 + GMP for certain bit-integer arithmetic
 + libprocps for reporting memory usage
-+ Boost for command lines usage
-+ libevent for network
++ [Boost1.75](https://www.boost.org/users/history/version_1_75_0.html)
+```asm
+$ wget https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.tar.bz2 && tar -xvf ./boost_1_75_0.tar.bz2 
+$ cd ./boost_1_75_0 && ./bootstrap.sh && sudo ./b2 install
+```
 
 So far we have tested these only on Linux. On Debian 10 (buster), Ubuntu 18.04 LTS, Ubuntu 20.04 LTS:
 ```bash

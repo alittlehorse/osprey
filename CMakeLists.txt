@@ -153,7 +153,7 @@ else()
 endif()
 
 # Enable Boost for program_options
-FIND_PACKAGE( Boost 1.40 COMPONENTS program_options REQUIRED )
+FIND_PACKAGE( Boost 1.75.0 COMPONENTS program_options json REQUIRED )
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
 add_definitions(
@@ -247,9 +247,14 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
 add_subdirectory(tinyram_snark)
 add_subdirectory(depends)
 add_subdirectory(libserver)
-add_subdirectory(application)
+add_subdirectory(analysis_program)
 
 
+add_executable(
+        simulate
+        simulate.cpp
+        osprey_server.cpp)
+target_link_libraries(simulate libserver libanalysis)
 
 
 
