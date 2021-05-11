@@ -1,6 +1,7 @@
 add_library(libserver
         STATIC
 
+        osprey_server.cpp
         proof_systems/groth16_server.cpp
         aux_struct/Log.hpp
         aux_struct/string_helper.hpp
@@ -12,11 +13,13 @@ add_library(libserver
         ram_compiler/specialization_pool.hpp
         aux_struct/params_config.cpp)
 
+add_subdirectory(analysis_program)
 add_subdirectory(smart_contract)
 target_link_libraries(libserver
         tinyram_snark
         fmt::fmt
         smart_contract
+        libanalysis
         ${Boost_LIBRARIES}
 )
 
@@ -83,7 +86,7 @@ target_link_libraries(compiler_tests libserver)
 add_executable(
         server_provider
         EXCLUDE_FROM_ALL
-        ../osprey_server.cpp)
+        osprey_server.cpp)
 target_link_libraries(server_provider libserver)
 
 

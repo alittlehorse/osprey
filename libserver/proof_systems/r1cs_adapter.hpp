@@ -19,9 +19,9 @@ Declaration of interface of r1cs_adapter.
 #include <libserver/proof_systems/tinyram_circuit.hpp>
 #include <tinyram_snark/reductions/ram_to_r1cs/ram_to_r1cs.hpp>
 #include <tinyram_snark/relations/constraint_satisfaction_problems/r1cs/r1cs.hpp>
-#include <libserver/aux_struct/proof_params_config.hpp>
+
 #include <libserver/ram_compiler/tinyram_compiler_server.hpp>
-#include <libserver/aux_struct/proof_params_config.hpp>
+
 using tinyram_snark::ram_to_r1cs;
 using tinyram_snark::r1cs_constraint_system;
 using tinyram_snark::r1cs_primary_input;

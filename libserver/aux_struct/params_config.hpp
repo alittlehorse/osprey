@@ -6,11 +6,13 @@
 #define OSPREY_LIBSERVER_AUX_STRUCT_PARAMS_CONFIG_HPP_
 #include <string>
 #include <libserver/ram_compiler/tinyram_precompiler.hpp>
+#include <boost/json.hpp>
 
 
 class params_config {
  public:
   params_config()=default;
+  explicit params_config(const boost::json::object& object);
   bool init(const std::string& config_path);
   [[nodiscard]] const size_t get_register_count() const;
   [[nodiscard]] const size_t get_word_size() const;
