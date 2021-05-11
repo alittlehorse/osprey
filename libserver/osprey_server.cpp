@@ -103,6 +103,12 @@ osprey_plateform::osprey_plateform(const std::string& config) {
   groth16_server_ = make_unique<libserver::groth16_server>(std::move(a));
 }
 
+osprey_plateform::osprey_plateform(const boost::json::object &object) {
+  std::unique_ptr<params_config> a= std::make_unique<params_config>(object);
+  a->precompiler(a->get_verify_program());
+  groth16_server_ = make_unique<libserver::groth16_server>(std::move(a));
+}
+
 void osprey_plateform::set_server_address(const string &account) {
   this->groth16_server_address_ = account;
 }
@@ -117,5 +123,6 @@ bool osprey_plateform::on_generate_keypair(const std::string& proving_key_path,c
   groth16_server_->serialize_verification_key(keypair.value().vk,verification_key_path);
   return true;
 }
+
 
 
