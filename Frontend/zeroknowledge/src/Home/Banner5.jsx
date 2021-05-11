@@ -2,7 +2,7 @@ import React from 'react';
 import QueueAnim from 'rc-queue-anim';
 import TweenOne from 'rc-tween-one';
 import { getChildrenToRender } from './utils';
-
+import logoindex1 from '../banner2.png';
 class Banner5 extends React.PureComponent {
   render() {
     const { ...tagProps } = this.props;
@@ -35,7 +35,7 @@ class Banner5 extends React.PureComponent {
             {dataSource.childWrapper.children.map(getChildrenToRender)}
           </QueueAnim>
           <TweenOne animation={animType.one} key="title" {...dataSource.image}>
-            <img src={dataSource.image.children} width="100%" alt="img" />
+            <img src={logoindex1} width="100%" alt="img" />
           </TweenOne>
         </div>
       </div>

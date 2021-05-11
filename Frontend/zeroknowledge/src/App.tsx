@@ -1,17 +1,12 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Header from './Home/Nav0';
-import Footer from './Home/Footer1';
-import Home from './Home';
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Link, Switch, Redirect} from "react-router-dom";
+import Header from "./Home/Nav0";
+import Footer from "./Home/Footer1";
+import Home from "./Home";
 
-import {
-  Nav01DataSource,
-  Footer10DataSource,
-} from './Home/data.source.js';
-import Code from './Components/Code/code';
-import MyResult from './Components/Result/result';
-
-
+import { Nav01DataSource, Footer10DataSource } from "./Home/data.source.js";
+import Code from "./Components/Code/code";
+import MyResult from "./Components/Result/result";
 
 class App extends Component {
   constructor(props: {} | Readonly<{}>) {
@@ -21,9 +16,12 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/code" component={Code} />
-          <Route exact path="/result" component={MyResult} />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/code" component={Code} />
+            <Route path="/result" component={MyResult} />
+            {/* <Redirect exact to="/" from="/" /> */}
+          </Switch>
         </div>
       </Router>
     );

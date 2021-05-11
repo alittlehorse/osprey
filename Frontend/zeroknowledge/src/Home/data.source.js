@@ -27,65 +27,13 @@ export const Nav01DataSource = {
               name: 'text',
             },
           ],
-        },
-        subItem: [
-          {
-            name: 'sub0',
-            className: 'item-sub',
-            children: {
-              className: 'item-sub-item',
-              children: [
-                {
-                  name: 'image0',
-                  className: 'item-image',
-                  children:
-                    'https://gw.alipayobjects.com/zos/rmsportal/ruHbkzzMKShUpDYMEmHM.svg',
-                },
-                {
-                  name: 'title',
-                  className: 'item-title',
-                  children: 'Osprey',
-                },
-                {
-                  name: 'content',
-                  className: 'item-content',
-                  children: '企业级 UI 设计体系',
-                },
-              ],
-            },
-          },
-          {
-            name: 'sub1',
-            className: 'item-sub',
-            children: {
-              className: 'item-sub-item',
-              children: [
-                {
-                  name: 'image0',
-                  className: 'item-image',
-                  children:
-                    'https://gw.alipayobjects.com/zos/rmsportal/ruHbkzzMKShUpDYMEmHM.svg',
-                },
-                {
-                  name: 'title',
-                  className: 'item-title',
-                  children: 'Ant Design',
-                },
-                {
-                  name: 'content',
-                  className: 'item-content',
-                  children: '企业级 UI 设计体系',
-                },
-              ],
-            },
-          },
-        ],
+        }
       },
       {
         name: 'item1',
         className: 'header0-item',
         children: {
-          href: 'http://localhost:3000/page2',
+          href: 'http://localhost:3000/code',
           children: [
             {
               children: (
@@ -149,7 +97,7 @@ export const Banner51DataSource = {
         className: 'banner5-explain',
         children: (
           <span>
-            <p>PAAS零知识证明平台</p>
+            <p>PaaS零知识证明平台</p>
           </span>
         ),
       },
@@ -313,7 +261,7 @@ export const Teams10DataSource = {
               className: 'teams1-job',
               children: (
                 <span>
-                  <p>华东师范大学-17-网络安全</p>
+                  <p>华东师范大学-17-数据科学</p>
                 </span>
               ),
             },
@@ -321,7 +269,7 @@ export const Teams10DataSource = {
               name: 'content1',
               className: 'teams1-content',
               children:
-                'Osprey 是华东师范大学全新一代大数据安全交易解决方案，致力于提供一套简单方便、专业可靠、无限可能的大数据安全交易最佳实践。',
+                'Osprey -- 软件开发工程师',
             },
           ],
         },
@@ -361,7 +309,7 @@ export const Teams10DataSource = {
               name: 'content1',
               className: 'teams1-content',
               children:
-                'Osprey也是一款优雅高效的在线文档编辑与协同工具， 让每个企业轻松拥有文档中心阿里巴巴集团内部使用多年，众多中小企业首选。',
+                'Osprey -- 软件开发工程师',
             },
           ],
         },
@@ -401,7 +349,7 @@ export const Teams10DataSource = {
               name: 'content1',
               className: 'teams1-content',
               children:
-                'Osprey 是华东师范大学全新一代大数据安全交易解决方案，致力于提供一套简单方便、专业可靠、无限可能的大数据安全交易最佳实践。',
+                'Osprey -- 软件开发工程师',
             },
           ],
         },
@@ -562,6 +510,175 @@ export const Content30DataSource = {
     ],
   },
 };
+export const Feature50DataSource = {
+  wrapper: { className: 'home-page-wrapper content7-wrapper' },
+  page: { className: 'home-page content7' },
+  OverPack: {},
+  titleWrapper: {
+    className: 'title-wrapper',
+    children: [
+      {
+        name: 'title',
+        children: 'Osprey提供定制化的数据交易服务',
+        className: 'title-h1',
+      },
+      { name: 'content', children: '基于华东师范大学数据科学学院强大的基础资源' },
+    ],
+  },
+  tabsWrapper: { className: 'content7-tabs-wrapper' },
+  block: {
+    children: [
+      {
+        name: 'block0',
+        tag: {
+          className: 'content7-tag',
+          text: { children: 'PHONE', className: 'content7-tag-name' },
+          icon: { children: 'mobile' },
+        },
+        content: {
+          className: 'content7-content',
+          text: {
+            className: 'content7-text',
+            md: 14,
+            xs: 24,
+            children: (
+              <span>
+                <h3>创新</h3>
+                <p>
+                将通用零知识证明技术应用于大数据PaaS交易系统。SDTE提出的大数据PaaS交易系统是使用SGX和智能合约来保证数据隐私和执行过可信的特性的，这样会对硬件有限制条件。而本文是使用零知识证明技术来保证上述特性的，对于参与方的硬件没有要求。同时，应用零知识证明保证“谁卖谁计算“，解决了SDTE中多个节点对同一个分析程序进行计算，从而浪费算力的缺点。
+                </p>
+                <br />
+                <h3>融合</h3>
+                <p>
+                在大数据PaaS系统中加入函数隐私特性。Osprey首次将函数隐私引入大数据交易系统。已有的大数据交易系统方案没有考虑到买方的分析函数不想透露的情况，基于这种情况，Osprey用程序混淆和IO的方法提供了一定程度上的函数隐私。
+                </p>
+                <br />
+                <h3>
+                  安全
+                </h3>同时保证公平交易、数据隐私和函数隐私。分析以前的方案，SDTE主要解决的问题是数据隐私，没有考虑函数隐私。而fair-swap等方案主要关注公平交易。Osprey同时实现了公平交易，数据隐私和函数隐私
+              </span>
+            ),
+          },
+          img: {
+            className: 'content7-img',
+            children:
+              'https://zos.alipayobjects.com/rmsportal/xBrUaDROgtFBRRL.png',
+            md: 10,
+            xs: 24,
+          },
+        },
+      },
+      {
+        name: 'block1',
+        tag: {
+          className: 'content7-tag',
+          icon: { children: 'tablet' },
+          text: { className: 'content7-tag-name', children: 'TABLET' },
+        },
+        content: {
+          className: 'content7-content',
+          text: {
+            className: 'content7-text',
+            md: 14,
+            xs: 24,
+            children: (
+              <span>
+                <h3>技术</h3>
+                <p>
+                  丰富的技术组件，简单组装即可快速搭建金融级应用，丰富的技术组件，简单组装即可快速搭建金融级应用。
+                </p>
+                <br />
+                <h3>融合</h3>
+                <p>
+                  解放业务及技术生产力，推动金融服务底层创新，推动金融服务底层创新。解放业务及技术生产力，推动金融服务底层创新。
+                </p>
+                <br />
+                <h3>
+                  开放
+                </h3>符合金融及要求的安全可靠、高可用、高性能的服务能力，符合金融及要求的安全可靠、高可用、高性能的服务能力。
+              </span>
+            ),
+          },
+          img: {
+            className: 'content7-img',
+            md: 10,
+            xs: 24,
+            children:
+              'https://zos.alipayobjects.com/rmsportal/xBrUaDROgtFBRRL.png',
+          },
+        },
+      },
+      {
+        name: 'block2',
+        tag: {
+          className: 'content7-tag',
+          text: { children: 'DESKTOP', className: 'content7-tag-name' },
+          icon: { children: 'laptop' },
+        },
+        content: {
+          className: 'content7-content',
+          text: {
+            className: 'content7-text',
+            md: 14,
+            xs: 24,
+            children: (
+              <span>
+                <h3>技术</h3>
+                <p>
+                  丰富的技术组件，简单组装即可快速搭建金融级应用，丰富的技术组件，简单组装即可快速搭建金融级应用。
+                </p>
+                <br />
+                <h3>融合</h3>
+                <p>
+                  解放业务及技术生产力，推动金融服务底层创新，推动金融服务底层创新。解放业务及技术生产力，推动金融服务底层创新。
+                </p>
+                <br />
+                <h3>
+                  开放
+                </h3>符合金融及要求的安全可靠、高可用、高性能的服务能力，符合金融及要求的安全可靠、高可用、高性能的服务能力。
+              </span>
+            ),
+          },
+          img: {
+            className: 'content7-img',
+            md: 10,
+            xs: 24,
+            children:
+              'https://zos.alipayobjects.com/rmsportal/xBrUaDROgtFBRRL.png',
+          },
+        },
+      },
+    ],
+  },
+};
+export const Content40DataSource = {
+  wrapper: { className: 'home-page-wrapper content4-wrapper' },
+  page: { className: 'home-page content4' },
+  OverPack: { playScale: 0.3, className: '' },
+  titleWrapper: {
+    className: 'title-wrapper',
+    children: [
+      {
+        name: 'title',
+        children: 'Osprey提供专业的服务',
+        className: 'title-h1',
+      },
+      {
+        name: 'content',
+        className: 'title-content content4-title-content',
+        children: '大数据时代，数据交易',
+      },
+    ],
+  },
+  video: {
+    className: 'content4-video',
+    children: {
+      video: 'https://os.alipayobjects.com/rmsportal/EejaUGsyExkXyXr.mp4',
+      image: 'https://zos.alipayobjects.com/rmsportal/HZgzhugQZkqUwBVeNyfz.jpg',
+    },
+  },
+};
+
 export const Footer10DataSource = {
   wrapper: { className: 'home-page-wrapper footer1-wrapper' },
   OverPack: {
@@ -588,7 +705,7 @@ export const Footer10DataSource = {
           children: [
             {
               name: 'content0',
-              children: 'Animation specification and components of Ant Design.',
+              children: '基于AntDesign+AntMotion的前端开发',
             },
           ],
         },
@@ -617,7 +734,7 @@ export const Footer10DataSource = {
         childWrapper: {
           children: [
             { href: '#', name: 'link0', children: 'FAQ' },
-            { href: '#', name: 'link1', children: '联系我们' },
+            { href: 'https://github.com/alittlehorse/osprey#', name: 'link1', children: '联系我们' },
           ],
         },
       },
@@ -626,11 +743,11 @@ export const Footer10DataSource = {
         xs: 24,
         md: 6,
         className: 'block',
-        title: { children: '资源' },
+        title: { children: '组件库' },
         childWrapper: {
           children: [
-            { href: '#', name: 'link0', children: 'Ant Design' },
-            { href: '#', name: 'link1', children: 'Ant Motion' },
+            { href: 'https://ant.design/components/overview-cn/', name: 'link0', children: 'Ant Design' },
+            { href: 'https://motion.ant.design/index-cn', name: 'link1', children: 'Ant Motion' },
           ],
         },
       },

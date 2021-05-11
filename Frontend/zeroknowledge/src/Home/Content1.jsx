@@ -3,6 +3,7 @@ import QueueAnim from 'rc-queue-anim';
 import TweenOne from 'rc-tween-one';
 import { Row, Col } from 'antd';
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
+import logoindex1 from '../logo-index1.png';
 
 function Content1(props) {
   const { ...tagProps } = props;
@@ -40,7 +41,7 @@ function Content1(props) {
           }}
         >
           <span {...dataSource.img}>
-            <img src={dataSource.img.children} width="100%" alt="img" />
+            <img src={logoindex1} width="100%" alt="img" />
           </span>
         </TweenOne>
         <QueueAnim

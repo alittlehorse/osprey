@@ -8,19 +8,23 @@ import Banner5 from './Banner5';
 import Content0 from './Content0';
 import Content1 from './Content1';
 import Teams1 from './Teams1';
-import Content3 from './Content3';
+import Feature8 from './Feature8';
+import Feature5 from './Feature5';
 import Footer1 from './Footer1';
-
+import Content4 from './Content4';
 import {
   Nav01DataSource,
   Banner51DataSource,
   Content00DataSource,
   Content10DataSource,
   Teams10DataSource,
-  Content30DataSource,
   Footer10DataSource,
+  Feature80DataSource,
+  Content40DataSource,
+  Feature50DataSource,
 } from './data.source';
 import './less/antMotionStyle.less';
+import PmRibbon from 'pm-ribbon'
 
 let isMobile;
 enquireScreen((b) => {
@@ -34,7 +38,7 @@ export default class Home extends React.Component {
     super(props);
     this.state = {
       isMobile,
-      show: !location.port, 
+      show: !location.port,
     };
   }
 
@@ -82,16 +86,24 @@ export default class Home extends React.Component {
         dataSource={Content10DataSource}
         isMobile={this.state.isMobile}
       />,
+      <Content4
+        id="Content4_0"
+        key="Content4_0"
+        dataSource={Content40DataSource}
+        isMobile={this.state.isMobile}
+      />,
       <Teams1
         id="Teams1_0"
         key="Teams1_0"
         dataSource={Teams10DataSource}
         isMobile={this.state.isMobile}
       />,
-      <Content3
-        id="Content3_0"
-        key="Content3_0"
-        dataSource={Content30DataSource}
+
+
+      <Feature5
+        id="Feature5_0"
+        key="Feature5_0"
+        dataSource={Feature50DataSource}
         isMobile={this.state.isMobile}
       />,
       <Footer1
@@ -112,6 +124,7 @@ export default class Home extends React.Component {
         {this.state.show && children}
         {/* 如果不是 dva 2.0 替换成 {children} end */}
       </div>
+      
     );
   }
 }
