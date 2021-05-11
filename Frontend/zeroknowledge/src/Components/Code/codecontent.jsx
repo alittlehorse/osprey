@@ -62,7 +62,7 @@ const CodeContent = () => {
             <Header className="header">
                 <div className="logo" />
                 <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-                    <Menu.Item key="1">首页</Menu.Item>
+                    <Menu.Item key="1" ><a href="../#">首页</a></Menu.Item>
                     <Menu.Item key="2">控制台</Menu.Item>
                     <Menu.Item key="3">使用帮助</Menu.Item>
                 </Menu>
@@ -95,11 +95,9 @@ const CodeContent = () => {
                             <Menu.Item key="11">积分商城</Menu.Item>
                             <Menu.Item key="12">操作记录</Menu.Item>
                         </SubMenu>
-                        <div id="menu-logo">
                             <Image
-                                width={200}
+                                width={250}
                                 src={tsIcon} />
-                        </div>
                     </Menu>
                 </Sider>
                 <Layout style={{ padding: '0 24px 24px' }}>

@@ -32,7 +32,7 @@ function Codeparameter(props) {
             handleClick()
         }
     }
-    
+
     const onMessageReceived = () => {
         ws.onmessage = function (payload) {
             console.log('有消息过来');
@@ -48,7 +48,7 @@ function Codeparameter(props) {
             "tinyram_input_size_bound": values.tinyram_input_size_bound,
             "word_size": values.word_size,
             "verify_program": verify_program,
-            "tinyram_input_size_bound": values.tinyram_input_size_bound,
+            "tinyram_program_size_bound": values.tinyram_program_size_bound,
             "userProgram": userProgram,
             "program": values.program,
             "destination": SUBSCRIBE_PREFIX
@@ -68,12 +68,12 @@ function Codeparameter(props) {
         setVisible(false);
     };
     const [values, setValues] = useState({
-        register_count: "",
-        word_size: "",
-        tinyram_input_size_bound: "",
-        program: "",
-        time_bound: "",
-        tinyram_program_size_bound: ""
+        register_count: "16",
+        word_size: "16",
+        tinyram_input_size_bound: "25",
+        program: "16",
+        time_bound: "64",
+        tinyram_program_size_bound: "20"
     });
 
     const onChange = event => {
@@ -108,7 +108,7 @@ function Codeparameter(props) {
         <>
             <Button type="primary" onClick={showDrawer}>
                 <PlusOutlined /> 输入运行参数
-          </Button>
+      </Button>
             <Drawer
                 title="请输入即将运行的模拟参数"
                 width={720}
@@ -123,10 +123,10 @@ function Codeparameter(props) {
                     >
                         <Button onClick={onClose} style={{ marginRight: 8 }}>
                             Cancel
-                </Button>
+            </Button>
                         <Button type="primary" htmlType="submit" onClick={onSubmit} >
                             Submit
-                </Button>
+            </Button>
                     </div>
                 }
             >
@@ -138,7 +138,7 @@ function Codeparameter(props) {
                                 label="Register_count"
                                 rules={[{ required: true, message: 'Please enter Register count' }]}
                             >
-                                <Input placeholder="Please enter Register count" value={values.register_count}
+                                <Input placeholder={values.register_count} value={values.register_count}
                                     onChange={onChange} name="register_count" />
                             </Form.Item>
                         </Col>
@@ -148,7 +148,7 @@ function Codeparameter(props) {
                                 label="Word_size"
                                 rules={[{ required: true, message: 'Please enter Word size(bit)' }]}
                             >
-                                <Input placeholder="Please enter Word size(bit)" value={values.word_size}
+                                <Input placeholder={values.word_size} value={values.word_size}
                                     onChange={onChange} name="word_size" />
                             </Form.Item>
                         </Col>
@@ -160,7 +160,7 @@ function Codeparameter(props) {
                                 label="Tinyram_input_size_bound"
                                 rules={[{ required: true, message: 'Please enter Tinyram input size bound' }]}
                             >
-                                <Input placeholder="Please enter Tinyram input size bound" onChange={onChange} name="tinyram_input_size_bound" />
+                                <Input placeholder={values.tinyram_input_size_bound} onChange={onChange} name="tinyram_input_size_bound" value={values.tinyram_input_size_bound} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -169,7 +169,7 @@ function Codeparameter(props) {
                                 label="Program"
                                 rules={[{ required: true, message: 'Please enter Program' }]}
                             >
-                                <Input placeholder="Please enter Program" onChange={onChange} name="program" />
+                                <Input placeholder={values.program} onChange={onChange} name="program" value={values.program} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -180,7 +180,7 @@ function Codeparameter(props) {
                                 label="Time_bound"
                                 rules={[{ required: true, message: 'Please enter Time bound' }]}
                             >
-                                <Input placeholder="Please enter Time bound" onChange={onChange} name="time_bound" />
+                                <Input placeholder={values.time_bound} onChange={onChange} name="time_bound" value={values.time_bound} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -189,7 +189,7 @@ function Codeparameter(props) {
                                 label="Tinyram_program_size_bound"
                                 rules={[{ required: true, message: 'Please enter Tinyram_program_size_bound' }]}
                             >
-                                <Input placeholder="Please enter Tinyram_program_size_bound" onChange={onChange} name="tinyram_program_size_bound" />
+                                <Input placeholder={values.tinyram_program_size_bound} onChange={onChange} name="tinyram_program_size_bound" value={values.tinyram_program_size_bound} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -207,7 +207,7 @@ function Codeparameter(props) {
                                 ]
                                 }
                             >
-                                <Input.TextArea rows={25} placeholder={verify_program.toString()} onChange={onChange} name="verify_program" />
+                                <Input.TextArea rows={25} placeholder={verify_program.toString()} onChange={onChange} name="verify_program" value={verify_program} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -225,7 +225,7 @@ function Codeparameter(props) {
                                 ]
                                 }
                             >
-                                <Input.TextArea rows={25} placeholder={userProgram.toString()} onChange={onChange} name="userProgram" />
+                                <Input.TextArea rows={25} placeholder={userProgram.toString()} onChange={onChange} name="userProgram" value={userProgram} />
                             </Form.Item>
                         </Col>
                     </Row>

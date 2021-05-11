@@ -1,8 +1,8 @@
 import React from 'react';
 import TweenOne from 'rc-tween-one';
-import { Menu } from 'antd';
+import { Menu, Avatar, Image } from 'antd';
 import { getChildrenToRender } from './utils';
-import tsIcon from '../logo3.png';
+import tsIcon from '../logo1.png';
 const { Item, SubMenu } = Menu;
 
 class Header extends React.Component {
@@ -85,7 +85,8 @@ class Header extends React.Component {
             animation={{ x: -30, type: 'from', ease: 'easeOutQuad' }}
             {...dataSource.logo}
           >
-            <img width="100%" src={tsIcon} alt="img" />
+            <img width="50%" src={tsIcon} alt="img" />
+            Osprey
           </TweenOne>
           {isMobile && (
             <div
@@ -104,15 +105,15 @@ class Header extends React.Component {
             animation={
               isMobile
                 ? {
-                    height: 0,
-                    duration: 300,
-                    onComplete: (e) => {
-                      if (this.state.phoneOpen) {
-                        e.target.style.height = 'auto';
-                      }
-                    },
-                    ease: 'easeInOutQuad',
-                  }
+                  height: 0,
+                  duration: 300,
+                  onComplete: (e) => {
+                    if (this.state.phoneOpen) {
+                      e.target.style.height = 'auto';
+                    }
+                  },
+                  ease: 'easeInOutQuad',
+                }
                 : null
             }
             moment={moment}
@@ -126,7 +127,11 @@ class Header extends React.Component {
               {navChildren}
             </Menu>
           </TweenOne>
+          <TweenOne>
+          
+          </TweenOne>
         </div>
+        
       </TweenOne>
     );
   }
