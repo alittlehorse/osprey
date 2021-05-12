@@ -24,7 +24,12 @@ bool server_provider::on_generate_and_serialize_proof(const std::string& proving
   groth16_server_->serialize_proof(proof.value(),proof_path);
   return true;
 }
-
+server_provider::server_provider(const boost::json::object object, const string &smart_contract_address) {
+  std::unique_ptr<params_config> a= std::make_unique<params_config>(object);
+  a->precompiler(a->get_verify_program());
+  groth16_server_ = make_unique<libserver::groth16_server>(std::move(a));
+  this->account_ = smart_contract_address;
+}
 server_provider::server_provider(const std::string &config,
                                const std::string& smart_contract_address) {
   std::unique_ptr<params_config> a = std::make_unique<params_config>();
@@ -37,6 +42,7 @@ server_provider::server_provider(const std::string &config,
 const std::string &server_provider::get_address() {
   return account_;
 }
+
 
 bool osprey_plateform::on_verify(const std::string& verifacation_key_path,const std::string& proof_path,const std::string& primary_input_path) {
   auto vk = groth16_server_->get_verification_key_from_file(verifacation_key_path);
@@ -103,7 +109,7 @@ osprey_plateform::osprey_plateform(const std::string& config) {
   groth16_server_ = make_unique<libserver::groth16_server>(std::move(a));
 }
 
-osprey_plateform::osprey_plateform(const boost::json::object &object) {
+osprey_plateform::osprey_plateform(const boost::json::object object) {
   std::unique_ptr<params_config> a= std::make_unique<params_config>(object);
   a->precompiler(a->get_verify_program());
   groth16_server_ = make_unique<libserver::groth16_server>(std::move(a));
