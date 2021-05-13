@@ -47,7 +47,7 @@ void performTask(boost::json::object jsonParams, bool &done, std::mutex &m, std:
   printf("=====================================");
   // sp is ready for zkp .
   // sp generate the proof and serialize it in local. the proof is local on libserver/tutorial/proof
-  server_provider provider(json_config,"0x57128a8c478B3fEab65866a9c39d06408c243ce9");
+  server_provider provider(jsonParams,"0x57128a8c478B3fEab65866a9c39d06408c243ce9");
 
   provider.on_generate_and_serialize_proof(proveing_key_path,primary_input_path,auxiliary_input_path,proof_path);
 
