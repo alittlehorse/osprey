@@ -18,7 +18,7 @@ osprey server:
 class server_provider {
  public:
   explicit server_provider(const std::string& config,const std::string& smart_contract_address);
-
+  explicit server_provider(const boost::json::object& config,const std::string& smart_contract_address);
   bool on_generate_and_serialize_proof(const std::string& proving_key_path,const std::string& primary_input_path,const std::string& auxiliary_input_path,const std::string proof_path);
   const std::string& get_address();
  private:

@@ -25,6 +25,12 @@ bool server_provider::on_generate_and_serialize_proof(const std::string& proving
   return true;
 }
 
+server_provider::server_provide(const boost::json::object& config,const std::string& smart_contract_address){
+  std::unique_ptr<params_config> a= std::make_unique<params_config>(config);
+  a->precompiler(a->get_verify_program());
+  groth16_server_ = make_unique<libserver::groth16_server>(std::move(a));
+  account_ = smart_contract_address;
+}
 server_provider::server_provider(const std::string &config,
                                const std::string& smart_contract_address) {
   std::unique_ptr<params_config> a = std::make_unique<params_config>();
