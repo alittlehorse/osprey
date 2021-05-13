@@ -56,6 +56,6 @@ jobs:
 
 
     - name: Run target:simulate
-      working-directory: ${{github.workspace}}/build/libserver
+      working-directory: ${{github.workspace}}/build
       shell: bash
       run: ./simulate

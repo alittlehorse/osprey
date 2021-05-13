@@ -2,12 +2,12 @@
 #include <libserver/smart_contract/connectEthereum.h>
 
 int main(){
-  std::string json_config = "../libserver/tutorial/avarage/avarage.json";
-  std::string proveing_key_path = "../libserver/tutorial/avarage/proving_key";
-  std::string verification_key_path = "../libserver/tutorial/avarage/verification_key";
-  std::string proof_path = "../libserver/tutorial/avarage/proof";
-  std::string primary_input_path = "../libserver/tutorial/avarage/primary_input.txt";
-  std::string auxiliary_input_path = "../libserver/tutorial/avarage/auxiliary_input.txt";
+  std::string json_config = "libserver/tutorial/avarage/avarage.json";
+  std::string proveing_key_path = "libserver/tutorial/avarage/proving_key";
+  std::string verification_key_path = "libserver/tutorial/avarage/verification_key";
+  std::string proof_path = "libserver/tutorial/avarage/proof";
+  std::string primary_input_path = "libserver/tutorial/avarage/primary_input.txt";
+  std::string auxiliary_input_path = "libserver/tutorial/avarage/auxiliary_input.txt";
   //init json config
   std::ifstream f(json_config);
   std::string content((std::istreambuf_iterator<char>(f)),
