@@ -12,7 +12,6 @@ var SUBSCRIBE = ""; // 设置订阅消息的请求地址
 var SEND_ENDPOINT = "/app/test"; // 设置服务器端点，访问服务器中哪个接口
 var message2 = "";
 var wsUrl = "ws://106.13.125.83:3498/compute_query";//必须以ws开头
-wsUrl = "ws://localhost:3498/compute_query"; //测试网址
 let ws;
 
 function Codeparameter(props) {
@@ -24,7 +23,6 @@ function Codeparameter(props) {
         ws = new WebSocket(wsUrl);
         ws.onopen = function (evt) {
             console.log("连接开始")
-            // ws.send('33');
             sendMessage();
         }
         onMessageReceived();
@@ -33,7 +31,7 @@ function Codeparameter(props) {
             handleClick()
         }
     }
-
+    
     const onMessageReceived = () => {
         ws.onmessage = function (payload) {
             console.log('有消息过来');
@@ -45,13 +43,13 @@ function Codeparameter(props) {
     const sendMessage = () => {
         // 设置待发送的消息内容
         var message3 = {
-            "register_count": values.register_count,
-            "tinyram_input_size_bound": values.tinyram_input_size_bound,
-            "word_size": values.word_size,
+            "register_count": parseInt(values.register_count),
+            "tinyram_input_size_bound": Number(values.tinyram_input_size_bound),
+            "word_size": Number(values.word_size),
             "verify_program": verify_program,
-            "tinyram_program_size_bound": values.tinyram_program_size_bound,
-            "program": userProgram,
-            "time_bound": 64,
+            "tinyram_program_size_bound": Number(values.tinyram_program_size_bound),
+            "userProgram": userProgram,
+            "program": Number(values.program),
             "destination": SUBSCRIBE_PREFIX
         }
         console.log("aaaa", message3);
@@ -109,7 +107,7 @@ function Codeparameter(props) {
         <>
             <Button type="primary" onClick={showDrawer}>
                 <PlusOutlined /> 输入运行参数
-      </Button>
+          </Button>
             <Drawer
                 title="请输入即将运行的模拟参数"
                 width={720}
@@ -124,10 +122,10 @@ function Codeparameter(props) {
                     >
                         <Button onClick={onClose} style={{ marginRight: 8 }}>
                             Cancel
-            </Button>
+                </Button>
                         <Button type="primary" htmlType="submit" onClick={onSubmit} >
                             Submit
-            </Button>
+                </Button>
                     </div>
                 }
             >
@@ -226,7 +224,7 @@ function Codeparameter(props) {
                                 ]
                                 }
                             >
-                                <Input.TextArea rows={25} placeholder={userProgram.toString()} onChange={onChange} name="userProgram" value={userProgram} />
+                                <Input.TextArea rows={25} placeholder={userProgram.toString()} onChange={onChange} name="userProgram" value={userProgram}/>
                             </Form.Item>
                         </Col>
                     </Row>
