@@ -1,11 +1,10 @@
 .CodeMirror {
   height: 630px;
-  max-width: 1495px;
-  min-width: 100%;
+  max-width: 1195px;
   margin: 40px auto;
   margin-top: -5px;
   position: relative;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .CodeMirror-scroll {

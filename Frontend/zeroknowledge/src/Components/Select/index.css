@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
+.hzr-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color:rgba(255, 255, 255, 1);
+  width: 100vw;
+  height: 5rem;
+  padding: 0 10vw;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.5s;
+  z-index: 1000;
+  border: 2px solid;
+  border-left: none;
+  border-right: none;
+}
+
+.hzr-header.header_bg {
+  background: #607d8b;
+}
+
+.hzr-nav ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.hzr-nav ul li {
+  list-style: none;
+}
+
+.hzr-nav ul li a {
+  color: #000;
+  padding: 0 20px;
+  font-size: 1.1em;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.hzr-brand a {
+  color: #000;
+  font-size: 1.1em;
+  text-decoration: none;
+  font-weight: bold;
+}
+#hzr-text {
+    margin-top: 150px;
+    text-align: center;
+    font-size:2.42857rem;
+    line-height:2.42857rem;
+    padding: 8px 0;
+    font: Segoe UI;
+}
+#hzr-text p {
+    margin: 12px;
+    font-size:1.42857rem;
+    line-height:1.71429rem;
+    color:#8b8f94
+}
+#hzr-content {
+  margin-top: 70px;
+  display: flex;
+  justify-content: center;
+}
