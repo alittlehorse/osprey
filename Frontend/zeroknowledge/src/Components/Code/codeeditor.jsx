@@ -74,58 +74,34 @@ const { Option } = Select;
 
 const setFontSizeByClassName = (value) => {
     var obj = document.getElementsByClassName("CodeMirror");
-    if (value == '12px') {
+    if (value == '12px')
         obj[0].setAttribute('style', 'font-size:12px;');
-        obj[1].setAttribute('style', 'font-size:12px;');
-    }
-    else if (value == '9px') {
+    else if (value == '9px')
         obj[0].setAttribute('style', 'font-size:9px;');
-        obj[1].setAttribute('style', 'font-size:9px;');
-    }
-    else if (value == '14px') {
+    else if (value == '14px')
         obj[0].setAttribute('style', 'font-size:14px;');
-        obj[1].setAttribute('style', 'font-size:14px;');
-    }
-    else if (value == '16px') {
+    else if (value == '16px')
         obj[0].setAttribute('style', 'font-size:16px;');
-        obj[1].setAttribute('style', 'font-size:16px;');
-    }
-    else if (value == '18px') {
+    else if (value == '18px')
         obj[0].setAttribute('style', 'font-size:18px;');
-        obj[1].setAttribute('style', 'font-size:18px;');
-    }
-    else {
+    else
         obj[0].setAttribute('style', 'font-size:22px;');
-        obj[1].setAttribute('style', 'font-size:22px;');
-    }
 }
 
 const setFontThemeByClassName = (value) => {
     var obj = document.getElementsByClassName("CodeMirror");
-    if (value == 'FangSong'){
+    if (value == 'FangSong')
         obj[0].setAttribute('style', 'font-family:FangSong;');
-        obj[1].setAttribute('style', 'font-family:FangSong;');
-    }
-    else if (value == 'KaiTi'){
+    else if (value == 'KaiTi')
         obj[0].setAttribute('style', 'font-family:KaiTi;');
-        obj[1].setAttribute('style', 'font-family:KaiTi;');
-    }
-    else if (value == 'PMingLiU'){
+    else if (value == 'PMingLiU')
         obj[0].setAttribute('style', 'font-family:PMingLiU;');
-        obj[1].setAttribute('style', 'font-family:PMingLiU;');
-    }
-    else if (value == 'Microsoft YaHei'){
+    else if (value == 'Microsoft YaHei')
         obj[0].setAttribute('style', 'font-family:Microsoft YaHei;');
-        obj[1].setAttribute('style', 'font-family:Microsoft YaHei;');
-    }
-    else if (value == 'YouYuan'){
+    else if (value == 'YouYuan')
         obj[0].setAttribute('style', 'font-family:YouYuan;');
-        obj[1].setAttribute('style', 'font-family:YouYuan;');
-    }
-    else{
+    else
         obj[0].setAttribute('style', 'font-family:Arial;');
-        obj[1].setAttribute('style', 'font-family:Arial;');
-    }
 }
 
 
@@ -181,13 +157,13 @@ const SelectFontTheme = ({ onChange }) => {
 
 function Editor(props) {
     const [tabSize, setTabSize] = useState('40');
-    const [FontSize, setFontSize] = useState('12px')
+    const [FontSize, setFontSize] = useState('16px')
     const [FontTheme, setFontTheme] = useState('FangSong')
-    const [verify_program, setVerify_program] = useState('import sys; .....')
+    const [verify_program, setVerify_program] = useState('')
     const [theme, setTheme] = useState('monokai')
     const [mode, setmode] = useState('c++')
     const [compile_info, setcompile_info] = useState("")
-    const [userProgram, setuserProgram] = useState("; TinyRAM V=2.000 M=vn W=16 K=16\n;;; avarage\n;;; primary input: DATA_HASH\n;;; aux input: DATA\n;;; suppose the aux input is a array which length is 20\n;;; compute the avarage of data,which hash is DATA_HASH\n;;; 1. hash aux input and compare with the DATA_HASH\n;;; 2. avarage the aux inpute and out the result\n\n;;;we just complete the step2 firstly, and the hash function is hard.\nstore.w 0, r0                    ; 0:\nmov r0, 32768                    ; 4:\nread r1, 0                       ; 8: read the first word in the primary word\ncjmp 28                          ; 12: if the flag is 1 ,jump 28\nadd r0, r0, 2                    ; 16:\nstore.w r0, r1                   ; 20:\njmp 8                            ; 24:this prelude can store the primary input in the momery\nstore.w 32768, r0                ; 28: end of prelude. put the data end index in the  32768\nmov r3, 0                        ; 44:r3 is the count index of auxiliary input\nmov r4, 0                        ; 48:r4 is the sum of r2\n_loop:read r2, 1                 ; 36: read auxiliary input in r2 (note that pairs are processed in reverse order)\ncjmp _bail                       ; 40\nadd r3,r3,1                      ; 52:r3 += 1\nadd r4, r4, r2                   ; 56:r4 = r4 + r2\njmp _loop                        ; 60\n_bail: udiv r4,r4,r3             ; 64:r4 = r4/r3\nload.w r1,r0\nsub r4,r4,r1\nanswer r4")
+    const [userProgram, setuserProgram] = useState("")
 
     const SelectTheme = ({ onChange }) => {
         return (
@@ -261,11 +237,11 @@ function Editor(props) {
             if (anchorElement) { anchorElement.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
         }
     }
-
+    
     return (
         <div >
             <BackTop >
-                <Button type="Link" icon={<VerticalAlignTopOutlined />} />
+            <Button type="Link" icon={<VerticalAlignTopOutlined />} />
             </BackTop>
             <div className="ToolBar">
                 <SelectTabSize value={tabSize} onChange={onChangeTabSize} />
@@ -300,7 +276,6 @@ function Editor(props) {
 
                 />
             </div>
-            
             <div id='program2'>
                 <CodeMirror
                     value={userProgram}
@@ -321,9 +296,9 @@ function Editor(props) {
 
                 />
             </div>
-
+            
             <div>
-                <TextArea rows={10} value={compile_info} id='result' autosize="true"></TextArea>
+                <TextArea rows={10} value={compile_info} id='result'></TextArea>
             </div>
         </div>
     )
