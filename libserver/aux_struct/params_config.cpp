@@ -5,6 +5,18 @@
 #include "params_config.hpp"
 #include <boost/json.hpp>
 #include <fstream>
+params_config::params_config(const boost::json::object &object) {
+  program = value_to<std::string>(object.at("program"));
+
+  tinyram_input_size_bound = value_to<size_t>(object.at("tinyram_input_size_bound"));
+  time_bound = value_to<size_t>(object.at("time_bound"));
+  tinyram_program_size_bound = value_to<size_t>(object.at("tinyram_program_size_bound"));
+  register_count = value_to<size_t>(object.at("register_count"));
+  word_size = value_to<size_t>(object.at("word_size"));
+  verify_program =  value_to<std::string>(object.at("verify_program"));
+}
+
+
 bool params_config::init(const std::string& config_path) {
   std::ifstream f(config_path);
   std::string content((std::istreambuf_iterator<char>(f)),
@@ -53,6 +65,7 @@ bool params_config::precompiler(const std::string &tinyram_program) {
   std::string s;
   c.compile_tinyram(this->verify_program,&s);
   this->verify_program = s;
+  return true;
 }
 
 

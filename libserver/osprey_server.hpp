@@ -18,7 +18,7 @@ osprey server:
 class server_provider {
  public:
   explicit server_provider(const std::string& config,const std::string& smart_contract_address);
-
+  explicit server_provider(const boost::json::object& config,const std::string& smart_contract_address);
   bool on_generate_and_serialize_proof(const std::string& proving_key_path,const std::string& primary_input_path,const std::string& auxiliary_input_path,const std::string proof_path);
   const std::string& get_address();
  private:
@@ -49,6 +49,7 @@ class osprey_plateform{
   std::unique_ptr<libserver::groth16_server> groth16_server_;
  public:
   explicit osprey_plateform(const std::string& config);
+  osprey_plateform(const boost::json::object&);
   osprey_plateform()=delete;
   void set_server_address(const std::string& server_account);
   bool on_finish_and_pay();
