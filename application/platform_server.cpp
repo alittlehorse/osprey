@@ -3,7 +3,7 @@
 #include <filesystem>
 using namespace drogon;
 int main() {
-  std::cout << "Current path is " << std::filesystem::current_path() << '\n';
+vim
   app()
       .setLogPath("./")
       .setLogLevel(trantor::Logger::kWarn)
