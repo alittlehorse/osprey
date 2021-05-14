@@ -72,11 +72,17 @@ void EchoWebsock::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr,
     wsConnPtr->forceClose();
     return;
   }
-  boost::json::error_code ec;
-  auto decode_val = boost::json::parse(message, ec);
+  std::cout << message << endl;
+//  boost::json::error_code ec;
+//  auto decode_val = boost::json::parse(message, ec);
 //  std::string tmp = boost::json::serialize(decode_val);
 //  wsConnPtr->send("Your json:\n" + tmp);
-  std::cout << "22";
+  const char *cstr = message.c_str();
+  boost::json::parser parser;
+  boost::json::error_code ec;
+  parser.write(cstr,message.size(),ec);
+  boost::json::value value = parser.release();
+  boost::json::object object = value.as_object();
   wsConnPtr->send("json format syntax: \n" + ec.message());
   if (ec.message() != "Success") {
     wsConnPtr->forceClose();
@@ -86,7 +92,7 @@ void EchoWebsock::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr,
   bool done;
   std::stringstream ss;
   std::streambuf *wsBuf = ss.rdbuf();
-  std::thread t(performTask, decode_val.as_object(), std::ref(done), std::ref(m), std::ref(wsBuf));
+  std::thread t(performTask, object, std::ref(done), std::ref(m), std::ref(wsBuf));
   do {
     std::lock_guard<std::mutex> lock(m);
     if (!ss.str().empty()) {

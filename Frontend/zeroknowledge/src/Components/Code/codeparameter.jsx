@@ -12,6 +12,7 @@ var SUBSCRIBE = ""; // 设置订阅消息的请求地址
 var SEND_ENDPOINT = "/app/test"; // 设置服务器端点，访问服务器中哪个接口
 var message2 = "";
 var wsUrl = "ws://106.13.125.83:3498/compute_query";//必须以ws开头
+wsUrl = "ws://localhost:3498/compute_query"; //测试网址
 let ws;
 
 function Codeparameter(props) {
@@ -49,8 +50,8 @@ function Codeparameter(props) {
             "word_size": values.word_size,
             "verify_program": verify_program,
             "tinyram_program_size_bound": values.tinyram_program_size_bound,
-            "userProgram": userProgram,
-            "program": values.program,
+            "program": userProgram,
+            "time_bound": 64,
             "destination": SUBSCRIBE_PREFIX
         }
         console.log("aaaa", message3);
@@ -68,12 +69,12 @@ function Codeparameter(props) {
         setVisible(false);
     };
     const [values, setValues] = useState({
-        register_count: "16",
-        word_size: "16",
-        tinyram_input_size_bound: "25",
-        program: "16",
-        time_bound: "64",
-        tinyram_program_size_bound: "20"
+        register_count: 16,
+        word_size: 16,
+        tinyram_input_size_bound: 25,
+        program: 16,
+        time_bound: 64,
+        tinyram_program_size_bound: 20
     });
 
     const onChange = event => {
