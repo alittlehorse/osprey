@@ -40,7 +40,7 @@ export default function Loading() {
           <Row gutter={200}>
             <Col span={70}>
               <BouncyDiv>
-                <a href="http://106.15.204.115/code">
+                <a href="/code">
                 <Card
                   hoverable
                   style={{ width: 240, height: 350 }}
@@ -59,7 +59,7 @@ export default function Loading() {
             </Col>
             <Col span={70}>
               <BouncyDiv>
-              <a href="http://106.15.204.115/code">
+              <a href="/code">
                 <Card
                   hoverable
                   style={{ width: 240, height: 350 }}
@@ -78,7 +78,7 @@ export default function Loading() {
             </Col>
             <Col span={70}>
               <BouncyDiv>
-              <a href="http://106.15.204.115/code">
+              <a href="/code">
                 <Card
                   hoverable
                   style={{ width: 240, height: 350 }}

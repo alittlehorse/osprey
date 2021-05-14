@@ -33,7 +33,7 @@ export const Nav01DataSource = {
         name: "item1",
         className: "header0-item",
         children: {
-          href: "http://106.15.204.115/load",
+          href: "/load",
           children: [
             {
               children: (
@@ -105,7 +105,7 @@ export const Banner51DataSource = {
         name: "button",
         className: "banner5-button-wrapper",
         children: {
-          href: "http://106.15.204.115/load",
+          href: "/load",
           className: "banner5-button",
           type: "primary",
           children: "开始使用",
