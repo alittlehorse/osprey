@@ -7,10 +7,13 @@
 #include <fstream>
 params_config::params_config(const boost::json::object &object) {
   program = value_to<std::string>(object.at("program"));
-
   tinyram_input_size_bound = value_to<size_t>(object.at("tinyram_input_size_bound"));
   time_bound = value_to<size_t>(object.at("time_bound"));
   tinyram_program_size_bound = value_to<size_t>(object.at("tinyram_program_size_bound"));
+
+
+
+
   register_count = value_to<size_t>(object.at("register_count"));
   word_size = value_to<size_t>(object.at("word_size"));
   verify_program =  value_to<std::string>(object.at("verify_program"));

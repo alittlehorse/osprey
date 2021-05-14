@@ -2,7 +2,7 @@
 #include <libserver/smart_contract/connectEthereum.h>
 
 int main(){
-  //std::string json_config = "../libserver/tutorial/avarage/avarage.json";
+  std::string json_config = "../libserver/tutorial/avarage/avarage.json";
   std::string proveing_key_path = "../libserver/tutorial/avarage/proving_key";
   std::string verification_key_path = "../libserver/tutorial/avarage/verification_key";
   std::string proof_path = "../libserver/tutorial/avarage/proof";

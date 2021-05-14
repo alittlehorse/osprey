@@ -6,18 +6,18 @@
  * @param m mutex for editing 'done'
  * @param wsBuf streamBuf to record std::cout
  */
-void performTask(boost::json::object jsonParams, bool &done, std::mutex &m, std::streambuf *&wsBuf) {
+void performTask(boost::json::object object, bool &done, std::mutex &m, std::streambuf *&wsBuf) {
   std::ios_base::sync_with_stdio(false);
   std::cin.tie(0);
   auto oldBuf = std::cout.rdbuf();
   std::cout.rdbuf(wsBuf);
   //=========================================
   //std::string json_config = "../libserver/tutorial/avarage/avarage.json";
-  std::string proveing_key_path = "../libserver/tutorial/avarage/proving_key";
-  std::string verification_key_path = "../libserver/tutorial/avarage/verification_key";
-  std::string proof_path = "../libserver/tutorial/avarage/proof";
-  std::string primary_input_path = "../libserver/tutorial/avarage/primary_input.txt";
-  std::string auxiliary_input_path = "../libserver/tutorial/avarage/auxiliary_input.txt";
+  std::string proveing_key_path = "proving_key";
+  std::string verification_key_path = "verification_key";
+  std::string proof_path = "proof";
+  std::string primary_input_path = "primary_input.txt";
+  std::string auxiliary_input_path = "auxiliary_input.txt";
   //init json config
   //std::ifstream f(json_config);
   //std::string content((std::istreambuf_iterator<char>(f)),
@@ -40,14 +40,14 @@ void performTask(boost::json::object jsonParams, bool &done, std::mutex &m, std:
   //simulate op to generate keypair
   //verification key for sq
   //proving key for sp
-  osprey_plateform op(jsonParams);
+  osprey_plateform op(object);
   assert(op.on_generate_keypair(proveing_key_path,verification_key_path));
   printf("=====================================");
   printf("\nplateform builed\n");
   printf("=====================================");
   // sp is ready for zkp .
   // sp generate the proof and serialize it in local. the proof is local on libserver/tutorial/proof
-  server_provider provider(jsonParams,"0x57128a8c478B3fEab65866a9c39d06408c243ce9");
+  server_provider provider(object,"0x57128a8c478B3fEab65866a9c39d06408c243ce9");
 
   provider.on_generate_and_serialize_proof(proveing_key_path,primary_input_path,auxiliary_input_path,proof_path);
 

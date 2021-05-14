@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-
 from web3 import Web3, HTTPProvider
 
 true = True

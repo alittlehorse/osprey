@@ -11,7 +11,7 @@ var SUBSCRIBE_PREFIX = "/topic/public" // 设置订阅消息的请求前缀
 var SUBSCRIBE = ""; // 设置订阅消息的请求地址
 var SEND_ENDPOINT = "/app/test"; // 设置服务器端点，访问服务器中哪个接口
 var message2 = "";
-var wsUrl = "ws://106.13.125.83:3498/compute_query";//必须以ws开头
+//var wsUrl = "ws://106.13.125.83:3498/compute_query";//必须以ws开头
 let ws;
 
 function Codeparameter(props) {
