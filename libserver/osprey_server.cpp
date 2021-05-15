@@ -131,8 +131,12 @@ void osprey_plateform::set_server_address(const string &account) {
 bool osprey_plateform::on_generate_keypair(const std::string& proving_key_path,const std::string& verification_key_path) {
   auto keypair = groth16_server_->generate_keypair();
   if(keypair== std::nullopt) return false;
-  groth16_server_->serialize_proveing_key(keypair.value().pk,proving_key_path);
-  groth16_server_->serialize_verification_key(keypair.value().vk,verification_key_path);
+  if(!groth16_server_->serialize_proveing_key(keypair.value().pk,proving_key_path)){
+    exit(1);
+  };
+  if(!groth16_server_->serialize_verification_key(keypair.value().vk,verification_key_path)){
+    exit(1);
+  }
   return true;
 }
 

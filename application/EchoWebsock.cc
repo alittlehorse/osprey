@@ -13,11 +13,12 @@ void performTask(boost::json::object object, bool &done, std::mutex &m, std::str
   std::cout.rdbuf(wsBuf);
   //=========================================
   //std::string json_config = "../libserver/tutorial/avarage/avarage.json";
-  std::string proveing_key_path = "proving_key";
-  std::string verification_key_path = "verification_key";
-  std::string proof_path = "proof";
-  std::string primary_input_path = "/root/1.txt";
-  std::string auxiliary_input_path = "/root/2.txt";
+  std::string proveing_key_path = "/usr/tests/avarage/proving_key";
+  std::string verification_key_path = "/usr/tests/avarage/verification_key";
+  std::string proof_path = "/usr/tests/avarage/proof";
+
+  std::string primary_input_path = "/usr/tests/avarage/primary_input.txt";
+  std::string auxiliary_input_path = "/usr/tests/avarage/auxiliary_input.txt";
   //init json config
   //std::ifstream f(json_config);
   //std::string content((std::istreambuf_iterator<char>(f)),

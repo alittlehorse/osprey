@@ -61,6 +61,7 @@ namespace  libserver{
             return true;
         }
         catch (std::exception &e){
+            printf("the proving key file path has an error. the path is : %s",proving_key_path);
             return false;
         }
     }
@@ -74,6 +75,7 @@ namespace  libserver{
             return true;
         }
         catch (std::exception &e){
+            printf("the verification_key_path has an error. the path is :%",verification_key_path);
             return false;
         }
     }

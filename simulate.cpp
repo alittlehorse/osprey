@@ -3,12 +3,12 @@
 #include <filesystem>
 
 int main(){
-  std::string json_config = "../libserver/tutorial/avarage/avarage.json";
-  std::string proveing_key_path = "../libserver/tutorial/avarage/proving_key";
-  std::string verification_key_path = "../libserver/tutorial/avarage/verification_key";
-  std::string proof_path = "../libserver/tutorial/avarage/proof";
-  std::string primary_input_path = "../libserver/tutorial/avarage/primary_input.txt";
-  std::string auxiliary_input_path = "../libserver/tutorial/avarage/auxiliary_input.txt";
+  std::string json_config = "/usr/tests/avarage/avarage.json";
+  std::string proveing_key_path = "/usr/tests/avarage/proving_key";
+  std::string verification_key_path = "/usr/tests/avarage/verification_key";
+  std::string proof_path = "/usr/tests/avarage/proof";
+  std::string primary_input_path = "/usr/tests/avarage/primary_input.txt";
+  std::string auxiliary_input_path = "/usr/tests/avarage/auxiliary_input.txt";
   //init json config
   std::ifstream f(json_config);
   std::string content((std::istreambuf_iterator<char>(f)),
@@ -37,14 +37,14 @@ int main(){
   //proving key for sp
   osprey_plateform op(object);
   assert(op.on_generate_keypair(proveing_key_path,verification_key_path));
-  printf("=====================================");
+  printf("=====================================\n");
   printf("\nplateform builed\n");
-  printf("=====================================");
+  printf("=====================================\n");
   // sp is ready for zkp .
   // sp generate the proof and serialize it in local. the proof is local on libserver/tutorial/proof
   server_provider provider(object,"0x57128a8c478B3fEab65866a9c39d06408c243ce9");
-
-  if(!provider.on_generate_and_serialize_proof(proveing_key_path,primary_input_path,auxiliary_input_path,proof_path)){
+  bool flag = provider.on_generate_and_serialize_proof(proveing_key_path,primary_input_path,auxiliary_input_path,proof_path);
+  if(!flag){
     std::cout<< filesystem::current_path()<<endl;
     printf("please check the auxiliary_input file path and proof_input file path!\n");
     printf("the auxiliary input file path in this processing is on %s\n the prima"
