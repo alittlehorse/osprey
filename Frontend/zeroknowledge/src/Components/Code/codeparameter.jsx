@@ -11,7 +11,8 @@ var SUBSCRIBE_PREFIX = "/topic/public" // 设置订阅消息的请求前缀
 var SUBSCRIBE = ""; // 设置订阅消息的请求地址
 var SEND_ENDPOINT = "/app/test"; // 设置服务器端点，访问服务器中哪个接口
 var message2 = "";
-//var wsUrl = "ws://106.13.125.83:3498/compute_query";//必须以ws开头
+var wsUrl = "ws://106.13.125.83:3498/compute_query";//必须以ws开头
+//wsUrl = "ws://localhost:3498/compute_query";//必须以ws开头
 let ws;
 
 function Codeparameter(props) {
@@ -48,8 +49,8 @@ function Codeparameter(props) {
             "word_size": Number(values.word_size),
             "verify_program": verify_program,
             "tinyram_program_size_bound": Number(values.tinyram_program_size_bound),
-            "userProgram": userProgram,
-            "program": Number(values.program),
+            "program": program,
+            "time_bound": 64,
             "destination": SUBSCRIBE_PREFIX
         }
         console.log("aaaa", message3);
@@ -57,8 +58,8 @@ function Codeparameter(props) {
         ws.send(JSON.stringify(message3));
     }
 
+    const { program } = props;
     const { verify_program } = props;
-    const { userProgram } = props;
     const showDrawer = () => {
         setVisible(true);
     };
@@ -197,7 +198,7 @@ function Codeparameter(props) {
                             <Form.Item
                                 name="verify_program"
                                 label="verify_program"
-                                initialValue={verify_program.toString()}
+                                initialValue={program.toString()}
                                 rules={[
                                     {
                                         required: true,
@@ -206,7 +207,7 @@ function Codeparameter(props) {
                                 ]
                                 }
                             >
-                                <Input.TextArea rows={25} placeholder={verify_program.toString()} onChange={onChange} name="verify_program" value={verify_program} />
+                                <Input.TextArea rows={25} placeholder={program.toString()} onChange={onChange} name="verify_program" value={program} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -215,7 +216,7 @@ function Codeparameter(props) {
                             <Form.Item
                                 name="userProgram"
                                 label="userProgram"
-                                initialValue={userProgram.toString()}
+                                initialValue={verify_program.toString()}
                                 rules={[
                                     {
                                         required: true,
@@ -224,7 +225,7 @@ function Codeparameter(props) {
                                 ]
                                 }
                             >
-                                <Input.TextArea rows={25} placeholder={userProgram.toString()} onChange={onChange} name="userProgram" value={userProgram}/>
+                                <Input.TextArea rows={25} placeholder={verify_program.toString()} onChange={onChange} name="userProgram" value={verify_program}/>
                             </Form.Item>
                         </Col>
                     </Row>

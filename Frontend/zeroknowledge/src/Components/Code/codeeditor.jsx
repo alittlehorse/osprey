@@ -251,7 +251,7 @@ function Editor(props) {
                 <SelectLanguage value={mode} onChange={onChangeLanguage} />
                 <Button icon={<UploadOutlined />} onClick={setFileVisible} >上传程序</Button>
                 <Button icon={<UploadOutlined />} onClick={setFileVisible2} >上传验证程序</Button>
-                <Codeparameter verify_program={verify_program} userProgram={userProgram} compile_info={compile_info} changeInfo={(compile_info) => setcompile_info(compile_info)}></Codeparameter>
+                <Codeparameter program={verify_program} verify_program={userProgram} compile_info={compile_info} changeInfo={(compile_info) => setcompile_info(compile_info)}></Codeparameter>
                 <input type="file" className="file" onChange={my_fileReader} id="file-upload" style={{ display: 'none' }} />
                 <input type="file" className="file" onChange={my_fileReader2} id="file-upload2" style={{ display: 'none' }} />
                 <Divider />
