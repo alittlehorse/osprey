@@ -6,17 +6,24 @@
 #include <boost/json.hpp>
 #include <fstream>
 params_config::params_config(const boost::json::object &object) {
-  program = value_to<std::string>(object.at("program"));
-  tinyram_input_size_bound = value_to<size_t>(object.at("tinyram_input_size_bound"));
-  time_bound = value_to<size_t>(object.at("time_bound"));
-  tinyram_program_size_bound = value_to<size_t>(object.at("tinyram_program_size_bound"));
-
-
-
-
-  register_count = value_to<size_t>(object.at("register_count"));
-  word_size = value_to<size_t>(object.at("word_size"));
-  verify_program =  value_to<std::string>(object.at("verify_program"));
+  try{
+    if(!object.contains("program")||!object.contains("tinyram_input_size_bound")||!object.contains("time_bound")||
+    !object.contains("tinyram_program_size_bound")||!object.contains("register_count")||!object.contains("word_size")||
+        !object.contains("verify_program")){
+      printf("Params are not enough, there are some params not included!\n");
+      exit(1);}
+    program = value_to<std::string>(object.at("program"));
+    tinyram_input_size_bound = value_to<size_t>(object.at("tinyram_input_size_bound"));
+    time_bound = value_to<size_t>(object.at("time_bound"));
+    tinyram_program_size_bound = value_to<size_t>(object.at("tinyram_program_size_bound"));
+    register_count = value_to<size_t>(object.at("register_count"));
+    word_size = value_to<size_t>(object.at("word_size"));
+    verify_program =  value_to<std::string>(object.at("verify_program"));
+  }
+  catch(std::exception &e){
+    printf("The json format is not right!;\nPlease check the params(string or size_t)\n");
+    exit(1);
+  }
 }
 
 

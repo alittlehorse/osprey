@@ -3,7 +3,6 @@
 #include <filesystem>
 using namespace drogon;
 int main() {
-vim
   app()
       .setLogPath("./")
       .setLogLevel(trantor::Logger::kWarn)

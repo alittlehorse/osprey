@@ -1,5 +1,6 @@
 #include <libserver/osprey_server.hpp>
 #include <libserver/smart_contract/connectEthereum.h>
+#include <filesystem>
 
 int main(){
   std::string json_config = "../libserver/tutorial/avarage/avarage.json";
@@ -16,6 +17,7 @@ int main(){
   boost::json::parser parser;
   boost::json::error_code ec;
   parser.write(cstr,content.size(),ec);
+  if(ec) exit(1);
   boost::json::value value = parser.release();
   boost::json::object object = value.as_object();
 
@@ -42,7 +44,13 @@ int main(){
   // sp generate the proof and serialize it in local. the proof is local on libserver/tutorial/proof
   server_provider provider(object,"0x57128a8c478B3fEab65866a9c39d06408c243ce9");
 
-  provider.on_generate_and_serialize_proof(proveing_key_path,primary_input_path,auxiliary_input_path,proof_path);
+  if(!provider.on_generate_and_serialize_proof(proveing_key_path,primary_input_path,auxiliary_input_path,proof_path)){
+    std::cout<< filesystem::current_path()<<endl;
+    printf("please check the auxiliary_input file path and proof_input file path!\n");
+    printf("the auxiliary input file path in this processing is on %s\n the prima"
+           "ry input file path in this processing is on%s",auxiliary_input_path.c_str(),primary_input_path.c_str());
+    exit(1);
+  }
 
   // op get the sp address and verify the proof.
   // if pass the proof, this process run success

@@ -18,7 +18,13 @@ osprey server:
  */
 bool server_provider::on_generate_and_serialize_proof(const std::string& proving_key_path,const std::string& primary_input_path,const std::string& auxiliary_input_path,const std::string proof_path) {
   r1cs_gg_ppzksnark_proving_key<default_r1cs_gg_ppzksnark_pp> pk1 ;
-  std::ifstream (proving_key_path)>>pk1;
+  try{
+    std::ifstream (proving_key_path)>>pk1;
+  }
+catch(std::exception& e){
+  printf("the proving file path is not right!\n");
+  return false;
+}
   auto proof = groth16_server_->generate_proof(pk1,primary_input_path,auxiliary_input_path);
   assert(proof!= std::nullopt);
   groth16_server_->serialize_proof(proof.value(),proof_path);
