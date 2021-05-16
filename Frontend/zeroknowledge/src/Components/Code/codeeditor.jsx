@@ -74,34 +74,58 @@ const { Option } = Select;
 
 const setFontSizeByClassName = (value) => {
     var obj = document.getElementsByClassName("CodeMirror");
-    if (value == '12px')
+    if (value == '12px') {
         obj[0].setAttribute('style', 'font-size:12px;');
-    else if (value == '9px')
+        obj[1].setAttribute('style', 'font-size:12px;');
+    }
+    else if (value == '9px') {
         obj[0].setAttribute('style', 'font-size:9px;');
-    else if (value == '14px')
+        obj[1].setAttribute('style', 'font-size:9px;');
+    }
+    else if (value == '14px') {
         obj[0].setAttribute('style', 'font-size:14px;');
-    else if (value == '16px')
+        obj[1].setAttribute('style', 'font-size:14px;');
+    }
+    else if (value == '16px') {
         obj[0].setAttribute('style', 'font-size:16px;');
-    else if (value == '18px')
+        obj[1].setAttribute('style', 'font-size:16px;');
+    }
+    else if (value == '18px') {
         obj[0].setAttribute('style', 'font-size:18px;');
-    else
+        obj[1].setAttribute('style', 'font-size:18px;');
+    }
+    else {
         obj[0].setAttribute('style', 'font-size:22px;');
+        obj[1].setAttribute('style', 'font-size:22px;');
+    }
 }
 
 const setFontThemeByClassName = (value) => {
     var obj = document.getElementsByClassName("CodeMirror");
-    if (value == 'FangSong')
+    if (value == 'FangSong') {
         obj[0].setAttribute('style', 'font-family:FangSong;');
-    else if (value == 'KaiTi')
+        obj[1].setAttribute('style', 'font-family:FangSong;');
+    }
+    else if (value == 'KaiTi') {
         obj[0].setAttribute('style', 'font-family:KaiTi;');
-    else if (value == 'PMingLiU')
+        obj[1].setAttribute('style', 'font-family:KaiTi;');
+    }
+    else if (value == 'PMingLiU') {
         obj[0].setAttribute('style', 'font-family:PMingLiU;');
-    else if (value == 'Microsoft YaHei')
+        obj[1].setAttribute('style', 'font-family:PMingLiU;');
+    }
+    else if (value == 'Microsoft YaHei') {
         obj[0].setAttribute('style', 'font-family:Microsoft YaHei;');
-    else if (value == 'YouYuan')
+        obj[1].setAttribute('style', 'font-family:Microsoft YaHei;');
+    }
+    else if (value == 'YouYuan') {
         obj[0].setAttribute('style', 'font-family:YouYuan;');
-    else
+        obj[1].setAttribute('style', 'font-family:YouYuan;');
+    }
+    else {
         obj[0].setAttribute('style', 'font-family:Arial;');
+        obj[1].setAttribute('style', 'font-family:Arial;');
+    }
 }
 
 
@@ -237,11 +261,11 @@ function Editor(props) {
             if (anchorElement) { anchorElement.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
         }
     }
-    
+
     return (
         <div >
             <BackTop >
-            <Button type="Link" icon={<VerticalAlignTopOutlined />} />
+                <Button type="Link" icon={<VerticalAlignTopOutlined />} />
             </BackTop>
             <div className="ToolBar">
                 <SelectTabSize value={tabSize} onChange={onChangeTabSize} />
@@ -273,7 +297,6 @@ function Editor(props) {
                     onBlur={editor => {
                         setVerify_program(editor.getValue());
                     }}
-
                 />
             </div>
             <div id='program2'>
@@ -293,10 +316,8 @@ function Editor(props) {
                     onBlur={editor => {
                         setuserProgram(editor.getValue());
                     }}
-
                 />
             </div>
-            
             <div>
                 <TextArea rows={10} value={compile_info} id='result'></TextArea>
             </div>
