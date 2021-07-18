@@ -16,8 +16,8 @@
 #include <fstream>
 #include <libserver/aux_struct/string_helper.hpp>
 
-#include<depends/fmt/include/fmt/format.h>
-#include<depends/fmt/include/fmt/ostream.h>
+#include<fmt/format.h>
+#include<fmt/ostream.h>
 
 //TODO:refactoring the log system.
 namespace libserver{

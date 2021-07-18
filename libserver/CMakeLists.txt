@@ -1,3 +1,6 @@
+find_package(fmt CONFIG REQUIRED)
+find_package(xbyak CONFIG REQUIRED)
+
 add_library(libserver
         STATIC
 
@@ -12,12 +15,13 @@ add_library(libserver
         ram_compiler/tinyram_compiler_server.hpp
         ram_compiler/specialization_pool.hpp
         aux_struct/params_config.cpp)
-
 add_subdirectory(analysis_program)
 add_subdirectory(smart_contract)
+
+target_link_libraries(libserver fmt)
+message(“${fmt_INCLUDE_DIR}”)
 target_link_libraries(libserver
         tinyram_snark
-        fmt::fmt
         smart_contract
         libanalysis
         ${Boost_LIBRARIES}
@@ -34,11 +38,6 @@ add_executable(
         aux_struct/tests/params_config_tests.cpp)
 target_link_libraries(params_config_tests libserver)
 
-add_executable(
-        log_tests
-        EXCLUDE_FROM_ALL
-        aux_struct/tests/log_tests.cpp)
-target_link_libraries(log_tests fmt::fmt)
 
 add_executable(
         ram_ppsnark_server_test

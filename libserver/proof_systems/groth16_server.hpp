@@ -26,7 +26,7 @@ the server of zksnark using the Groth16 algorithm
 #include <libserver/aux_struct/Log.hpp>
 #include <libserver/aux_struct/params_config.hpp>
 
-#include <depends/fmt/include/fmt/ostream.h>
+#include <fmt/ostream.h>
 
 #include <libserver/proof_systems/r1cs_adapter.hpp>
 #include <iostream>

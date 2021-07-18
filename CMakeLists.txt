@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.17)
-project(osprey)
 
+project(osprey)
 set(CMAKE_CXX_STANDARD 20)
 
 set(
@@ -255,6 +255,5 @@ add_executable(
         simulate.cpp
         libserver/osprey_server.cpp)
 target_link_libraries(simulate libserver)
-
 
 
