@@ -5,15 +5,15 @@
 #ifndef OSPREY_ANALYSIS_PROGRAM_HPP
 #define OSPREY_ANALYSIS_PROGRAM_HPP
 #include<string>
+#include "Python.h"
+#include<iostream>
 #include <utility>
-
+using namespace std;
 class analysis_program {
 private:
-    std::string result_path;
-    std::string input_path;
 public:
-    explicit analysis_program(std::string input_path,std::string result_path):input_path(std::move(input_path)),result_path(std::move(result_path)){}
-    std::string execute();
+    explicit analysis_program(){}
+    std::string execute(string program_str);
 
 };
 
