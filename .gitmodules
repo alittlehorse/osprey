@@ -4,6 +4,3 @@
 [submodule "depends/libsnark-supercop"]
 	path = depends/libsnark-supercop
 	url = https://github.com/mbbarbosa/libsnark-supercop.git
-[submodule "depends/xbyak"]
-	path = depends/xbyak
-	url = https://github.com/herumi/xbyak.git
