@@ -13,8 +13,7 @@ std::string analysis_program::execute(string program_str) {
   Py_Initialize();
   if (!Py_IsInitialized())
   {
-    printf("初始化失败！");
-    return 0;
+    return Analysis_Error_Code::Python_Init_Error;
   }
   PyRun_SimpleString("import sys");
   PyRun_SimpleString("sys.path.append('./')");//这一步很重要，修改Python路径
