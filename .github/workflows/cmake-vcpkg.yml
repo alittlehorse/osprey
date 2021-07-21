@@ -1,4 +1,4 @@
-name: CMake
+name: CMake-vcpkg
 
 on:
   push:
