@@ -1,0 +1,10 @@
+{
+  "name" : "osprey",
+  "version-string": "0.1",
+  "homepage" : ",",
+  "dependencies" : [
+    "boost",
+    "xbyak",
+    "drogon"
+  ]
+}
