@@ -53,24 +53,29 @@ The libsnark library relies on the following:
 + libprocps for reporting memory usage
 + [Boost1.75](https://www.boost.org/users/history/version_1_75_0.html)
 ```asm
-$ wget https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.tar.bz2 && tar -xvf ./boost_1_75_0.tar.bz2 
-$ cd ./boost_1_75_0 && ./bootstrap.sh && sudo ./b2 install
+wget https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.tar.bz2 && tar -xvf ./boost_1_75_0.tar.bz2 
+cd ./boost_1_75_0 && ./bootstrap.sh && sudo ./b2 install
 ```
 
 So far we have tested these only on Linux. On Debian 10 (buster), Ubuntu 18.04 LTS, Ubuntu 20.04 LTS:
 ```bash
 sudo apt install build-essential cmake git libgmp3-dev libprocps-dev python3-markdown libboost-program-options-dev libssl-dev python3 pkg-config python3-dev libevent-dev libfmt-dev
 ```
+
+In order to reduce build time, some packages are installed by vcpkg,you should install vcpkg in [vcpkg.io](https://vcpkg.io/en/getting-started.html), then install following package:
+```bash
+vcpkg install drogon
+vcpkg install xbyak
+```
+
 after cloning, you should download submodule:
 ```bash
 git submodule update --init --recursive
 ```
 
 ### Building
-Create the Makefile:
-```bash
-$ mkdir build && cd build && cmake ..
-```
+If you are using Clion, then you should follow this tutorial to integrate [vcpkg](https://intellij-support.jetbrains.com/hc/en-us/community/posts/360000023899-How-to-use-vcpkg-with-clion-)
+
 If you want to build one specific target, for example, platform_server:
 ```bash
 cmake --build . --target platform_server
