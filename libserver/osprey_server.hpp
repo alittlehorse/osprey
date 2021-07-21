@@ -13,13 +13,14 @@ osprey server:
 #include<libserver/proof_systems/groth16_server.hpp>
 #include <libserver/aux_struct/params_config.hpp>
 #include <libserver/ram_compiler/tinyram_precompiler.hpp>
-
+#include <libserver/analysis_program/analysis_program.hpp>
 
 class server_provider {
  public:
   explicit server_provider(const std::string& config,const std::string& smart_contract_address);
   explicit server_provider(const boost::json::object& config,const std::string& smart_contract_address);
   bool on_generate_and_serialize_proof(const std::string& proving_key_path,const std::string& primary_input_path,const std::string& auxiliary_input_path,const std::string proof_path);
+  outcome::result<std::string> execute_user_program(const std::string& program_str,const std::string& primary_input_path);
   const std::string& get_address();
  private:
   std::unique_ptr<libserver::groth16_server> groth16_server_ = nullptr;

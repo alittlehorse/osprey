@@ -6,16 +6,23 @@
 #define OSPREY_ANALYSIS_PROGRAM_HPP
 #include<string>
 #include "Python.h"
+#include <boost/outcome.hpp>
+#include <boost/filesystem.hpp>
 #include "analysis_err_code.hpp"
-#include <boost/outcome/result.hpp>
 #include<iostream>
+#include <sstream>
+#include <fstream>
 #include <utility>
+//! [namespace]
+namespace outcome = BOOST_OUTCOME_V2_NAMESPACE;
+//! [namespace]
+
 using namespace std;
 class analysis_program {
 private:
 public:
-    explicit analysis_program(){}
-    boost_result<std::string> execute(string program_str) noexcept;
+    analysis_program(){}
+    outcome::result<std::string> execute(string program_str,string primary_input_path) noexcept;
 
 };
 

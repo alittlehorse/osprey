@@ -17,7 +17,10 @@ int main(){
   boost::json::parser parser;
   boost::json::error_code ec;
   parser.write(cstr,content.size(),ec);
-  if(ec) exit(1);
+  if(ec) {
+    fprintf(stderr,"%s",ec.message().c_str());
+    exit(1);
+  }
   boost::json::value value = parser.release();
   boost::json::object object = value.as_object();
 

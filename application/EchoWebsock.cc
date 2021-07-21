@@ -6,18 +6,18 @@
  * @param m mutex for editing 'done'
  * @param wsBuf streamBuf to record std::cout
  */
-void performTask(boost::json::object object, bool &done, std::mutex &m, std::streambuf *&wsBuf) {
+void performTask(boost::json::object object,const WebSocketConnectionPtr &wsConnPtr) {
   std::ios_base::sync_with_stdio(false);
   std::cin.tie(0);
   auto oldBuf = std::cout.rdbuf();
-  std::cout.rdbuf(wsBuf);
   //=========================================
   //std::string json_config = "../libserver/tutorial/avarage/avarage.json";
   std::string proveing_key_path = "proving_key";
   std::string verification_key_path = "verification_key";
   std::string proof_path = "proof";
-  std::string primary_input_path = "/root/1.txt";
-  std::string auxiliary_input_path = "/root/2.txt";
+  std::string primary_input_path = "primary_input.txt";
+  std::string auxiliary_input_path = "auxiliary_input.txt";
+
   //init json config
   //std::ifstream f(json_config);
   //std::string content((std::istreambuf_iterator<char>(f)),
@@ -29,6 +29,8 @@ void performTask(boost::json::object object, bool &done, std::mutex &m, std::str
   //boost::json::value value = parser.release();
   //boost::json::object object = value.as_object();
   //init smart_contract and some file path to simulate the Interactive of sp,sq and op
+  std::string program_str = value_to< std::string >(object["program"]);
+  wsConnPtr->send("start to lock money\n");
   smart_contract::smart_contract::init();
 
   // sq lock their money.
@@ -36,7 +38,7 @@ void performTask(boost::json::object object, bool &done, std::mutex &m, std::str
   printf("begin lock\n");
   assert(requester.on_lock_pay(100000)== true);
   printf("lock success\n");
-
+  wsConnPtr->send("lock money success\n");
   //simulate op to generate keypair
   //verification key for sq
   //proving key for sp
@@ -48,9 +50,16 @@ void performTask(boost::json::object object, bool &done, std::mutex &m, std::str
   // sp is ready for zkp .
   // sp generate the proof and serialize it in local. the proof is local on libserver/tutorial/proof
   server_provider provider(object,"0x57128a8c478B3fEab65866a9c39d06408c243ce9");
-
+  wsConnPtr->send("start to execute user's program\n");
+  auto execute_result = provider.execute_user_program(program_str,primary_input_path);
+  if(execute_result.has_error()){
+    boost::system::error_code ec = execute_result.error();
+    fprintf(stderr,"error info : %s",ec.message().c_str());
+  }
+  wsConnPtr->send("success to execute user's program\n");
+  wsConnPtr->send("start to generate proof\n");
   provider.on_generate_and_serialize_proof(proveing_key_path,primary_input_path,auxiliary_input_path,proof_path);
-
+  wsConnPtr->send("success to generate proof\n");
   // op get the sp address and verify the proof.
   // if pass the proof, this process run success
   // else throw an error
@@ -58,8 +67,6 @@ void performTask(boost::json::object object, bool &done, std::mutex &m, std::str
   assert(op.on_verify(verification_key_path,proof_path,primary_input_path)==true);
   printf("OK!");
   //======================================================================
-  std::lock_guard<std::mutex> lock(m);
-  done = true;
   std::cout.rdbuf(oldBuf); // reset cout
 }
 
@@ -84,24 +91,11 @@ void EchoWebsock::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr,
   boost::json::value value = parser.release();
   boost::json::object object = value.as_object();
   wsConnPtr->send("json format syntax: \n" + ec.message());
-  if (ec.message() != "Success") {
+  if (ec.failed()) {
     wsConnPtr->forceClose();
     return;
   }
-  std::mutex m;
-  bool done;
-  std::stringstream ss;
-  std::streambuf *wsBuf = ss.rdbuf();
-  std::thread t(performTask, object, std::ref(done), std::ref(m), std::ref(wsBuf));
-  do {
-    std::lock_guard<std::mutex> lock(m);
-    if (!ss.str().empty()) {
-      wsConnPtr->send(ss.str());
-      ss.clear(); // clear state
-      ss.str(""); // clear content
-    }
-  } while (!done);
-  t.join();
+  performTask(object, wsConnPtr);
   wsConnPtr->forceClose();
 }
 void EchoWebsock::handleNewConnection(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr) {

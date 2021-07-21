@@ -49,6 +49,12 @@ server_provider::server_provider(const std::string &config,
 const std::string &server_provider::get_address() {
   return account_;
 }
+outcome::result<std::string> server_provider::execute_user_program(
+    const string& program_str, const string& primary_input_path) {
+  analysis_program analysisProgram;
+  auto res = analysisProgram.execute(program_str,primary_input_path);
+  return res;
+}
 
 bool osprey_plateform::on_verify(const std::string& verifacation_key_path,const std::string& proof_path,const std::string& primary_input_path) {
   auto vk = groth16_server_->get_verification_key_from_file(verifacation_key_path);

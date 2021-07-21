@@ -1,0 +1,9 @@
+{
+  "register_count":16,
+  "word_size":16,
+  "tinyram_input_size_bound": 25,
+  "time_bound": 64,
+  "tinyram_program_size_bound":20,
+  "program":"def fun(data):\n        return 2",
+  "verify_program":"; TinyRAM V=2.000 M=vn W=16 K=16\n;;; avarage\n;;; primary input: DATA_HASH\n;;; aux input: DATA\n;;; suppose the aux input is a array which length is 20\n;;; compute the avarage of data,which hash is DATA_HASH\n;;; 1. hash aux input and compare with the DATA_HASH\n;;; 2. avarage the aux inpute and out the result\n\n;;;we just complete the step2 firstly, and the hash function is hard.\nstore.w 0, r0                    ; 0:\nmov r0, 32768                    ; 4:\nread r1, 0                       ; 8: read the first word in the primary word\ncjmp 28                          ; 12: if the flag is 1 ,jump 28\nread r2,1\nsub r2,r2,r1\nanswer r2"
+}

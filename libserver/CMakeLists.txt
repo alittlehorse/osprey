@@ -14,13 +14,12 @@ add_library(libserver
         ram_compiler/tinyram_compiler_server.hpp
         ram_compiler/specialization_pool.hpp
         aux_struct/params_config.cpp)
+
 add_subdirectory(analysis_program)
 add_subdirectory(smart_contract)
-
-target_link_libraries(libserver fmt)
-
 target_link_libraries(libserver
         tinyram_snark
+        fmt::fmt
         smart_contract
         libanalysis
         ${Boost_LIBRARIES}
@@ -33,6 +32,8 @@ target_link_libraries(libserver
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/analysis_program/analysis_execute_script.py
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/tutorial
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 #module testing
 add_executable(
         analysis_program_tests
@@ -101,9 +102,10 @@ add_executable(
         ram_compiler/tests/specialization_pool_tests.cpp
 )
 target_link_libraries(specialization_pool_tests libserver)
+
 #include(CTest)
 #enable_testing()
-#add_test(NAME groth16_server_tests COMMAND groth16_server_tests)
+add_test(NAME groth16_server_tests COMMAND groth16_server_tests)
 #add_test(NAME params_config_tests COMMAND params_config_tests)
 #add_test(NAME proof_program_tests COMMAND proof_program_tests)
 #add_test(NAME log_tests COMMAND log_tests)
@@ -118,5 +120,5 @@ target_link_libraries(specialization_pool_tests libserver)
 #add_dependencies(check log_tests)
 #add_dependencies(check ram_ppsnark_server_test)
 #add_dependencies(check tinyram_compiler_server_test)
-#add_dependencies(check groth16_server_tests)
+add_dependencies(check groth16_server_tests)
 #add_dependencies(check params_config_tests)
