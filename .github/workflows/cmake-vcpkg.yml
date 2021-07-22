@@ -31,13 +31,17 @@ jobs:
       uses: egor-tensin/build-boost@v1
       with:
         version: 1.75.0
-        
-    - name: Install apt dependency
-      run: sudo apt install build-essential cmake git libgmp3-dev libprocps-dev python3-markdown libboost-program-options-dev libssl-dev python3 pkg-config python3-dev libevent-dev libfmt-dev
 
+
+    - name: install apt dependency
+    # You may pin to the exact commit or the version.
+    # uses: LyricWulf/abc@fac86f9a1ed76c6985324639b2f843f845ffb40b
+      uses: LyricWulf/abc@v1.1.0
+      with:
+        # Apt dependencies
+        linux: build-essential cmake git libgmp3-dev libprocps-dev python3-markdown libboost-program-options-dev libssl-dev python3 pkg-config python3-dev libevent-dev libfmt-dev
+        # Install latest CMake.
         
-        
-      # Install latest CMake.
     - uses: lukka/get-cmake@latest
     # Restore from cache the previously built ports. If cache-miss, download and build vcpkg (aka "bootstrap vcpkg").
     - name: Restore from cache and install vcpkg
@@ -45,6 +49,9 @@ jobs:
       uses: lukka/run-vcpkg@v7
       with:
         setupOnly: true
+        vcpkgDirectory: ${{ github.workspace }}/vcpkg
+        vcpkgGitUrl: 'https://github.com/microsoft/vcpkg.git'
+        useShell: true
         vcpkgGitCommitId: 7344286766489958ec68af4e805a46fcdd306629
     # Now that vcpkg is installed, it is being used to run with the desired arguments.
     - run: |
