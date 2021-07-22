@@ -45,6 +45,7 @@ jobs:
       uses: lukka/run-vcpkg@v7
       with:
         setupOnly: true
+        vcpkgGitCommitId: 7344286766489958ec68af4e805a46fcdd306629
     # Now that vcpkg is installed, it is being used to run with the desired arguments.
     - run: |
         $VCPKG_ROOT/vcpkg install boost:linux-x64 &&
