@@ -49,16 +49,17 @@ jobs:
       uses: lukka/run-vcpkg@v7
       with:
         setupOnly: true
+        vcpkgArguments: "drogon xbyak"
         vcpkgDirectory: ${{ github.workspace }}/vcpkg
         vcpkgGitUrl: 'https://github.com/microsoft/vcpkg.git'
         useShell: true
-        vcpkgGitCommitId: 7344286766489958ec68af4e805a46fcdd306629
+        vcpkgGitCommitId: 30124253eecff36bc90f73341edbfb4f845e2a1e
     # Now that vcpkg is installed, it is being used to run with the desired arguments.
-    - run: |
-        $VCPKG_ROOT/vcpkg install boost:linux-x64 &&
-        $VCPKG_ROOT/vcpkg install drogon:linux-x64 &&
-        $VCPKG_ROOT/vcpkg install xbyak:linux-x64
-      shell: bash
+#     - run: |
+#         $VCPKG_ROOT/vcpkg install boost:linux-x64 &&
+#         $VCPKG_ROOT/vcpkg install drogon:linux-x64 &&
+#         $VCPKG_ROOT/vcpkg install xbyak:linux-x64
+#       shell: bash
 
     - name: Run CMake to install the dependencies specified in the vcpkg.json manifest, generate project file and build the project
       uses: lukka/run-cmake@v3
