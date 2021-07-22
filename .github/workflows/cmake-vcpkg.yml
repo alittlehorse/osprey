@@ -8,6 +8,7 @@ on:
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  buildDir: '${{ github.workspace }}/build/'
   BUILD_TYPE: Release
 
 jobs:
@@ -54,6 +55,7 @@ jobs:
         vcpkgGitUrl: 'https://github.com/microsoft/vcpkg.git'
         useShell: true
         vcpkgGitCommitId: 30124253eecff36bc90f73341edbfb4f845e2a1e
+        additionalCachedPaths: ${{ env.buildDir }}/vcpkg_installed
     # Now that vcpkg is installed, it is being used to run with the desired arguments.
 #     - run: |
 #         $VCPKG_ROOT/vcpkg install boost:linux-x64 &&
