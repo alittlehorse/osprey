@@ -20,9 +20,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Cache Boost
+      uses: actions/cache@v2
+      with:
+        path: '${{ runner.workspace }}/boost_*.tar.gz'
+        key: 'boost-1.75.0'
+
+    - name: Build Boost
+      # This won't re-download the archive unnecessarily:
+      uses: egor-tensin/build-boost@v1
+      with:
+        version: 1.75.0
+        
+        
       # Install latest CMake.
     - uses: lukka/get-cmake@latest
-
     # Restore from cache the previously built ports. If a "cache miss" occurs, then vcpkg is bootstrapped. Since a the vcpkg.json is being used later on to install the packages when run-cmake runs, no packages are installed at this time and the input 'setupOnly:true' is mandatory.
     - name: Restore artifacts, or setup vcpkg (do not install any package)
       uses: lukka/run-vcpkg@v7
