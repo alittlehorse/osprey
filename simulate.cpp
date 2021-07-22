@@ -30,7 +30,7 @@ int main(){
 //  std::string primary_input_path = "/usr/tests/avarage/primary_input.txt";
 //  std::string auxiliary_input_path = "/usr/tests/avarage/auxiliary_input.txt";
   //init json config
-  std::ifstream f("/home/alittlehorse/ProjectHUB/github.com/osprey-dev/libserver/tutorial/avarage/avarage.json");
+  std::ifstream f(json_config);
   std::string content((std::istreambuf_iterator<char>(f)),
                       std::istreambuf_iterator<char>());
   const char *cstr = content.c_str();

@@ -1,5 +1,5 @@
 {
-  "middle_folder": "/home/alittlehorse/ProjectHUB/github.com/osprey-dev/libserver/tutorial/compare/",
+  "middle_folder": "../libserver/tutorial/compare/",
   "proof_config_name": "compare.json",
   "proof_name": "proof",
   "proving_key_name": "proving_key",
