@@ -1,9 +1,8 @@
 {
   "name" : "osprey",
   "version-string": "0.1",
-  "homepage" : ",",
+  "homepage" : "https://github.com/alittlehorse/osprey",
   "dependencies" : [
-    "boost",
     "xbyak",
     "drogon"
   ]
