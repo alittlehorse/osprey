@@ -1,0 +1,11 @@
+{
+  "middle_folder": "/home/alittlehorse/ProjectHUB/github.com/osprey-dev/libserver/tutorial/compare/",
+  "proof_config_name": "compare.json",
+  "proof_name": "proof",
+  "proving_key_name": "proving_key",
+  "verification_key_name": "verification_key",
+  "tinyram_file_name": "processed_assembly.txt",
+  "primary_input_file_name": "primary_input.txt",
+  "auxiliary_input_file_name": "auxiliary_input.txt",
+  "log_file_name": "proof_log.log"
+}
