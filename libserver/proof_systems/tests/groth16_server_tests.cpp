@@ -14,6 +14,9 @@ tests for groth16 server
 using namespace std::filesystem;
 using namespace libserver;
 int main(){
+
+  clock_t startTime,endTime;
+  startTime = clock();
   std::string proveing_key_path = "../../libserver/tutorial/avarage/proving_key";
   std::string verification_key_path = "../../libserver/tutorial/avarage/verification_key";
   std::string proof_path = "../../libserver/tutorial/avarage/proof";
@@ -40,5 +43,7 @@ int main(){
 
   bool b = s.verify(keypair.vk,proof.value(),"../../libserver/tutorial/avarage/primary_input.txt");
   assert(b== true);
+  endTime = clock();
+  printf("%f S",(double)(endTime - startTime) / CLOCKS_PER_SEC);
   return 0;
 }

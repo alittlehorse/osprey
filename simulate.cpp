@@ -1,19 +1,40 @@
 #include <libserver/osprey_server.hpp>
 #include <libserver/smart_contract/connectEthereum.h>
 #include <filesystem>
-
+#include <boost/json.hpp>
 int main(){
-  std::string json_config = "/usr/tests/avarage/avarage.json";
-  std::string proveing_key_path = "/usr/tests/avarage/proving_key";
-  std::string verification_key_path = "/usr/tests/avarage/verification_key";
-  std::string proof_path = "/usr/tests/avarage/proof";
-  std::string primary_input_path = "/usr/tests/avarage/primary_input.txt";
-  std::string auxiliary_input_path = "/usr/tests/avarage/auxiliary_input.txt";
+  std::string config = "../config.json";
+  std::ifstream f_config(config);
+  std::string conf_content((std::istreambuf_iterator<char>(f_config)),
+                      std::istreambuf_iterator<char>());
+  const char *conf_cstr = conf_content.c_str();
+  printf("%s",conf_cstr);
+  boost::json::parser conf_parser;
+  boost::json::error_code conf_ec;
+  conf_parser.write(conf_cstr,conf_content.size(),conf_ec);
+  if(conf_ec) exit(1);
+  boost::json::object config_object = conf_parser.release().as_object();
+  std::string folder_path = value_to<std::string>(config_object.at("middle_folder"));
+  std::string json_config = folder_path + value_to<std::string>(config_object.at("proof_config_name"));
+  std::string proveing_key_path = folder_path + value_to<string>(config_object.at("proving_key_name"));
+  std::string verification_key_path = folder_path + value_to<string>(config_object.at("verification_key_name"));
+  std::string proof_path = folder_path + value_to<string>(config_object.at("proof_name"));
+  std::string primary_input_path = folder_path + value_to<string>(config_object.at("primary_input_file_name"));
+  std::string auxiliary_input_path = folder_path + value_to<string>(config_object.at("auxiliary_input_file_name"));
+  printf("%s",json_config.c_str());
+  //=====================================
+//  std::string json_config = "/usr/tests/avarage/avarage.json";
+//  std::string proveing_key_path = "/usr/tests/avarage/proving_key";
+//  std::string verification_key_path = "/usr/tests/avarage/verification_key";
+//  std::string proof_path = "/usr/tests/avarage/proof";
+//  std::string primary_input_path = "/usr/tests/avarage/primary_input.txt";
+//  std::string auxiliary_input_path = "/usr/tests/avarage/auxiliary_input.txt";
   //init json config
-  std::ifstream f(json_config);
+  std::ifstream f("/home/alittlehorse/ProjectHUB/github.com/osprey-dev/libserver/tutorial/avarage/avarage.json");
   std::string content((std::istreambuf_iterator<char>(f)),
                       std::istreambuf_iterator<char>());
   const char *cstr = content.c_str();
+  printf("%s\n",cstr);
   boost::json::parser parser;
   boost::json::error_code ec;
   parser.write(cstr,content.size(),ec);
