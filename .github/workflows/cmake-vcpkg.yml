@@ -20,18 +20,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Cache Boost
-      uses: actions/cache@v2
-      with:
-        path: '${{ runner.workspace }}/boost_*.tar.gz'
-        key: 'boost-1.75.0'
+#     - uses: actions/checkout@v2
+#     - name: Cache Boost
+#       uses: actions/cache@v2
+#       with:
+#         path: '${{ runner.workspace }}/boost_*.tar.gz'
+#         key: 'boost-1.75.0'
 
-    - name: Build Boost
-      # This won't re-download the archive unnecessarily:
-      uses: egor-tensin/build-boost@v1
-      with:
-        version: 1.75.0
+#     - name: Build Boost
+#       # This won't re-download the archive unnecessarily:
+#       uses: egor-tensin/build-boost@v1
+#       with:
+#         version: 1.75.0
 
 
     - name: install apt dependency
@@ -50,7 +50,7 @@ jobs:
       uses: lukka/run-vcpkg@v7
       with:
         setupOnly: true
-        vcpkgArguments: "drogon xbyak"
+        vcpkgArguments: "drogon xbyak boost"
         vcpkgDirectory: ${{ github.workspace }}/vcpkg
         vcpkgGitUrl: 'https://github.com/microsoft/vcpkg.git'
         useShell: true
