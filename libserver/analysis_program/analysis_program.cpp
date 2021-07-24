@@ -19,12 +19,11 @@ outcome::result<std::string> analysis_program::execute(string program_str,string
   PyRun_SimpleString("import sys");
   PyRun_SimpleString("sys.path.append('./')");//这一步很重要，修改Python路径
   string python_script_name = "analysis_execute_script";
-  if(!filesystem::exists(python_script_name+".py")){
-    char buffer[1000];
+  char buffer[1000];
   getcwd(buffer, 1000);
+  fprintf(stdout,"Start to execute user's program, current directory is: %s\n", buffer);
+  if(!filesystem::exists(python_script_name+".py")){
   fprintf(stderr,"python script %s not found\n", (python_script_name + ".py").c_str());
-  fprintf(stderr,"The current directory is: %s\n", buffer);
-
     return Analysis_Error_Code::Script_Not_Found;
   }
   PyObject * pModule = NULL;//声明变量
@@ -40,11 +39,16 @@ outcome::result<std::string> analysis_program::execute(string program_str,string
   pFunc = PyObject_GetAttrString(pModule, "execute");//这里是要调用的函数名
   PyObject* pRet = PyObject_CallFunction(pFunc,"s",program_str.c_str());
   //PyObject* pRet = PyObject_CallFunctionObjArgs(pFunc,args);//调用函数
-  char* res;
-  PyArg_Parse(pRet, "s", &res);//转换返回类型
+  char* tmp;
+  PyArg_Parse(pRet, "s", &tmp);//转换返回类型
+  string res(tmp);
+  if(res.find("Traceback") != string::npos){
+    return Analysis_Error_Code::Function_Parse_Fail;
+  }
   ofstream outfile;
   outfile.open(primary_input_path, ios_base::out | ios_base::trunc);  //删除文件重写
   outfile << res << endl;
+  outfile.close();
   Py_Finalize();
   return string(res);
 }

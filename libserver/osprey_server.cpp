@@ -17,6 +17,18 @@ osprey server:
  * Generate proof and serialize proof in proof path
  */
 bool server_provider::on_generate_and_serialize_proof(const std::string& proving_key_path,const std::string& primary_input_path,const std::string& auxiliary_input_path,const std::string proof_path) {
+  if(!filesystem::exists(proving_key_path)){
+    fprintf(stderr,"proving_key_path(%s) does not exists\n",proving_key_path.c_str());
+  }
+  if(!filesystem::exists(primary_input_path)){
+    fprintf(stderr,"primary_input_path(%s) does not exists\n",primary_input_path.c_str());
+  }
+  if(!filesystem::exists(auxiliary_input_path)){
+    fprintf(stderr,"auxiliary_input_path(%s) does not exists\n",auxiliary_input_path.c_str());
+  }
+  if(!filesystem::exists(proof_path)){
+    fprintf(stderr,"proof_path(%s) does not exists\n",proof_path.c_str());
+  }
   r1cs_gg_ppzksnark_proving_key<default_r1cs_gg_ppzksnark_pp> pk1 ;
   try{
     std::ifstream (proving_key_path)>>pk1;

@@ -1,6 +1,7 @@
 from typing import *
 import traceback
 def execute(program_str:str) -> str:
+    program_str = program_str.strip()
     try:
         exec(program_str,globals())
 

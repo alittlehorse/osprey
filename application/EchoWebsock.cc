@@ -55,6 +55,8 @@ void performTask(boost::json::object object,const WebSocketConnectionPtr &wsConn
   if(execute_result.has_error()){
     boost::system::error_code ec = execute_result.error();
     fprintf(stderr,"error info : %s",ec.message().c_str());
+    wsConnPtr->send(ec.message().c_str());
+    return;
   }
   wsConnPtr->send("success to execute user's program\n");
   wsConnPtr->send("start to generate proof\n");
@@ -65,7 +67,7 @@ void performTask(boost::json::object object,const WebSocketConnectionPtr &wsConn
   // else throw an error
   op.set_server_address(provider.get_address());
   assert(op.on_verify(verification_key_path,proof_path,primary_input_path)==true);
-  printf("OK!");
+  printf("OK!\n");
   //======================================================================
   std::cout.rdbuf(oldBuf); // reset cout
 }
@@ -95,7 +97,16 @@ void EchoWebsock::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr,
     wsConnPtr->forceClose();
     return;
   }
+   try
+ { 
   performTask(object, wsConnPtr);
+ } 
+ catch (exception& e) 
+ { 
+  cout << "Standard exception: " << e.what() << endl; 
+  wsConnPtr->send(e.what());
+ } 
+ 
   wsConnPtr->forceClose();
 }
 void EchoWebsock::handleNewConnection(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr) {
