@@ -14,3 +14,4 @@ osprey/libserver/tutorial/avarage/proof
 osprey/libserver/tutorial/avarage/proving_key
 osprey/libserver/tutorial/avarage/verification_key
 osprey/libserver/tutorial/avarage/complier-log.txt
+depends/

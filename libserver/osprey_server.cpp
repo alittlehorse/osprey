@@ -31,6 +31,13 @@ catch(std::exception& e){
   return true;
 }
 
+outcome::result<std::string> server_provider::execute_user_program(
+    const string& program_str, const string& primary_input_path) {
+  analysis_program analysisProgram;
+  auto res = analysisProgram.execute(program_str,primary_input_path);
+  return res;
+}
+
 server_provider::server_provider(const boost::json::object& config,const std::string& smart_contract_address){
   std::unique_ptr<params_config> a= std::make_unique<params_config>(config);
   a->precompiler(a->get_verify_program());

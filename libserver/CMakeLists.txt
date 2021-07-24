@@ -22,12 +22,22 @@ target_link_libraries(libserver
         libanalysis
         ${Boost_LIBRARIES}
 )
+# FIle Copy
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/analysis_program/analysis_execute_script.py
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/../)
+
+        file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/tutorial
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/../)
 
 # Tests
 #Integration Testing
 
 
 #module testing
+add_executable(
+        analysis_program_tests
+        analysis_program/tests/analysis_program_tests.cpp)
+target_link_libraries(analysis_program_tests libanalysis)
 
 add_executable(
         params_config_tests
