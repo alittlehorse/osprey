@@ -16,12 +16,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
-    - name: Install apt dependency(1)
-      run: sudo apt install build-essential cmake git libgmp3-dev libprocps-dev python3-markdown libboost-program-options-dev libssl-dev python3 pkg-config python3-dev libevent-dev
+    - name: ABC Install
+      # You may pin to the exact commit or the version.
+        # uses: LyricWulf/abc@fac86f9a1ed76c6985324639b2f843f845ffb40b
+      uses: LyricWulf/abc@v1.1.0
+      with:
+          # Apt dependencies
+        linux: build-essential cmake git libgmp3-dev libprocps-dev python3-markdown libboost-program-options-dev libssl-dev python3 pkg-config python3-dev libevent-dev libjsoncpp-dev uuid-dev openssl libssl-dev zlib1g-dev
+#     - name: Install apt dependency(1)
+#       run: sudo apt install build-essential cmake git libgmp3-dev libprocps-dev python3-markdown libboost-program-options-dev libssl-dev python3 pkg-config python3-dev libevent-dev
 
-    - name: Install apt dependency(2)
-      run: sudo apt install libjsoncpp-dev uuid-dev openssl libssl-dev zlib1g-dev # for drogon
+#     - name: Install apt dependency(2)
+#       run: sudo apt install libjsoncpp-dev uuid-dev openssl libssl-dev zlib1g-dev # for drogon
 
     - name: Download newer boost 1.75
       run: wget https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.tar.bz2 && tar -xvf ./boost_1_75_0.tar.bz2 
